@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 from flask_session import Session
 import sqlite3
 import random
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 
@@ -20,7 +21,13 @@ def index():
     NYSE = (random.randint(1, 3298),)
     other = (random.randint(1, 5199),)
     coinFlip = random.randint(0, 1)
-    quote = random.randint(0,10)
+    quote = (random.randint(1,33),)
+
+    #extract quote
+    db.execute("SELECT quote FROM quotes WHERE id = ?", quote)
+    stockquote = db.fetchone()
+    db.execute("SELECT author FROM quotes WHERE id = ?", quote)
+    quoteauthor = db.fetchone()
 
     #extract random stock from database for NYSE
     db.execute("SELECT symbol FROM NYSE WHERE id = ?", NYSE)
@@ -40,9 +47,15 @@ def index():
     if (coinFlip == 0):
         symbol = str(nyseSymbol).replace("(", "").replace(")", "").replace(",", "").strip("''")
         stock = str(nyseStock).replace("(", "").replace(")", "").replace(",", "").strip("''")
-        return render_template("index.html", symbol=symbol, stock=stock)
+        stockquotefinal = str(stockquote).replace("(", "").replace(")", "").rstrip(",").strip("''").strip('""')
+        quoteauthorfinal = str(quoteauthor).replace("(", "").replace(")", "").replace(",", "").strip("''")
+        exchange = 'NYSE'
+        return render_template("index.html", symbol=symbol, stock=stock, exchange = exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)
 
     else:
         symbol = (str(otherSymbol)).replace("(", "").replace(")", "").replace(",", "").strip("''")
         stock = (str(otherStock)).replace("(", "").replace(")", "").replace(",", "").strip("''")
-        return render_template("index.html", symbol=symbol, stock=stock)
+        stockquotefinal = str(stockquote).replace("(", "").replace(")", "").rstrip(",").strip("''").strip('""')
+        quoteauthorfinal = str(quoteauthor).replace("(", "").replace(")", "").replace(",", "").strip("''")
+        exchange = 'NASDAQ'
+        return render_template("index.html", symbol=symbol, stock=stock, exchange=exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)

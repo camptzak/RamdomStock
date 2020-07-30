@@ -1,0 +1,35 @@
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: #cfe0e8;
+}
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
+
+.page {
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.result {
+  text-align: center;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.mybutton {
+  text-align: center;
+}
+
+

@@ -1,14 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>UnplannedInvestments</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block head %}
 
-<div>These Investments were not planned!</div>
-<div>Your Unplanned Investment is {{symbol}} | {{stock}}!</div>
-<div>Quote will be here</div>
+{% endblock %}
 
-</body>
-</html>
+
+{% block body %}
+<br>
+<div class="page">
+    <br>
+    <p>
+        At Unplanned Investments we believe that no broker or fund manager can truly pick winning stocks consistently.
+        In fact, we believe that a portfolio consisting of randomly picked stocks will do just about as well as
+        some of the best funds in the business. The truth is, no one can really beat the market, and anyone telling you
+        they can is either lying, stupid, or both. (Or they're engaged in insider trading!)<br>
+    </p>
+    <p>
+        We thought it would be fun to create a platform to deliver a randomly generated security every time you visit the site.
+        The randomly generated stock is retrieved from a large database of all publicly traded stocks in the United States.
+        We also included a fun quote for your amusement. Enjoy!
+    </p>
+</div>
+<br>
+<div class="result">
+    ACT Symbol <b>{{symbol}}</b><br>
+    Company Name <b>{{stock}}</b><br>
+    Listed On <b> {{exchange}}</b>
+    <br>
+    <br>
+    <br>
+    <em>"{{stockquotefinal}}"</em><br>
+    -{{quoteauthorfinal}}
+</div>
+<div class="mybutton">
+    <a href="{{url_for('index')}}"><button style="background-color: #295fa6" class="btn btn-primary btn-lg">Get Another Stock</button></a>
+</div>
+
+
+
+{% endblock %}
+
