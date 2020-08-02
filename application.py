@@ -59,3 +59,8 @@ def index():
         quoteauthorfinal = str(quoteauthor).replace("(", "").replace(")", "").replace(",", "").strip("''")
         exchange = 'NASDAQ'
         return render_template("index.html", symbol=symbol, stock=stock, exchange=exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)
+
+
+@app.route("/RandomPortfolio")
+def portfolio():
+    return render_template("portfolio.html")
