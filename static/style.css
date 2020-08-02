@@ -13,12 +13,6 @@ body {
   flex-shrink: 0;
 }
 
-.page {
-  padding-left: 16px;
-  padding-right: 16px;
-  margin-left: 30px;
-  margin-right: 30px;
-}
 
 .result {
   text-align: center;
@@ -30,6 +24,15 @@ body {
 
 .mybutton {
   text-align: center;
+  margin-bottom: 20px;
 }
 
+.disclaimer {
+  text-align: center;
+  font-size: small;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
