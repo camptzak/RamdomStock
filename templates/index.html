@@ -12,9 +12,9 @@
 <div class="result">
     ACT Symbol <b>{{symbol}}</b><br>
     Company Name <b>{{stock}}</b><br>
-    Listed On <b> {{exchange}}</b>
-    <br>
+    Listed On <b> {{exchange}}</b><br>
     <a href="http://finance.yahoo.com/quote/{{symbol}}">Quote</a>
+    <br>
     <br>
     <br>
     <em>"{{stockquotefinal}}"</em><br>
@@ -30,8 +30,7 @@
 
     <p>
         We thought it would be fun to create a platform to deliver a randomly generated security every time you visit the site.
-        We also decided to invest $1000 USD in 10 randomly selected stocks. (Coming Soon!) The randomly generated stocks
-        are retrieved from a large database of all publicly traded stocks in the United States. The
+        The randomly generated stocks are retrieved from a large database (~10k) of all publicly traded stocks in the United States. The
         available stocks are restricted to what is traded on the NASDAQ or the NYSE, we do not include penny stocks in our
         database. We also included a fun quote for your amusement.
     </p>
@@ -43,4 +42,5 @@
 
 
 {% endblock %}
+
 
