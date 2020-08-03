@@ -9,7 +9,7 @@
 <br>
 <br>
 <br>
-<div class="result">
+<div id="result" class="result">
     ACT Symbol <b>{{symbol}}</b><br>
     Company Name <b>{{stock}}</b><br>
     Listed On <b> {{exchange}}</b><br>
@@ -19,6 +19,9 @@
     <br>
     <em>"{{stockquotefinal}}"</em><br>
     -{{quoteauthorfinal}}
+    <script type="text/javascript">
+        Sijax.request('update_result');
+    </script>
 </div>
 <div class="mybutton">
     <a href="{{url_for('index')}}"><button style="background-color: #295fa6" class="btn btn-primary btn-lg">Get Another Stock</button></a>

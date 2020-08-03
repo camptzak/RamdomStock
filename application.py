@@ -1,10 +1,19 @@
+import os
 from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 from flask_session import Session
 import sqlite3
 import random
 from flask_bootstrap import Bootstrap
+import flask_sijax
 
 application = app = Flask(__name__)
+
+path = os.path.join('.', os.path.dirname(__file__), 'static/js/sijax/')
+app.config['SIJAX_STATIC_PATH'] = path
+
+app.config['SIJAX_STATIC_PATH'] = path
+app.config['SIJAX_JSON_URI'] = '/static/js/sijax/json2.js'
+flask_sijax.Sijax(app)
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
