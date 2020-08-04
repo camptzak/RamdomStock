@@ -64,6 +64,37 @@ def index():
         return render_template("index.html", symbol=symbol, stock=stock, exchange=exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)
 
 
-@app.route("/RandomPortfolio")
-def portfolio():
-    return render_template("portfolio.html")
+@app.route("/PennyStocks")
+def pennyStocks():
+
+    conn = sqlite3.connect('unplannedInvestments.db')
+    db = conn.cursor()
+
+    # random number generation
+    pennyStock = (random.randint(1, 12018),)
+    quote = (random.randint(1, 33),)
+
+    # extract quote
+    db.execute("SELECT quote FROM quotes WHERE id = ?", quote)
+    stockquote = db.fetchone()
+    db.execute("SELECT author FROM quotes WHERE id = ?", quote)
+    quoteauthor = db.fetchone()
+
+
+    # extract random stock from pennyStock database
+    db.execute("SELECT symbol FROM pennyStocks WHERE id = ?", pennyStock)
+    pennySymbol = db.fetchone()
+    db.execute("SELECT name FROM pennyStocks WHERE id = ?", pennyStock)
+    pennyName = db.fetchone()
+    db.execute("SELECT tier FROM pennyStocks WHERE id = ?", pennyStock)
+    pennyMarket = db.fetchone()
+
+    symbolfinal = (str(pennySymbol)).replace("(", "").replace(")", "").replace(",", "").strip("''")
+    namefinal = (str(pennyName)).replace("(", "").replace(")", "").replace(",", "").strip("''")
+    marketfinal = (str(pennyMarket)).replace("(", "").replace(")", "").replace(",", "").strip("''")
+    stockquotefinal = str(stockquote).replace("(", "").replace(")", "").rstrip(",").strip("''").strip('""')
+    quoteauthorfinal = str(quoteauthor).replace("(", "").replace(")", "").replace(",", "").strip("''")
+    exchange = 'NASDAQ'
+    return render_template("pennyStocks.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, stockquotefinal=stockquotefinal,
+                           quoteauthorfinal=quoteauthorfinal)
+

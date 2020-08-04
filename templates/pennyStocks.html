@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="result">
+    ACT Symbol <b>{{symbol}}</b><br>
+    Company Name <b>{{stock}}</b><br>
+    Listed On <b> {{exchange}}</b><br>
+    <a href="http://finance.yahoo.com/quote/{{symbol}}">Quote</a>
+    <br>
+    <br>
+    <br>
+    <em>"{{stockquotefinal}}"</em><br>
+    -{{quoteauthorfinal}}
+
+</div>
+<div class="mybutton">
+    <a href="{{url_for('pennyStocks')}}"><button style="background-color: #295fa6" class="btn btn-primary btn-lg">Get Another Penny Stock</button></a>
+</div>
+<div class="disclaimer">
+    <br>
+    <br>
+    <br>
+
+    <p>
+        Here'another random stock generator with a database of all publicly traded penny stocks!
+        The randomly generated penny stocks are retrieved from a large database (~12k) of all publicly traded penny stocks in the United States and abroad.
+        We also included a fun quote for your amusement.
+    </p>
+    <p>
+        <b>We do not advocate that you invest money into randomly selected securities!</b> This page was made to give people
+        access to a random stock generator, and for general entertainment.
+    </p>
+</div>
+{% endblock %}
