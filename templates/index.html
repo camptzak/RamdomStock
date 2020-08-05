@@ -13,7 +13,7 @@
     ACT Symbol <b>{{symbol}}</b><br>
     Company Name <b>{{stock}}</b><br>
     Listed On <b> {{exchange}}</b><br>
-    <a href="http://finance.yahoo.com/quote/{{symbol}}">Quote</a>
+    <a href="http://finance.yahoo.com/quote/{{symbol}}">Stock Quote</a>
     <br>
     <br>
     <br>
@@ -22,8 +22,28 @@
 
 </div>
 <div class="mybutton">
-    <a href="{{url_for('index')}}"><button style="background-color: #295fa6" class="btn btn-primary btn-lg">Get Another Stock</button></a>
+    <a href="{{url_for('index')}}">
+        <button style="background-color: #295fa6" class="btn btn-primary btn-lg">Get Another Stock</button>
+    </a>
 </div>
+<br>
+<br>
+
+<!-- AddToAny BEGIN -->
+<style type="text/css">
+#my_centered_buttons { display: flex; justify-content: center; }
+</style>
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style" id="my_centered_buttons">
+
+    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_reddit"></a>
+    <a class="a2a_button_pinterest"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+
 <div class="disclaimer">
     <br>
     <br>
@@ -31,12 +51,15 @@
 
     <p>
         Welcome to RandomStock! Whenever you visit, we will generate a random stock for you!
-        The randomly generated stocks are retrieved from a large database (~10k) of all publicly traded stocks in the United States. The
-        available stocks are restricted to what is traded on the NASDAQ or the NYSE, we do not include penny stocks in this
+        The randomly generated stocks are retrieved from a large database (~10k) of all publicly traded stocks in the
+        United States. The
+        available stocks are restricted to what is traded on the NASDAQ or the NYSE, we do not include penny stocks in
+        this
         database. We also included a fun quote for your amusement.
     </p>
     <p>
-        <b>We do not advocate that you invest money into randomly selected securities!</b> This page was made to give people
+        <b>We do not advocate that you invest money into randomly selected securities!</b> This page was made to give
+        people
         access to a random stock generator, and for general entertainment.
     </p>
 </div>
