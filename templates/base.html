@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>RandomStock</title>
     <meta name="description" content="random stock generator">
-    <meta name="keywords" content="random stocks, random stock generator, investing" />
+    <meta name="keywords" content="random stocks, random stock generator, investing"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
@@ -29,22 +29,22 @@
 <div class="content">
     <!-- Bootstrap NavBar! -->
     <nav class="navbar navbar-light bg-light navbar-expand-sm">
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="navbar-brand navbar-right" style="font-size: 24px" href="{{url_for('index')}}">
-                        <img src="static/UnplannedFavicon.png" width="36" height="36" class="d-inline-block align-top"
-                             alt="">
-                        <b>Random</b>Stock
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="navbar-brand navbar-right link-items"  href="{{url_for('pennyStocks')}}" ><i class="fas fa-piggy-bank"></i>
-                        OTC Stocks
-                    </a>
-                </li>
-            </ul>
-        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="navbar-brand nav-link" style="font-size: 24px" href="{{url_for('index')}}">
+                    <img src="static/UnplannedFavicon.png" width="36" height="36" class="d-inline-block align-top"
+                         alt="">
+                    <b>Random</b>Stock
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="navbar-brand nav-link link-items" href="{{url_for('pennyStocks')}}"><i
+                        class="fas fa-piggy-bank"></i>
+                    OTC Stocks
+                </a>
+            </li>
+        </ul>
+
 
     </nav>
     {% block body %}

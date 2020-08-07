@@ -37,13 +37,18 @@ body {
 }
 
 .link-items {
-  margin-top:3.5px;
+  margin-top:3px;
   margin-left: 10px;
 }
 
 
-#my_centered_buttons {
-  display: flex; justify-content: center;
+.my_centered_buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.active {
+  color: black;
 }
 
 
