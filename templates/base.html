@@ -30,16 +30,29 @@
     <!-- Bootstrap NavBar! -->
     <nav class="navbar navbar-light bg-light navbar-expand-sm">
         <ul class="navbar-nav">
+            {% if active_page == "index" %}
             <li class="nav-item active">
+                {% else %}
+            <li class="nav-item">
+                {% endif %}
                 <a class="navbar-brand nav-link" style="font-size: 24px" href="{{url_for('index')}}">
                     <img src="static/UnplannedFavicon.png" width="36" height="36" class="d-inline-block align-top"
                          alt="">
                     <b>Random</b>Stock
                 </a>
             </li>
+
+            {% if active_page == "pennyStocks" %}
+            <li style="font-weight: bold" class="nav-item active">
+                {% else %}
             <li class="nav-item">
-                <a class="navbar-brand nav-link link-items" href="{{url_for('pennyStocks')}}"><i
-                        class="fas fa-piggy-bank"></i>
+                {% endif %}
+                <a class="navbar-brand nav-link link-items" href="{{url_for('pennyStocks')}}">
+                    {% if active_page == "pennyStocks" %}
+                    <i style="color: #295fa6" class="fas fa-piggy-bank"></i>
+                    {% else %}
+                    <i style="color: #295fa6" class="fas fa-piggy-bank"></i>
+                    {% endif %}
                     OTC Stocks
                 </a>
             </li>
