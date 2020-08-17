@@ -94,7 +94,7 @@ def pennyStocks():
     marketfinal = (str(pennyMarket)).replace("(", "").replace(")", "").replace(",", "").strip("''")
     stockquotefinal = str(stockquote).replace("(", "").replace(")", "").rstrip(",").strip("''").strip('""')
     quoteauthorfinal = str(quoteauthor).replace("(", "").replace(")", "").replace(",", "").strip("''")
-
+    exchange = 'NASDAQ'
     return render_template("pennyStocks.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, stockquotefinal=stockquotefinal,
                            quoteauthorfinal=quoteauthorfinal)
 
