@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session, j
 from flask_session import Session
 import sqlite3
 import random
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask_bootstrap import Bootstrap
 
 
@@ -97,3 +98,49 @@ def pennyStocks():
     return render_template("pennyStocks.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, stockquotefinal=stockquotefinal,
                            quoteauthorfinal=quoteauthorfinal)
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    conn = sqlite3.connect('unplannedInvestments.db')
+    db = conn.cursor()
+
+    if request.method == "POST":
+        """Log user in"""
+
+        # Forget any user_id
+        session.clear()
+
+        # User reached route via POST (as by submitting a form via POST)
+        if request.method == "POST":
+
+            # Query database for username
+            rows = db.execute("SELECT * FROM users WHERE username = :username",
+                              username = request.form.get("username"))
+
+            session["user_id"] = rows[0]["id"]
+
+            # Redirect user to home page
+            return redirect("/")
+    else:
+        return render_template("login.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+
+    conn = sqlite3.connect('unplannedInvestments.db')
+    db = conn.cursor()
+
+    # Clear any session data
+    session.clear()
+
+    if request.method == "POST":
+
+        db.execute("INSERT INTO users (username, hash, email) VALUES (:username, :hashpassword, :email)",
+                   username=request.form.get("username_register"),
+                   hashpassword=generate_password_hash(request.form.get("password_register")))
+        return redirect('/')
+
+
+
+    else:
+        return render_template("register.html")
