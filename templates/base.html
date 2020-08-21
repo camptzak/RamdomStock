@@ -21,6 +21,7 @@
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
 
+
     {% block head %}
     {% endblock %}
 
@@ -28,38 +29,47 @@
 <body>
 <div class="content">
     <!-- Bootstrap NavBar! -->
-    <nav class="navbar navbar-light bg-light navbar-expand-sm">
-        <ul class="navbar-nav">
+    <nav class="navbar navbar-light bg-light navbar-expand-sm" id="navbar">
+
+        <!-- right side of navbar -->
+        <ul class="navbar-nav mr-auto mt-2">
             {% if active_page == "index" %}
             <li class="nav-item active">
-                {% else %}
+            {% else %}
             <li class="nav-item">
-                {% endif %}
-                <a class="navbar-brand nav-link" style="font-size: 24px" href="{{url_for('index')}}">
-                    <img src="static/UnplannedFavicon.png" width="36" height="36" class="d-inline-block align-top"
-                         alt="">
-                    <b>Random</b>Stock
-                </a>
-            </li>
+            {% endif %}
+                <a class="navbar-brand nav-link" href="{{url_for('index')}}">
+                    <img src="static/UnplannedFavicon.png" width="36" height="36" class="d-inline-block align-top"><b>Random</b>Stock</a></li>
 
             {% if active_page == "pennyStocks" %}
-            <li style="font-weight: bold" class="nav-item active">
-                {% else %}
+            <li class="nav-item active">
+            {% else %}
             <li class="nav-item">
-                {% endif %}
-                <a class="navbar-brand nav-link link-items" href="{{url_for('pennyStocks')}}">
-                    {% if active_page == "pennyStocks" %}
-                    <i style="color: #295fa6" class="fas fa-piggy-bank"></i>
-                    {% else %}
-                    <i style="color: #295fa6" class="fas fa-piggy-bank"></i>
-                    {% endif %}
-                    OTC Stocks
-                </a>
-            </li>
+            {% endif %}
+                <a class="nav-link " href="{{url_for('pennyStocks')}}">
+                    <i style="color: #295fa6" class="fas fa-piggy-bank"></i> OTC Stocks</a></li>
+        </ul>
+
+        <!-- left side of navbar -->
+        <ul class="navbar-nav ml-auto mt-2">
+            {% if active_page == "login" %}
+            <li class="nav-item active">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+                <a class="nav-link" href="{{url_for('login')}}">Login</a> </li>
+
+            {% if active_page == "register" %}
+            <li class="nav-item active">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+                <a class="nav-link" href="{{url_for('register')}}">Register</a> </li>
         </ul>
 
 
     </nav>
+
     {% block body %}
     {% endblock %}
 
@@ -73,6 +83,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous"></script>
+
 </div>
 </body>
 
