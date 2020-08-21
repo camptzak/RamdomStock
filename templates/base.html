@@ -51,25 +51,41 @@
         </ul>
 
         <!-- left side of navbar -->
-        <ul class="navbar-nav ml-auto mt-2">
-            {% if active_page == "login" %}
+        {% if session.user_id %}
+            <ul class="navbar-nav ml-auto mt-2">
+            {% if active_page == "logout" %}
             <li class="nav-item active">
             {% else %}
             <li class="nav-item">
             {% endif %}
-                <a class="nav-link" href="{{url_for('login')}}">Login</a> </li>
+                <a class="nav-link" href="{{url_for('logout')}}">Logout</a> </li>
+            </ul>
+        {% else %}
+            <ul class="navbar-nav ml-auto mt-2">
+                {% if active_page == "login" %}
+                <li class="nav-item active">
+                {% else %}
+                <li class="nav-item">
+                {% endif %}
+                    <a class="nav-link" href="{{url_for('login')}}">Login</a> </li>
 
-            {% if active_page == "register" %}
-            <li class="nav-item active">
-            {% else %}
-            <li class="nav-item">
-            {% endif %}
-                <a class="nav-link" href="{{url_for('register')}}">Register</a> </li>
-        </ul>
-
+                {% if active_page == "register" %}
+                <li class="nav-item active">
+                {% else %}
+                <li class="nav-item">
+                {% endif %}
+                    <a class="nav-link" href="{{url_for('register')}}">Register</a> </li>
+            </ul>
+        {% endif %}
 
     </nav>
-
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {% block body %}
     {% endblock %}
 
