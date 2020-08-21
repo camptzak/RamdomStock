@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% set active_page = "register" %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block body %}
+<div class="container p-5 mybutton">
+<form action="/register" method="post">
+    <div class="form-group">
+        <input autocomplete="off" autofocus class="form-control" name="username_register" placeholder="Username"
+               type="text">
+    </div>
+    <div class="form-group">
+        <input class="form-control" name="password_register" placeholder="Password" type="password">
+    </div>
+    <div class="form-group">
+        <input class="form-control" name="email_register" placeholder="Email address" type="text">
+    </div>
+    <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Register</button>
+</form>
+</div>
+{% endblock %}
