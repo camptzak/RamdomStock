@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% set active_page = "crypto" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<br>
+<br>
+<br>
+<br>
+<div class="result">
+    ACT Symbol <b>{{symbol}}</b><br>
+    Company Name <b>{{stock}}</b><br>
+    Listed On <b> {{exchange}}</b><br>
+    <a href="https://coinmarketcap.com/currencies/{{lookup}}">Crypto Quote</a>
+    <br>
+    <br>
+    <br>
+    <em>"{{stockquotefinal}}"</em><br>
+    -{{quoteauthorfinal}}
+
+</div>
+<div class="mybutton">
+    <a href="{{url_for('crypto')}}"><button style="background-color: #295fa6" class="btn btn-primary btn-lg">Get Another Cryptocurrency</button></a>
+</div>
+<br>
+<br>
+<!-- AddToAny BEGIN -->
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style my_centered_buttons">
+
+    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_reddit"></a>
+    <a class="a2a_button_pinterest"></a>
+</div>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
+
+<div class="disclaimer">
+    <br>
+    <br>
+    <br>
+
+    <p>
+        Here's a random cryptocurrency generator with a database of over 1600 traded cryptocurrencies! There's also a link for more information!
+        We also included a fun quote for your amusement.
+    </p>
+    <p>
+        <b>We do not advocate that you invest money into randomly selected securities!</b> This page was made to give people
+        access to a random cryptocurrency generator, and for general entertainment.
+    </p>
+</div>
+{% endblock %}

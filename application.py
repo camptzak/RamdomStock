@@ -96,6 +96,41 @@ def pennyStocks():
     return render_template("pennyStocks.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, stockquotefinal=stockquotefinal,
                            quoteauthorfinal=quoteauthorfinal)
 
+@app.route("/crypto")
+def crypto():
+
+    conn = sqlite3.connect('unplannedInvestments.db')
+    db = conn.cursor()
+
+    # random number generation
+    crypto = (random.randint(1, 1754),)
+    quote = (random.randint(1, 33),)
+
+    # extract quote
+    db.execute("SELECT quote FROM quotes WHERE id = ?", quote)
+    stockquote = db.fetchone()
+    db.execute("SELECT author FROM quotes WHERE id = ?", quote)
+    quoteauthor = db.fetchone()
+
+
+    # extract random stock from pennyStock database
+    db.execute("SELECT symbol FROM crypto WHERE id = ?", crypto)
+    cryptoSymbol = db.fetchone()
+    db.execute("SELECT name FROM pennyStocks WHERE id = ?", crypto)
+    cryptoName = db.fetchone()
+    db.execute("SELECT lookup FROM crypto WHERE id = ?", crypto)
+    cryptolookup = db.fetchone()
+    cryptoMarket = "CoinBase"
+
+    symbolfinal = cryptoSymbol[0]
+    namefinal = cryptoName[0]
+    marketfinal = cryptoMarket
+    lookup = cryptolookup[0]
+    stockquotefinal = stockquote[0]
+    quoteauthorfinal = quoteauthor[0]
+    return render_template("crypto.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, lookup = lookup, stockquotefinal=stockquotefinal,
+                           quoteauthorfinal=quoteauthorfinal,)
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     conn = sqlite3.connect('unplannedInvestments.db')

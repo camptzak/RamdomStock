@@ -48,6 +48,14 @@
             {% endif %}
                 <a class="nav-link " href="{{url_for('pennyStocks')}}">
                     <i style="color: #295fa6" class="fas fa-piggy-bank"></i> OTC Stocks</a></li>
+
+            {% if active_page == "crypto" %}
+            <li class="nav-item active">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+                <a class="nav-link " href="{{url_for('crypto')}}">
+                    <i style="color: #295fa6" class="fab fa-bitcoin"></i> Crypto</a></li>
         </ul>
 
         <!-- left side of navbar -->
