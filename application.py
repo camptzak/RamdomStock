@@ -40,10 +40,10 @@ def index():
         db.execute("SELECT name FROM NYSE WHERE id = ?", NYSE)
         nyseStock = db.fetchone()
 
-        symbol = str(nyseSymbol).replace("(", "").replace(")", "").replace(",", "").strip("''")
-        stock = str(nyseStock).replace("(", "").replace(")", "").replace(",", "").strip("''")
-        stockquotefinal = str(stockquote).replace("(", "").replace(")", "").rstrip(",").strip("''").strip('""')
-        quoteauthorfinal = str(quoteauthor).replace("(", "").replace(")", "").replace(",", "").strip("''")
+        symbol = nyseSymbol[0]
+        stock = nyseStock[0]
+        stockquotefinal = stockquote[0]
+        quoteauthorfinal = quoteauthor[0]
         exchange = 'NYSE'
         return render_template("index.html", symbol=symbol, stock=stock, exchange = exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)
 
@@ -109,9 +109,19 @@ def login():
 
         username = request.form.get("username")
         password = request.form.get("password")
-        if not username and password:
-            flash("Sorry! You must enter a username and password")
-            redirect("/login")
+
+        # Ensure username was submitted
+        if not username:
+            flash("Sorry! You must provide a username", "error")
+            redirect(url_for("login"))
+            return render_template("login.html")
+
+        # Ensure password was submitted
+        elif not password:
+            flash("Sorry! You must provide a password", "error")
+            redirect(url_for("login"))
+            return render_template("login.html")
+
 
 
         # Query database for username
@@ -120,13 +130,16 @@ def login():
         print(rows)
 
         if not check_password_hash(rows[2], password):
-            flash("Sorry, your username or password is not correct", "info")
-            redirect("login")
+            flash("Sorry, your username or password is not correct", "error")
+            redirect(url_for("login"))
+            return render_template("login.html")
 
         session["user_id"] = rows[0]
         flash("Login Successful", "info")
+
         # Redirect user to home page
-        return redirect("/")
+        return redirect(url_for("index"))
+
     else:
         return render_template("login.html")
 
@@ -145,28 +158,33 @@ def register():
         password = request.form.get("password_register")
         email = request.form.get("email_register")
 
-        if not username or password or email:
-            flash("Sorry! You must enter a username and password", "error")
+        if not username or not password or not email:
+            flash("Sorry! You must enter a username, password, and email", "error")
+            redirect(url_for("register"))
+            return render_template("register.html")
 
         if " " in username:
-            flash("Sorry! Your username cannot contain a space")
-            redirect("/login")
+            flash("Sorry! Your username cannot contain a space", "error")
+            redirect(url_for("register"))
+            return render_template("register.html")
 
         if " " in password:
             flash("Sorry! Your password cannot contain a space", "error")
-            redirect("/login")
+            redirect(url_for("register"))
+            return render_template("register.html")
 
         if " " in email:
             flash("Sorry! Your email cannot contain a space", "error")
+            redirect(url_for("register"))
+            return render_template("register.html")
 
         hashpassword = generate_password_hash(password)
 
         db.execute("INSERT INTO users (username, hash, email) VALUES (?, ?, ?)", (username, hashpassword, email,))
         conn.commit()
-        flash("Registration Successsful!")
-        return redirect("/login")
-
-
+        flash("Registration Successful!", "info")
+        redirect(url_for("login"))
+        return render_template(login.html)
 
     else:
         return render_template("register.html")
@@ -180,4 +198,5 @@ def logout():
     session.clear()
 
     # Redirect user to login form
-    return redirect("/")
+    flash("Logged out Successfully", "info")
+    return redirect(url_for("index"))

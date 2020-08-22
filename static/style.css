@@ -36,12 +36,6 @@ body {
   margin-bottom: 20px;
 }
 
-.link-items {
-  margin-top:3px;
-  margin-left: 10px;
-}
-
-
 .my_centered_buttons {
   display: flex;
   justify-content: center;

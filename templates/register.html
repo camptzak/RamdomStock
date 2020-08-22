@@ -6,6 +6,9 @@
 
 
 {% block body %}
+{% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+{% endif %}
 <div class="container p-5 mybutton">
 <form action="/register" method="post">
     <div class="form-group">
