@@ -45,4 +45,22 @@ body {
   color: black;
 }
 
+.alert-error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+  margin: 16px;
+}
+
+.alert-info {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+  margin: 16px;
+}
+
+
+
+
+
 

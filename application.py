@@ -184,7 +184,7 @@ def register():
         conn.commit()
         flash("Registration Successful!", "info")
         redirect(url_for("login"))
-        return render_template(login.html)
+        return render_template("login.html")
 
     else:
         return render_template("register.html")
