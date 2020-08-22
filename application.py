@@ -32,19 +32,14 @@ def index():
     db.execute("SELECT author FROM quotes WHERE id = ?", quote)
     quoteauthor = db.fetchone()
 
-    # extract random stock from database for NYSE
-    db.execute("SELECT symbol FROM NYSE WHERE id = ?", NYSE)
-    nyseSymbol = db.fetchone()
-    db.execute("SELECT name FROM NYSE WHERE id = ?", NYSE)
-    nyseStock = db.fetchone()
-
-    # extract random stock from database for other markets
-    db.execute("SELECT symbol FROM other WHERE id = ?", other)
-    otherSymbol = db.fetchone()
-    db.execute("SELECT name FROM other WHERE id = ?", other)
-    otherStock = db.fetchone()
 
     if (coinFlip == 0):
+        # extract random stock from database for NYSE
+        db.execute("SELECT symbol FROM NYSE WHERE id = ?", NYSE)
+        nyseSymbol = db.fetchone()
+        db.execute("SELECT name FROM NYSE WHERE id = ?", NYSE)
+        nyseStock = db.fetchone()
+
         symbol = str(nyseSymbol).replace("(", "").replace(")", "").replace(",", "").strip("''")
         stock = str(nyseStock).replace("(", "").replace(")", "").replace(",", "").strip("''")
         stockquotefinal = str(stockquote).replace("(", "").replace(")", "").rstrip(",").strip("''").strip('""')
@@ -53,10 +48,17 @@ def index():
         return render_template("index.html", symbol=symbol, stock=stock, exchange = exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)
 
     else:
-        symbol = (str(otherSymbol)).replace("(", "").replace(")", "").replace(",", "").strip("''")
-        stock = (str(otherStock)).replace("(", "").replace(")", "").replace(",", "").strip("''")
-        stockquotefinal = str(stockquote).replace("(", "").replace(")", "").rstrip(",").strip("''").strip('""')
-        quoteauthorfinal = str(quoteauthor).replace("(", "").replace(")", "").replace(",", "").strip("''")
+        # extract random stock from database for other markets
+        db.execute("SELECT symbol FROM other WHERE id = ?", other)
+        otherSymbol = db.fetchone()
+        db.execute("SELECT name FROM other WHERE id = ?", other)
+        otherStock = db.fetchone()
+
+
+        symbol = otherSymbol[0]
+        stock = otherStock[0]
+        stockquotefinal = stockquote[0]
+        quoteauthorfinal = quoteauthor[0]
         exchange = 'NASDAQ'
         return render_template("index.html", symbol=symbol, stock=stock, exchange=exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)
 
@@ -86,11 +88,11 @@ def pennyStocks():
     db.execute("SELECT tier FROM pennyStocks WHERE id = ?", pennyStock)
     pennyMarket = db.fetchone()
 
-    symbolfinal = (str(pennySymbol)).replace("(", "").replace(")", "").replace(",", "").strip("''")
-    namefinal = (str(pennyName)).replace("(", "").replace(")", "").replace(",", "").strip("''")
-    marketfinal = (str(pennyMarket)).replace("(", "").replace(")", "").replace(",", "").strip("''")
-    stockquotefinal = str(stockquote).replace("(", "").replace(")", "").rstrip(",").strip("''").strip('""')
-    quoteauthorfinal = str(quoteauthor).replace("(", "").replace(")", "").replace(",", "").strip("''")
+    symbolfinal = pennySymbol[0]
+    namefinal = pennyName[0]
+    marketfinal = pennyMarket[0]
+    stockquotefinal = stockquote[0]
+    quoteauthorfinal = quoteauthor[0]
     return render_template("pennyStocks.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, stockquotefinal=stockquotefinal,
                            quoteauthorfinal=quoteauthorfinal)
 
@@ -143,23 +145,26 @@ def register():
         password = request.form.get("password_register")
         email = request.form.get("email_register")
 
+        if not username or password or email:
+            flash("Sorry! You must enter a username and password", "error")
+
         if " " in username:
             flash("Sorry! Your username cannot contain a space")
             redirect("/login")
 
         if " " in password:
-            flash("Sorry! Your password cannot contain a space")
+            flash("Sorry! Your password cannot contain a space", "error")
             redirect("/login")
 
         if " " in email:
-            flash("Sorry! Your email cannot contain a space")
+            flash("Sorry! Your email cannot contain a space", "error")
 
         hashpassword = generate_password_hash(password)
 
-        db.execute("INSERT INTO users (username, hash, email) VALUES (?, ?, ?)", (username, hashpassword, email))
+        db.execute("INSERT INTO users (username, hash, email) VALUES (?, ?, ?)", (username, hashpassword, email,))
         conn.commit()
         flash("Registration Successsful!")
-        return redirect("/")
+        return redirect("/login")
 
 
 
