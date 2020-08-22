@@ -123,14 +123,18 @@ def login():
             return render_template("login.html")
 
 
-
         # Query database for username
         db.execute("SELECT * FROM users WHERE username = ?", (username,))
         rows = db.fetchone()
         print(rows)
 
+        if not rows:
+            flash("Sorry, that username does not exist", "error")
+            redirect(url_for("login"))
+            return render_template("login.html")
+
         if not check_password_hash(rows[2], password):
-            flash("Sorry, your username or password is not correct", "error")
+            flash("Sorry, your password is not correct", "error")
             redirect(url_for("login"))
             return render_template("login.html")
 
@@ -177,6 +181,15 @@ def register():
             flash("Sorry! Your email cannot contain a space", "error")
             redirect(url_for("register"))
             return render_template("register.html")
+
+        # Check if username exists already
+        db.execute("SELECT * FROM users WHERE username = ?", (username,))
+        rows = db.fetchone()
+        if rows:
+            flash("Sorry! That username is already taken", "error")
+            redirect(url_for("register"))
+            return render_template("register.html")
+
 
         hashpassword = generate_password_hash(password)
 
