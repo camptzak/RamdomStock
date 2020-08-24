@@ -131,6 +131,10 @@ def crypto():
     return render_template("crypto.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, lookup = lookup, stockquotefinal=stockquotefinal,
                            quoteauthorfinal=quoteauthorfinal,)
 
+@app.route("/blog/blog")
+def blog():
+    return render_template("blog.html")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     conn = sqlite3.connect('unplannedInvestments.db')

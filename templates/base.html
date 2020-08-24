@@ -56,6 +56,14 @@
             {% endif %}
                 <a class="nav-link " href="{{url_for('crypto')}}">
                     <i style="color: #295fa6" class="fab fa-bitcoin"></i> Crypto</a></li>
+
+            {% if active_page == "blog" %}
+            <li class="nav-item active">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+                <a class="nav-link " href="{{url_for('blog')}}">
+                    <i style="color: #295fa6" class="fas fa-blog"></i> Blog</a></li>
         </ul>
 
         <!-- left side of navbar -->
@@ -66,7 +74,7 @@
             {% else %}
             <li class="nav-item">
             {% endif %}
-                <a class="nav-link" href="{{url_for('logout')}}">Logout</a> </li>
+                <a class="nav-link" href="{{url_for('logout')}}"> Logout</a></li>
             </ul>
         {% else %}
             <ul class="navbar-nav ml-auto mt-2">
@@ -75,14 +83,14 @@
                 {% else %}
                 <li class="nav-item">
                 {% endif %}
-                    <a class="nav-link" href="{{url_for('login')}}">Login</a> </li>
+                    <a class="nav-link" href="{{url_for('login')}}"> Login</a></li>
 
                 {% if active_page == "register" %}
                 <li class="nav-item active">
                 {% else %}
                 <li class="nav-item">
                 {% endif %}
-                    <a class="nav-link" href="{{url_for('register')}}">Register</a> </li>
+                    <a class="nav-link" href="{{url_for('register')}}"> Register</a></li>
             </ul>
         {% endif %}
 

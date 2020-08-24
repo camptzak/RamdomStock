@@ -45,6 +45,7 @@ body {
   color: black;
 }
 
+
 .alert-error {
   background-color: #f2dede;
   border-color: #ebccd1;
@@ -58,6 +59,24 @@ body {
   color: #3c763d;
   margin: 16px;
 }
+
+.blog_page {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  height: 200px;
+  align-content: center;
+  margin-top: 60px;
+}
+
+.blog_post {
+  margin: 40px;
+  padding: 16px;
+  width: 200px;
+}
+
+
 
 
 
