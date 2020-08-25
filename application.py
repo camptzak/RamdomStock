@@ -3,6 +3,7 @@ from flask_session import Session
 import sqlite3
 import random
 from werkzeug.security import check_password_hash, generate_password_hash
+import datetime
 from flask_bootstrap import Bootstrap
 
 
@@ -131,9 +132,39 @@ def crypto():
     return render_template("crypto.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, lookup = lookup, stockquotefinal=stockquotefinal,
                            quoteauthorfinal=quoteauthorfinal,)
 
-@app.route("/blog/blog")
+@app.route("/blog", methods=["GET", "POST"])
 def blog():
-    return render_template("blog.html")
+
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("blog"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+
+        article = 1
+
+        conn = sqlite3.connect('unplannedInvestments.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)", (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("blog"))
+
+    else:
+        conn = sqlite3.connect('unplannedInvestments.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 1")
+        rows = db.fetchall()
+
+
+        return render_template("blog/blog.html", rows =rows)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -178,6 +209,7 @@ def login():
             return render_template("login.html")
 
         session["user_id"] = rows[0]
+        session["username"] = rows[1]
         flash("Login Successful", "info")
 
         # Redirect user to home page

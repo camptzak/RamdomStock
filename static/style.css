@@ -61,20 +61,10 @@ body {
 }
 
 .blog_page {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  height: 200px;
-  align-content: center;
-  margin-top: 60px;
+  margin: 100px;
 }
 
-.blog_post {
-  margin: 40px;
-  padding: 16px;
-  width: 200px;
-}
+
 
 
 
