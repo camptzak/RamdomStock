@@ -100,7 +100,6 @@ tweet = "%s Todays Random Stock is: \n" \
 "Symbol: %s \n" \
 "Company: %s \n" \
 "Exchange: %s \n" \
-"Visit the website (www.randomstock.net) for more random stocks and funny quotes! \n" \
 "%s" % (greetings, symbol, name, exchange, goodbye)
 
 

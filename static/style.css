@@ -36,15 +36,23 @@ body {
   margin-bottom: 20px;
 }
 
-.my_centered_buttons {
-  display: flex;
-  justify-content: center;
+.share_buttons {
+  text-align: center;
+}
+
+.share_button {
+  margin: 3px;
+  display: inline-block;
+  border-radius: 100%;
+}
+
+.share_button:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .active {
   color: black;
 }
-
 
 .alert-error {
   background-color: #f2dede;

@@ -10,8 +10,8 @@
 <br>
 <br>
 <div class="result">
-    ACT Symbol <b>{{symbol}}</b><br>
-    Company Name <b>{{stock}}</b><br>
+    ACT Symbol <b id="symbol">{{symbol}}</b><br>
+    Company Name <b id="company">{{stock}}</b><br>
     Listed On <b> {{exchange}}</b><br>
     <a href="http://finance.yahoo.com/quote/{{symbol}}">Stock Quote</a>
     <br>
@@ -26,17 +26,13 @@
 </div>
 <br>
 <br>
-<!-- AddToAny BEGIN -->
-<div class="a2a_kit a2a_kit_size_32 a2a_default_style my_centered_buttons">
-
-    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
-    <a class="a2a_button_facebook"></a>
-    <a class="a2a_button_twitter"></a>
-    <a class="a2a_button_reddit"></a>
-    <a class="a2a_button_pinterest"></a>
+<div class="share_buttons">
+    <div class="share_button" onclick="twitter()"><img src="static/share_buttons/twitter.png" width="36" height="36"></div>
+    <div class="share_button" onclick="facebook()"><img src="static/share_buttons/facebook.png" width="36" height="36"></div>
+    <div class="share_button" onclick="instagram()"><img src="static/share_buttons/instagram.png" width="36" height="36"></div>
+    <div class="share_button" onclick="reddit()"><img src="static/share_buttons/reddit.png" width="36" height="36"></div>
+    <div class="share_button" onclick="linkedin()"><img src="static/share_buttons/linkedin.png" width="36" height="36"></div>
 </div>
-<script async src="https://static.addtoany.com/menu/page.js"></script>
-<!-- AddToAny END -->
 
 <div class="disclaimer">
     <br>
