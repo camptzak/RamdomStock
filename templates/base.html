@@ -57,7 +57,7 @@
             <li class="nav-item">
             {% endif %}
                 <a class="nav-link " href="{{url_for('pennyStocks')}}">
-                    <i style="color: #295fa6" class="fas fa-piggy-bank"></i> OTC Stocks</a></li>
+                    <img src="static/cent.png" width="30" height="30"> OTC Stocks</a></li>
 
             {% if active_page == "crypto" %}
             <li class="nav-item active">
@@ -65,7 +65,7 @@
             <li class="nav-item">
             {% endif %}
                 <a class="nav-link " href="{{url_for('crypto')}}">
-                    <i style="color: #295fa6" class="fab fa-bitcoin"></i> Crypto</a></li>
+                    <img src="static/bitcoin.png" width="30" height="30"> Crypto</a></li>
 
             {% if active_page == "blog" %}
             <li class="nav-item active">
@@ -73,7 +73,7 @@
             <li class="nav-item">
             {% endif %}
                 <a class="nav-link " href="{{url_for('blog')}}">
-                    <i style="color: #295fa6" class="fas fa-blog"></i> Blog</a></li>
+                    <img src="static/blog.png" width="30" height="30"> Blog</a></li>
         </ul>
 
         <!-- left side of navbar -->
