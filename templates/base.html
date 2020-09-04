@@ -12,9 +12,6 @@
     <script src="static/js/shareButtons.js"></script>
 
 
-    <!-- Font Awesome icon sheet -->
-    <script src="https://kit.fontawesome.com/a611a1ca45.js" crossorigin="anonymous"></script>
-
     <!-- Bootstrap Styles Sheet! -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -57,7 +54,7 @@
             <li class="nav-item">
             {% endif %}
                 <a class="nav-link " href="{{url_for('pennyStocks')}}">
-                    <img src="static/cent.png" width="30" height="30"> OTC Stocks</a></li>
+                    <img src="static/cent.png" width="24" height="24"> OTC Stocks</a></li>
 
             {% if active_page == "crypto" %}
             <li class="nav-item active">
@@ -65,7 +62,7 @@
             <li class="nav-item">
             {% endif %}
                 <a class="nav-link " href="{{url_for('crypto')}}">
-                    <img src="static/bitcoin.png" width="30" height="30"> Crypto</a></li>
+                    <img src="static/bitcoin.png" width="24" height="24"> Crypto</a></li>
 
             {% if active_page == "blog" %}
             <li class="nav-item active">
@@ -73,7 +70,7 @@
             <li class="nav-item">
             {% endif %}
                 <a class="nav-link " href="{{url_for('blog')}}">
-                    <img src="static/blog.png" width="30" height="30"> Blog</a></li>
+                    <img src="static/blog.png" width="24" height="24"> Blog</a></li>
         </ul>
 
         <!-- left side of navbar -->
