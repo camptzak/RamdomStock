@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Coronavirus Vaccines</h1>
+        <h3>Pfizer or Moderna? Which company should you bet on in the corona virus vaccine race?</h3>
+        <p>Written by: Zack | zack@randomstock.net</p>
+
+        <img src="static/blog/02/vaccines_header.jpg" width="400" height="267">
+
+    <div class="article">
+        <h2>What are these vaccines?</h2>
+
+        <p>Both Moderna and Pfizer are producing mRNA vaccines. mRNA is material that creates a protein, and proteins make up all living
+            things. In this case, Moderna and Pfizer are both using mRNA that will create the <a href="https://science.sciencemag.org/content/early/2020/07/22/science.abd0826">protein</a>
+            responsible for the virus attaching to the cell, a good protein to target! However, using mRNA based vaccines is fairly new, so it's interesting that both companies
+            would choose this moment to try to create an mRNA vaccine. Both companies have to complete the FDAs required testing which includes <a href="https://www.fda.gov/patients/drug-development-process/step-3-clinical-research"> 3 phases.</a><br>
+            <em>Phase 1:</em> dosages of
+            drug (10mg, 20mg, 30 mg, etc) are given to people to determine what dose can be tolerated safely.<br> <em>Phase 2:</em> a medium sized pool of people (100-300) are given
+            the safe dose to test efficacy while still monitoring for safety.<br> <em>Phase 3:</em> A large pool of people (300-3000) are given the drug to test efficacy while still
+            monitoring for safety.</p>
+
+        <img src="static/blog/02/Moderna.jpg">
+
+        <h2>Moderna</h2>
+
+        <p>Moderna has an active Phase 1 clinical trial. Phase 1 is not complete but the company feels they have enough <a href="https://www.nejm.org/doi/full/10.1056/nejmoa2022483"> data</a> to
+        start enrolling their Phase 2 and Phase 3 studies with plans to use the 100 microgram dose. Due to the pandemic, the company is receiving a lot help from the FDA to expedite
+        the review process. This is allowing them to create a lot of headlines. <b>They have generated no real data in humans on the efficacy of their vaccine</b>. Phase 2
+        hasn't even begun, so we can't really say anything about efficacy. Meanwhile, Moderna executives are in the middle of a huge <a href="https://www.npr.org/2020/09/04/908305074/bad-optics-or-something-more-moderna-executives-stock-sales-raise-concerns"> sell-off</a>:
+        The president of the company has cashed in to the tune of 40 million! I think the message is clear here, the public is overvaluing Moderna due to the press coverage and the FDA allowing
+        expedited trials. Be smart, like Moderna executives! Sell!</p>
+
+        <img src="static/blog/02/Pfizer.jpg">
+
+        <h2>Pfizer</h2>
+        <p>Pfizer has been slower to the clinic, and has only recently announced the two candidates it will take into trials. The company therefore has yet to determine dose
+        and is getting much less press than Moderna. Being behind Moderna isn't a bad thing, maybe they have used the extra time to more carefully select which candidates to bring
+        to clinic. Also, they have two drugs, where Moderna only has one. Pfizer is a large established drug company with many commercial drugs on the market. Pfizer also
+        pays dividends to share holders and doesn't have as much riding on this single trial. Additionally, their executives aren't in the middle of a massive sell-off. On the negative
+        side, Pfizer is behind Moderna, and they still need to see the safety results from Phase 1. That being said, even if this trial tanks I dont think it will make a dent in
+        Pfizers share price in the long run. Pfizer is a safe bet. Buy/Hold. </p>
+
+        <h2>Conclusion</h2>
+        <p>So who will win the race? If you couldn't tell, my money is on Pfizer: they give me the impression of being cool, calm, and collected as they enter the clinic. They are not in a rush, and they
+        have the money to back more than one drug. Also, while I don't begrudge anyone for making money, the fact that Moderna execs are cashing out now doesn't give me much faith
+        in them, and it certainly doesn't give me the confidence to invest my money in their project. </p>
+
+         <p>-Zack</p>
+
+        <p> Please Note! These are my opinons! and should not be considered financial advice. I have no degrees of certifications in the field on finance! Please
+        do your own due diligence before investing.</p>
+
+
+
+    </div>
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/coronaVaccine" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}

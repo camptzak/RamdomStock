@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Value Investing and Cryptocurrency</h1>
+        <p>Written by: Zack | zack@randomstock.net</p>
+
+        <img src="static/blog/bitcoin_header.jpg" width="400" height="267">
+
+    <div class="article">
+        <p><b>Is value investing possible in the field of cryptocurrency?</b> Several of my friends have made a lot of money in cryptocurrency,
+        but I have always stayed away due to a lack of understanding. I've always believed in the <a href="https://www.investopedia.com/articles/basics/07/grahamprinciples.asp">value investors</a>
+        playbook: find an undervalued asset (stock, bond, business, property) and buy it. This paradigm doesn't seem to have a parallel
+        in cryptocurrency despite my best efforts to find one.</p>
+        <p><b>How do you establish a value for a coin?</b> This has been my biggest stumbling block. Some businesses which I understand
+        (Petrol, Chemical Manufacturing, Real Estate, etc.) are more straight forward. A look at a business <a href="https://www.sec.gov/edgar/searchedgar/companysearch.html">balance sheet</a>
+        can give you a lot of insight on its physical assets, cash-on-hand, intangible assets, as well as any insider trading activity. All this information must be correct
+        under penalty of law.
+        <p><b>Where can you find information for cryptocurrencies such as BitCoin?</b> <a href="https://medium.com/coinbundle/the-role-of-value-investing-in-crypto-3b3d539fa2ae">People</a> often point to <a href="https://bitcoin.org/bitcoin.pdf">white papers</a> as a foundation of value for bitcoin and other cryptocurrencies.
+        After reading the bitcoin white pages, I feel the white pages prove the technological advancements of block chain, but fall short of demonstrating the
+        value of bitcoin itself. If the white pages outline of block chain technology denotes bitcoins value, then that implies all other coins created using the
+        same or similar technology should be equal in value, which they're not. They're not even close, the market caps of these crypto's are <a href="https://coinmarketcap.com/">all over</a> the place </p>
+        <p><b>If a company spends X amount of energy to produce a product, does that product automatically carry the value of the energy used to create it?</b> I have heard some <a href="https://www.investopedia.com/news/do-bitcoin-mining-energy-costs-influence-its-price/">say</a> that the value of bitcoin is tied to the energy used to create it.
+        This argument does not seem logical to me, according to this principle, if the energy is produced cheaply via a <a href="https://www.businessinsider.com/photos-iceland-bitcoin-mine-genesis-mining-cloud-2015-8?r=UK&IR=T/">renewable source</a>
+        , we should see the price of bitcoin and other cryptocurrencies slide. We have not seen the prices slide, we have seen them increase.</p>
+        <p>I don' think a value based investment can't be made in cryptocurrency. I feel it's a pump-n-dump
+        mechanism for sophisticated players with the means to manipulate markets. Also, when you ask bitcoin investors about the risks involved with bitcoin,
+        they seem to think there are none, which is a red flag. It feels cult-ish, and I'm going stay away. Maybe one day everyone will be laughing at me when bitcoin
+        hits 500k, but I wouldn't count on it.</p>
+
+        <p>-Zack</p>
+    </div>
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/ValueInCrypto" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}

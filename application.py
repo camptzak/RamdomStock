@@ -132,39 +132,6 @@ def crypto():
     return render_template("crypto.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, lookup = lookup, stockquotefinal=stockquotefinal,
                            quoteauthorfinal=quoteauthorfinal,)
 
-@app.route("/blog", methods=["GET", "POST"])
-def blog():
-
-    if request.method == "POST":
-
-        if session.get("user_id") is None:
-            flash("Sorry! You must be logged in to post a comment", "error")
-            return redirect(url_for("blog"))
-
-        comment = request.form["comment"]
-        username = session.get("username")
-        date = (str(datetime.datetime.now())).split(".")
-        date = date[0]
-
-
-        article = 1
-
-        conn = sqlite3.connect('unplannedInvestments.db')
-        db = conn.cursor()
-
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)", (article, comment, username, date))
-        conn.commit()
-
-        return redirect(url_for("blog"))
-
-    else:
-        conn = sqlite3.connect('unplannedInvestments.db')
-        db = conn.cursor()
-        db.execute("SELECT * FROM comments WHERE article = 1")
-        rows = db.fetchall()
-
-
-        return render_template("blog/blog.html", rows =rows)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -284,3 +251,77 @@ def logout():
     # Redirect user to login form
     flash("Logged out Successfully", "info")
     return redirect(url_for("index"))
+
+@app.route("/blog")
+def blog():
+    return render_template("blog/blog.html")
+
+#Blog Posts
+
+@app.route("/ValueInCrypto", methods=["GET", "POST"])
+def ValueInCrypto():
+
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("ValueInCrypto"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+
+        article = 1
+
+        conn = sqlite3.connect('unplannedInvestments.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)", (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("ValueInCrypto"))
+
+    else:
+        conn = sqlite3.connect('unplannedInvestments.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 1")
+        rows = db.fetchall()
+
+
+    return render_template("blog/ValueInCrypto.html", rows = rows)
+
+@app.route("/coronaVaccine", methods=["GET", "POST"])
+def coronaVaccine():
+
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("coronaVaccine"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+
+        article = 2
+
+        conn = sqlite3.connect('unplannedInvestments.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)", (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("coronaVaccine"))
+
+    else:
+        conn = sqlite3.connect('unplannedInvestments.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 2")
+        rows = db.fetchall()
+
+
+    return render_template("blog/coronaVaccine.html", rows = rows)
