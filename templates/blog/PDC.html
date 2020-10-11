@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Precision Drilling Corp</h1>
+        <h3>Buying $1 for 10 cents</h3>
+        <p>Written by: Zack | zack@randomstock.net</p>
+
+        <img src="static/blog/06/PDC.PNG" width="500" height="300">
+          <br>
+          <br>
+          <hr>
+
+    <div class="article">
+        <h2>Key Points</h2>
+        <ul>
+            <li>Michael Burry recently bought a $3 million stake in the company, price has not increased since Burry's purchase></a></li>
+            <li>P/B Ratio of 0.13 (Market Cap 200M / Equity ~1.5b)</li>
+            <li>Cash on Hand: 100M</li>
+        </ul>
+        <hr>
+        <br>
+        <h2>Buying $1 for 10 cents</h2>
+        <p>Recently <a href="https://en.wikipedia.org/wiki/Michael_Burry">Michael Burry</a> took a 3.05 million dollar stake in Precision Drilling Corp (NYSE: PDS).
+            Michael Burry (Scion Asset Management) predicted the housing market crash in 2007, and is known to have an eye for value investments. Precision Drilling Corp
+            has a market cap of ~200M, trading at around 75 cents per share. Amazingly, Precision Drilling has <b>~100M in liquid cash</b> and has a history of doing
+            profitable business. Based on their last reported <a href="https://www.sedar.com/search/search_form_pc_en.htm">balance sheet</a> the canadian drilling firm has
+            approximately 1.5b in equity, resulting in a P/B ratio of 0.13. This extreme undervaluation results in a situation where we can potentially purchase $1 worth
+            of shareholder equity for 13 cents!
+        </p>
+
+        <img src="static/blog/06/chart.PNG" width="500" height="300">
+        <br>
+        <br>
+        <h2>On the way to $1</h2>
+        <p>Recently the NYSE sent PDS a <a href="https://seekingalpha.com/news/3555479-precision-drilling-gets-nyse-continued-listing-standards-notice">letter</a>
+            stating that their share price needs to increase to $1 or they will be removed from the NYSE. In response to this
+            PDS has initiated a <a href="https://seekingalpha.com/news/3607946-precision-drilling-renews-share-repurchase-program">share buy-back program</a>
+            that will conclude next year. PDS has a long track record of profitability and even paid dividends as recently as 2015. They have been valued as high as
+            ~45 per share.
+        </p>
+        <br>
+        <br>
+         <p>-Zack</p>
+
+        <p> Please Note! These are my opinions! and should not be considered financial advice. Please
+        do your own due diligence before investing.</p>
+
+
+
+    </div>
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/PDC" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}

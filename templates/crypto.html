@@ -8,12 +8,12 @@
 <br>
 <br>
 <br>
-<br>
 <div class="result">
-    ACT Symbol <b id="symbol">{{symbol}}</b><br>
+    Symbol <b id="symbol">{{symbol}}</b><br>
     Company Name <b id="company">{{stock}}</b><br>
-    Listed On <b> {{exchange}}</b><br>
-    <a href="https://coinmarketcap.com/currencies/{{lookup}}">Crypto Quote</a>
+    Listed On <b id="exchange"> {{exchange}}</b><br>
+    <button class="stockQuoteButton" type="button" onclick="stockQuote()">Stock Quote</button>
+    <p id="lookup" hidden>{{lookup}}</p>
     <br>
     <br>
     <br>
@@ -22,7 +22,7 @@
 
 </div>
 <div class="mybutton">
-    <a href="{{url_for('crypto')}}"><button style="background-color: #295fa6" class="btn btn-primary btn-lg">Get Another Cryptocurrency</button></a>
+    <button style="background-color: #295fa6" class="btn btn-primary btn-lg" onclick="cryptoButton()">Get Another Cryptocurrency</button>
 </div>
 <br>
 <br>
@@ -34,7 +34,6 @@
     <div class="share_button" onclick="linkedinCoin()"><img src="static/share_buttons/linkedin.png" width="36" height="36"></div>
 </div>
 
-<p style="text-align: center"><b>Share your result!</b></p>
 
 <div class="disclaimer">
     <br>

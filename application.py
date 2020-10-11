@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash
+from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify
 from flask_session import Session
 import sqlite3
 import random
@@ -6,9 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import datetime
 from flask_bootstrap import Bootstrap
 
-
 application = app = Flask(__name__)
-
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -17,90 +15,119 @@ Session(app)
 
 @app.route("/")
 def index():
-
-    conn = sqlite3.connect('unplannedInvestments.db')
+    conn = sqlite3.connect('randomstock.db')
     db = conn.cursor()
 
+    # Uncheck all the boxes in the session dictionary
+    session["AMEX"] = False
+    session["LSE"] = False
+    session["AMEX"] = False
+    session["NASDAQ"] = False
+    session["NYSE"] = False
+    session["SGX"] = False
+
+
     # random number generation
-    NYSE = (random.randint(1, 3298),)
-    other = (random.randint(1, 5199),)
-    coinFlip = random.randint(0, 1)
-    quote = (random.randint(1,33),)
+    stock = random.randint(1, 15031)
+    quote = random.randint(1, 33)
 
     # extract quote
-    db.execute("SELECT quote FROM quotes WHERE id = ?", quote)
+    db.execute("SELECT quote FROM quotes WHERE id = ?", (quote,))
     stockquote = db.fetchone()
-    db.execute("SELECT author FROM quotes WHERE id = ?", quote)
+    db.execute("SELECT author FROM quotes WHERE id = ?", (quote,))
     quoteauthor = db.fetchone()
 
+    # extract stock information
+    db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
+    exchange = db.fetchone()
+    db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
+    symbol = db.fetchone()
+    db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
+    stock = db.fetchone()
 
-    if (coinFlip == 0):
-        # extract random stock from database for NYSE
-        db.execute("SELECT symbol FROM NYSE WHERE id = ?", NYSE)
-        nyseSymbol = db.fetchone()
-        db.execute("SELECT name FROM NYSE WHERE id = ?", NYSE)
-        nyseStock = db.fetchone()
-
-        symbol = nyseSymbol[0]
-        stock = nyseStock[0]
-        stockquotefinal = stockquote[0]
-        quoteauthorfinal = quoteauthor[0]
-        exchange = 'NYSE'
-        return render_template("index.html", symbol=symbol, stock=stock, exchange = exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)
-
-    else:
-        # extract random stock from database for other markets
-        db.execute("SELECT symbol FROM other WHERE id = ?", other)
-        otherSymbol = db.fetchone()
-        db.execute("SELECT name FROM other WHERE id = ?", other)
-        otherStock = db.fetchone()
+    symbol = symbol[0]
+    stock = stock[0]
+    stockquotefinal = stockquote[0]
+    quoteauthorfinal = quoteauthor[0]
+    exchange = exchange[0]
+    return render_template("index.html", symbol=symbol, stock=stock, exchange=exchange, stockquotefinal=stockquotefinal,
+                           quoteauthorfinal=quoteauthorfinal)
 
 
-        symbol = otherSymbol[0]
-        stock = otherStock[0]
-        stockquotefinal = stockquote[0]
-        quoteauthorfinal = quoteauthor[0]
-        exchange = 'NASDAQ'
-        return render_template("index.html", symbol=symbol, stock=stock, exchange=exchange, stockquotefinal=stockquotefinal, quoteauthorfinal=quoteauthorfinal)
+@app.route("/_indexButton")
+def _indexButton():
+    conn = sqlite3.connect('randomstock.db')
+    db = conn.cursor()
+
+    stock = random.randint(0, 15031)
+
+    # extract stock information
+    db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
+    exchange = db.fetchone()
+    db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
+    symbol = db.fetchone()
+    db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
+    stock = db.fetchone()
+
+    symbol = symbol[0]
+    company = stock[0]
+    exchange = exchange[0]
+    return jsonify(symbol=symbol, company=company, exchange=exchange)
 
 
 @app.route("/PennyStocks")
 def pennyStocks():
-
-    conn = sqlite3.connect('unplannedInvestments.db')
+    conn = sqlite3.connect('randomstock.db')
     db = conn.cursor()
 
     # random number generation
-    pennyStock = (random.randint(1, 12018),)
-    quote = (random.randint(1, 33),)
+    stock = random.randint(15032, 25514)
+    quote = random.randint(1, 33)
 
     # extract quote
-    db.execute("SELECT quote FROM quotes WHERE id = ?", quote)
+    db.execute("SELECT quote FROM quotes WHERE id = ?", (quote,))
     stockquote = db.fetchone()
-    db.execute("SELECT author FROM quotes WHERE id = ?", quote)
+    db.execute("SELECT author FROM quotes WHERE id = ?", (quote,))
     quoteauthor = db.fetchone()
 
+    # extract stock info from OTC section
+    db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
+    symbol = db.fetchone()
+    db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
+    stock = db.fetchone()
 
-    # extract random stock from pennyStock database
-    db.execute("SELECT symbol FROM pennyStocks WHERE id = ?", pennyStock)
-    pennySymbol = db.fetchone()
-    db.execute("SELECT name FROM pennyStocks WHERE id = ?", pennyStock)
-    pennyName = db.fetchone()
-    db.execute("SELECT tier FROM pennyStocks WHERE id = ?", pennyStock)
-    pennyMarket = db.fetchone()
-
-    symbolfinal = pennySymbol[0]
-    namefinal = pennyName[0]
-    marketfinal = pennyMarket[0]
+    symbolfinal = symbol[0]
+    namefinal = stock[0]
+    marketfinal = 'OTCBB'
     stockquotefinal = stockquote[0]
     quoteauthorfinal = quoteauthor[0]
-    return render_template("pennyStocks.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, stockquotefinal=stockquotefinal,
+    return render_template("pennyStocks.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal,
+                           stockquotefinal=stockquotefinal,
                            quoteauthorfinal=quoteauthorfinal)
+
+
+@app.route("/_pennyButton")
+def _pennyButton():
+    conn = sqlite3.connect('randomstock.db')
+    db = conn.cursor()
+
+    # random number generation
+    stock = random.randint(15032, 25514)
+
+    # extract stock information
+    db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
+    symbol = db.fetchone()
+    db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
+    stock = db.fetchone()
+
+    symbol = symbol[0]
+    company = stock[0]
+    return jsonify(symbol=symbol, company=company)
+
 
 @app.route("/crypto")
 def crypto():
-
-    conn = sqlite3.connect('unplannedInvestments.db')
+    conn = sqlite3.connect('randomstock.db')
     db = conn.cursor()
 
     # random number generation
@@ -113,29 +140,50 @@ def crypto():
     db.execute("SELECT author FROM quotes WHERE id = ?", quote)
     quoteauthor = db.fetchone()
 
-
     # extract random stock from pennyStock database
     db.execute("SELECT symbol FROM crypto WHERE id = ?", crypto)
     cryptoSymbol = db.fetchone()
-    db.execute("SELECT name FROM pennyStocks WHERE id = ?", crypto)
+    db.execute("SELECT name FROM crypto WHERE id = ?", crypto)
     cryptoName = db.fetchone()
     db.execute("SELECT lookup FROM crypto WHERE id = ?", crypto)
     cryptolookup = db.fetchone()
-    cryptoMarket = "CoinBase"
+
 
     symbolfinal = cryptoSymbol[0]
     namefinal = cryptoName[0]
-    marketfinal = cryptoMarket
     lookup = cryptolookup[0]
     stockquotefinal = stockquote[0]
     quoteauthorfinal = quoteauthor[0]
-    return render_template("crypto.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal, lookup = lookup, stockquotefinal=stockquotefinal,
-                           quoteauthorfinal=quoteauthorfinal,)
+    return render_template("crypto.html", symbol=symbolfinal, stock=namefinal, exchange="Coinbase", lookup=lookup,
+                           stockquotefinal=stockquotefinal,
+                           quoteauthorfinal=quoteauthorfinal, )
+
+
+@app.route("/_cryptoButton")
+def _cryptoButton():
+    conn = sqlite3.connect('randomstock.db')
+    db = conn.cursor()
+
+    # random number generation
+    stock = random.randint(1, 1754)
+
+    # extract stock information
+    db.execute("SELECT lookup FROM crypto WHERE id = ?", (stock,))
+    cryptolookup = db.fetchone()
+    db.execute("SELECT symbol FROM crypto WHERE id = ?", (stock,))
+    symbol = db.fetchone()
+    db.execute("SELECT name FROM crypto WHERE id = ?", (stock,))
+    stock = db.fetchone()
+
+    symbol = symbol[0]
+    company = stock[0]
+    lookup = cryptolookup[0]
+    return jsonify(symbol=symbol, company=company, lookup=lookup)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    conn = sqlite3.connect('unplannedInvestments.db')
+    conn = sqlite3.connect('randomstock.db')
     db = conn.cursor()
 
     # Forget any user_id
@@ -158,7 +206,6 @@ def login():
             flash("Sorry! You must provide a password", "error")
             redirect(url_for("login"))
             return render_template("login.html")
-
 
         # Query database for username
         db.execute("SELECT * FROM users WHERE username = ?", (username,))
@@ -188,8 +235,7 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-
-    conn = sqlite3.connect('unplannedInvestments.db')
+    conn = sqlite3.connect('randomstock.db')
     db = conn.cursor()
 
     # Clear any session data
@@ -228,7 +274,6 @@ def register():
             redirect(url_for("register"))
             return render_template("register.html")
 
-
         hashpassword = generate_password_hash(password)
 
         db.execute("INSERT INTO users (username, hash, email) VALUES (?, ?, ?)", (username, hashpassword, email,))
@@ -252,15 +297,16 @@ def logout():
     flash("Logged out Successfully", "info")
     return redirect(url_for("index"))
 
+
 @app.route("/blog")
 def blog():
     return render_template("blog/blog.html")
 
-#Blog Posts
+
+# Blog Posts
 
 @app.route("/ValueInCrypto", methods=["GET", "POST"])
 def ValueInCrypto():
-
     if request.method == "POST":
 
         if session.get("user_id") is None:
@@ -272,29 +318,28 @@ def ValueInCrypto():
         date = (str(datetime.datetime.now())).split(".")
         date = date[0]
 
-
         article = 1
 
-        conn = sqlite3.connect('unplannedInvestments.db')
+        conn = sqlite3.connect('randomstock.db')
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)", (article, comment, username, date))
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
         conn.commit()
 
         return redirect(url_for("ValueInCrypto"))
 
     else:
-        conn = sqlite3.connect('unplannedInvestments.db')
+        conn = sqlite3.connect('randomstock.db')
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 1")
         rows = db.fetchall()
 
+    return render_template("blog/ValueInCrypto.html", rows=rows)
 
-    return render_template("blog/ValueInCrypto.html", rows = rows)
 
 @app.route("/coronaVaccine", methods=["GET", "POST"])
 def coronaVaccine():
-
     if request.method == "POST":
 
         if session.get("user_id") is None:
@@ -306,22 +351,151 @@ def coronaVaccine():
         date = (str(datetime.datetime.now())).split(".")
         date = date[0]
 
-
         article = 2
 
-        conn = sqlite3.connect('unplannedInvestments.db')
+        conn = sqlite3.connect('randomstock.db')
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)", (article, comment, username, date))
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
         conn.commit()
 
         return redirect(url_for("coronaVaccine"))
 
     else:
-        conn = sqlite3.connect('unplannedInvestments.db')
+        conn = sqlite3.connect('randomstock.db')
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 2")
         rows = db.fetchall()
 
+    return render_template("blog/coronaVaccine.html", rows=rows)
 
-    return render_template("blog/coronaVaccine.html", rows = rows)
+@app.route("/randomness", methods=["GET", "POST"])
+def randomness():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("randomness"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 3
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("randomness"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 3")
+        rows = db.fetchall()
+
+    return render_template("blog/randomness.html", rows=rows)
+
+
+@app.route("/TSLAshort", methods=["GET", "POST"])
+def TSLAshort():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("TSLAshort"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 4
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("TSLAshort"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 4")
+        rows = db.fetchall()
+
+    return render_template("blog/TSLAshort.html", rows=rows)
+
+@app.route("/thirteenf", methods=["GET", "POST"])
+def thirteenf():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("thirteenf"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 5
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("thirteenf"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 5")
+        rows = db.fetchall()
+
+    return render_template("blog/thirteenf.html", rows=rows)
+
+
+@app.route("/PDC", methods=["GET", "POST"])
+def PDC():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("PDC"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 6
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("PDC"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 6")
+        rows = db.fetchall()
+
+    return render_template("blog/PDC.html", rows=rows)

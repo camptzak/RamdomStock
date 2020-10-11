@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Random Stock Generator</h1>
+        <h3>Why use a random stock generator? What's the point?</h3>
+        <p>Written by: Zack | zack@randomstock.net</p>
+
+        <img src="static/blog/03/random.jpg" width="400" height="267">
+
+    <div class="article">
+        <h2>Randomness in Markets</h2>
+
+        <p> One of my favorite funny market quotes is from Princeton University professor Burton Malkiel who said that
+            <em>“A blindfolded monkey throwing darts at a newspaper's financial pages could select a portfolio that would do just as well as one carefully selected by experts.”</em>
+            I've always found this quote to be funny and also true as <a href="https://www.studyfinds.org/new-to-investing-you-may-be-better-off-picking-stocks-at-random-study-finds/">experiment</a> after
+            <a href="https://www.marketwatch.com/story/random-darts-beat-hedge-fund-stars-again-2019-06-26">experiment</a> tells us. Prof. Malkiel is certainly not advocating that you just
+            pick a random stock and invest all your money in it, but he is pointing out that nobody has the ability to pick individual stocks from the ocean of unproven enterprises.
+
+        <img src="static/blog/03/buffett.jpeg" width="400" height="300">
+
+        <h2>What about Warren Buffet, Peter Lynch!</h2>
+
+        <p>Warren Buffet, the Oracle of Omaha, he must be able to pick individual stocks...right? My answer is yes, he can do it, but only because he has the ability to buy so much
+        of the company as to have sway over management. Also, Berkshire Hathaway often buys <a href="https://markets.businessinsider.com/news/stocks/warren-buffett-biggest-berkshire-hathaway-company-deals-takeovers-acquisitions-purchases-2020-5-1029204009#">entire companies</a>.
+        As an individual investor just buying stock, trading options, and placing some shorts I contend you are far better off buying index funds. Don't get me wrong, I love to buy stock in the market, I love to buy individual stocks, but
+        I'm doing it for fun. I don't use the money I need, but extra money I have. Instead of buying the sports car, I buy a company I like. </p>
+
+        <img src="static/blog/03/challenge.jpg">
+
+        <h2>Random Stock Generator</h2>
+        <p>Enter random stock generator! I challenge you to use the random stock generator to pick a grouping of stocks and see if they outperform your portfolio.
+        I'm even considering having some sort of contest in the future, just for fun. I'm not saying invest in the random stocks, just note the price of the stocks
+        when you look them up, then pick a time range, and see if they outperform your portfolio over that time range. </p>
+
+
+         <p>-Zack</p>
+
+        <p> Please Note! These are my opinons! and should not be considered financial advice. I have no degrees of certifications in the field on finance! Please
+        do your own due diligence before investing.</p>
+
+
+
+    </div>
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/randomness" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}

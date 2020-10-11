@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>How to Trade Like a Pro: The 13F Form</h1>
+        <h3>The 13F Form, What it is and how to use it</h3>
+        <p>Written by: Zack | zack@randomstock.net</p>
+
+        <img src="static/blog/05/13F.PNG" width="500" height="300">
+          <br>
+          <br>
+          <hr>
+
+    <div class="article">
+        <h2>Key Points</h2>
+        <ul>
+            <li>13F form available on SEC <a href="https://www.sec.gov/edgar/searchedgar/companysearch.html">website</a></li>
+            <li>Lists all long positions of Hedge Funds with Assets Under Management > 100M </li>
+            <li>Cloning hedge funds <a href="https://jfds.pm-research.com/content/early/2019/08/28/jfds.2019.1.008">shown</a> to give excellent returns</li>
+        </ul>
+        <hr>
+        <br>
+        <h2>What is the 13F?</h2>
+        <p>The 13F form is a form that hedge funds with assets under management greater than 100M are required to file with the SEC. The 13F was designed to give
+            investors an understanding of how hedge funds are managing their money. However, we can use the 13F to reap some benefits without committing to any
+            major funds. Here's how:
+        </p>
+
+        <br>
+        <br>
+
+        <h2>Locate The Company on the SEC Website</h2>
+        <p>Pick a fund or fund manager you are interested in, for the purposes of this demonstration I'm going to pick Warren Buffet and Berkshire Hathaway.
+        So I'll navigate over to the SEC <a href="https://www.sec.gov/edgar/searchedgar/companysearch.html">website</a> and type in "BerkShire Hathaway" in the
+        company lookup.</p>
+        <img src="static/blog/05/Search.PNG" width="800" height="250">
+        <br>
+        <br>
+        <h2>Find the Latest 13F Form</h2>
+
+        <p>Scroll down through all the filings until you find the latest 13F filing. There could be a lot of filings, so you may have to look closely.</p>
+
+        <img src="static/blog/05/Filings.PNG" width="600" height="300">
+        <br>
+        <br>
+
+        <h2>Click on the Information Table</h2>
+        <p>Click on the information table for the 13F form</p>
+        <img src="static/blog/05/DataPacket.PNG" width="600" height="300">
+
+        <br>
+        <br>
+
+        <h2>All the Long Positions are Displayed!</h2>
+        <p>As you can see below in <b>column 1</b>, all the companies that Berkshire Hathaway holds are listed. Some of the companies may show up more than once, that just
+        means that they were bought at different times. For example Warren Buffet may have decided he wanted to buy some Amazon stock, so he did, but then the price
+        fell even further and he decided to buy even more! This would show up as two separate rows in the 13F.</p>
+
+        <img src="static/blog/05/13F_column1.PNG" width="800" height="600">
+        <br>
+        <br>
+
+        <h2>Column 4 and Column 5: The Important Stuff</h2>
+        <p>So, here's the real information that we are looking for. <b>Column 5</b> contains the number of shares (sh) purchased in the transaction and <b>column 4</b>
+        contains the amount (times 1000) that were paid for those shares. So let's look at Berkshire Hathaway's first listed Amazon purchase as an example. So in column
+        5 we see that <b>419,500</b> shares were purchased. Then we look in column 4 and see that the total cost of the shares was <b>1,157,325,000</b>. As you can see I
+        remembered to multiply the listed number by 1000. This gives a share price (price/shares) of <b>2,758.82</b>. I'm looking today (9/30/2020) and I see AMZN is listed
+        at $3,205 so Berkshire Hathaway is doing quite well on this trade so far.
+        </p>
+
+        <br>
+        <br>
+
+        <img src="static/blog/05/13F_column4_5.PNG" width="800" height="600">
+        <br>
+        <br>
+
+        <h2>Summary</h2>
+        <p>As you can see, if you kept up with a certain manager you could piggy back off of their trades. These big funds have massive resources at their disposal
+        and can do a lot more market research than the average person can do. A word of warning though, these big funds are very risky, they are not like index funds
+        and their managers will probably be personally fine even if their fund takes a big dive. Invest with caution! Also, try to find managers who like taking long positions,
+        short positions do not show up on 13F forms, so short selling managers (David Einhorn, etc) are probably not the best to follow with the 13F.</p>
+
+         <p>-Zack</p>
+
+        <p> Please Note! These are my opinions! and should not be considered financial advice. Please
+        do your own due diligence before investing.</p>
+
+
+
+    </div>
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/thirteenf" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>TSLA: A Fool's Buy</h1>
+        <h3>Everyone's screaming buy! Here's why you should sell</h3>
+        <p>Written by: Zack | zack@randomstock.net</p>
+
+        <img src="static/blog/04/StockChart.PNG" width="500" height="300">
+          <br>
+          <br>
+
+    <div class="article">
+        <h2>Key Points</h2>
+        <ul>
+            <li>TSLA current P/E ratio over 1000 : 1</li>
+            <li>Founder Elon Musk engaged in blatant securities manipulation via social media</li>
+            <li>Questionable (at best) accounting practices</li>
+        </ul>
+        <h2>Businesses make money...right?</h2>
+        <p> What is the most popular company among US investors now: <a href="https://money.usnews.com/investing/stock-market-news/slideshows/most-popular-robinhood-stocks?slide=2"><b>Tesla</b></a>.
+            What is the most shorted stock on the US Market: <a href="https://www.nasdaq.com/articles/this-is-the-most-shorted-stock-in-the-market-right-now-2020-03-09"> <b>Tesla</b></a>.
+            What the is going on here?! People are freaking out snatching up Tesla shares for outrageous prices because Tesla has made it onto the S&P500 because they have had 4
+            consecutive profitable quarters...but here's the thing: <b>Tesla was only able to post a profit by selling regulatory credits to FIAT/Chrysler and classifying it as revenue!</b>
+            previously these credits were classified under cash and cash equivalents, so these 4 profitable quarters were really an accounting trick. The trick has paid off though, inclusion in
+            the prestigious S&P500 has resulted in a massive overvaluation, ballooning the share price to absurd highs, resulting in a P/E ratio of <a href="https://www.macrotrends.net/stocks/charts/TSLA/tesla/pe-ratio">1170</a>.
+            </p>
+        <img src="static/blog/04/AccountingTricks.PNG" width="400" height="250">
+        <br>
+        <br>
+
+        <h2>Tesla leadership not honest with shareholders</h2>
+
+        <p>We know that Elon Musk has engaged in <a href="https://www.cnbc.com/2019/05/01/judge-approves-agreement-between-elon-musk-and-sec-over-twitter-use.html">stock manipulation</a> for which he has been forced to
+            pay damages to the shareholders defrauded. However Elon continues to be active on twitter, engaging the american public in the daily operations at Tesla. Some people find this refreshing, but the twitter activity
+            is essentially a smokescreen and I'm sure people would not find his tweets refreshing if they looked closely at this balance sheet each month. Tesla dishonesty is so bad that Tesla
+            directors cannot get <a href="https://www.insurancejournal.com/news/national/2020/05/01/567042.htm">D&O insurance</a>. To deal with this the board of directors in being personally insured by Elon Musk, a serious conflict of interest.
+            </p>
+        <img src="static/blog/04/cash.PNG" width="400" height="300">
+        <br>
+        <br>
+
+        <h2>I wouldn't buy Tesla stock with your money!</h2>
+        <p>I'm not even going to get into all the issues with <a href="https://www.autosafety.org/wp-content/uploads/2015/03/Tesla-Regen-Brakes-and-Sudden-Acceleration.pdf">quality control</a> and manufacturing difficulties,
+        It's a total nightmare. Bottom line, this is the most over-hyped stock I have ever seen. Please, please, please don't give your hard earned dollars to Elon Musk. Tesla is even using
+        the public's insanity to <a href="https://www.cnbc.com/2020/09/01/tesla-to-sell-up-to-5-billion-in-stock-amid-rally.html"> sell more shares</a> and raise capital.
+            Do what <em>TESLA</em> is doing, sell TSLA.</p>
+
+
+         <p>-Zack</p>
+
+        <p> Please Note! These are my opinons! and should not be considered financial advice. Please
+        do your own due diligence before investing.</p>
+
+
+
+    </div>
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/TSLAshort" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}
