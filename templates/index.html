@@ -6,31 +6,30 @@
 
 
 {% block body %}
+<br xmlns="http://www.w3.org/1999/html">
 <br>
 <br>
-<br>
-<br>
-<div class="result">
-    ACT Symbol <b id="symbol">{{symbol}}</b><br>
+<div id="result" class="result">
+    Symbol <b id="symbol">{{symbol}}</b><br>
     Company Name <b id="company">{{stock}}</b><br>
-    Listed On <b> {{exchange}}</b><br>
-    <a href="http://finance.yahoo.com/quote/{{symbol}}">Stock Quote</a>
+    Listed On <b id="exchange"> {{exchange}}</b><br>
+    <button class="stockQuoteButton" type="button" onclick="stockQuote()">Stock Quote</button>
     <br>
     <br>
+
     <br>
     <em>"{{stockquotefinal}}"</em><br>
     -{{quoteauthorfinal}}
 
 </div>
+
 <div class="mybutton">
-    <a href="{{url_for('index')}}">
-        <button style="background-color: #295fa6" class="btn btn-primary btn-lg">Get Another Stock</button>
-    </a>
+
+    <button id="indexButton" style="background-color: #295fa6" class="btn btn-primary btn-lg" onclick="indexButton()">Get Another Stock</button>
+
 </div>
 <br>
 <br>
-
-
 <div class="share_buttons">
     <div class="share_button" id="twitter" onclick="twitter()"><img src="static/share_buttons/twitter.png" width="36" height="36"></div>
     <div class="share_button" id="facebook" onclick="facebook()"><img src="static/share_buttons/facebook.png" width="36" height="36"></div>
@@ -48,8 +47,8 @@
 
     <p>
         Welcome to RandomStock! Whenever you visit, we will generate a random stock for you!
-        The randomly generated stocks are retrieved from a large database (~10k) of all publicly traded stocks in the
-        United States. The available stocks are restricted to what is traded on the NASDAQ or the NYSE. We also included a fun quote for your amusement.
+        The randomly generated stocks are retrieved from a large, regularly updated database (~15k) of all publicly traded stocks in the
+        United States and abroad. We also included a fun quote for your amusement.
     </p>
     <p>
         <b>We do not advocate that you invest money into randomly selected securities!</b> This page was made to give

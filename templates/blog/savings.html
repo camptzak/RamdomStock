@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Hitting Your Savings Goals Faster</h1>
+        <h3 style="margin-bottom: 10px">Save for something big and grow your savings</h3>
+
+        <img class="avatar" src="static/bilal.jpg"><p class="email">Written by: Bilal | Bilal.elahi@randomstock.net<br>
+        <em>Financial Analyst serving multiple markets globally with expertise in Finance, Technology, Economics and Business niche.
+            Charter Holder in Accounting & Finance with 7 years industry experience. Currently serving as a Financial Analyst to multiple clients globally.</em>
+            <a href="https://twitter.com/bilalahsanelahi?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @bilalahsanelahi</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+          <p class="paragraph"><em>"Someone's sitting in the shade today because someone planted a tree a long time ago"</em> is a saying by Warren buffet, which is a reflection on saving. If we save today, that can help us in difficult situations in future.</p>
+
+          <p class="paragraph">A few strategies we can apply for saving:</p>
+
+          <p class="paragraph"><b>Create a monthly budget:</b> Prepare a budget which identifies all your expenses for the month. Now think of ways to cut down your unnecessary expenses, make a list of all expenses by order of importance. What can you afford to lose?</p>
+
+          <p class="paragraph">Once your expenses are recorded, you can identify money available for savings, hopefully 10-15% of your monthly income. <b>You should pay yourself first</b> and maintain a separate account for savings. Through this, when you exceed your average monthly expenses, you get to know instead of drawing from your savings. Savings can be utilized for an emergency fund, or to pay medical emergencies, etc. Don't forget about your long-term goals when allocating your savings.</p>
+
+          <p class="paragraph"><b>Grow your savings:</b> Invest your money to create passive income. Invest in securities for your retirement plans or college funds. Investment is what makes your money earn for you. Savings account interest rates are low and won't help you grow. After all, nobody ever became a millionaire by resting their money in their savings account! If you want to hit your short-term goals a saving account may help, but it won't let you build the empire of your dreams.</p>
+
+          <p class="paragraph"><b>Avoid credit cards:</b> Credit cards are useless unless you purposefully use them to build your credit. If you are using a credit card for non-credit building purposes, it means you don't have a budget and if you don't have a budget, why do undertake the expenditure? And if it's a necessity why use a credit? It would just increase your total costs by adding to the interest payments on your shoulders.</p>
+
+
+
+
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/Savings" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}

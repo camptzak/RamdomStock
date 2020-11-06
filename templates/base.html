@@ -9,15 +9,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
 
     <!-- my scripts -->
-    <script src="static/js/shareButtons.js"></script>
+    <script src="static/js/functions.js"></script>
 
 
     <!-- Bootstrap Styles Sheet! -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
+
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/favicon.ico') }}">
+
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-176573633-1"></script>
@@ -28,6 +30,7 @@
 
         gtag('config', 'UA-176573633-1');
     </script>
+
 
     {% block head %}
     {% endblock %}

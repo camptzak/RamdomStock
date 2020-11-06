@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Investment Opportunities Awaiting Your Attention</h1>
+        <h3 style="margin-bottom: 10px">One man's crash is another mans treasure</h3>
+
+        <img class="avatar" src="static/bilal.jpg"><p class="email">Written by: Bilal | Bilal.elahi@randomstock.net<br>
+        <em>Financial Analyst serving multiple markets globally with expertise in Finance, Technology, Economics and Business niche.
+            Charter Holder in Accounting & Finance with 7 years industry experience. Currently serving as a Financial Analyst to multiple clients globally.</em>
+            <a href="https://twitter.com/bilalahsanelahi?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @bilalahsanelahi</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+          <p class="paragraph">If you are one of the lucky individuals with cash available for investment during this Covid-19 crisis, you could take advantage of the situation to make some very profitable investments. This pandemic has caused many businesses to fail (hospitality, service, tourism, etc.) and the market is currently behaving erratically due to uncertainty over the future.</p>
+
+          <p class="paragraph">During these uncertain times, utility companies could be a wise investment due to their stability and consistent payment of dividends. Choose from a variety of different utility companies that pay consistent dividends and whose earnings have been relatively unaffected by the crisis. For example Enterprise Products Partners <a href="https://finance.yahoo.com/quote/EPD?p=EPD&.tsrc=fin-srch">(NYSE: EPD)</a> pays a 6.1% dividend yield and Enbridge <a href="https://finance.yahoo.com/quote/ENB?p=ENB&.tsrc=fin-srch">(NYSE: ENB)</a> pays a 6.4% dividend yield. Also, there is the possibility of investing in the <a href="https://finance.yahoo.com/quote/VPU/">Vanguard Utilities Index ETF</a>.</p>
+
+          <p class="paragraph">Pharmaceutical and Technology companies could also be a smart buy during this time of crises, if the company is selling at a reasonable price. For example, Pfizer <a href="https://finance.yahoo.com/quote/PFE?p=PFE&.tsrc=fin-srch">(NYSE: PFE)</a> a reasonably priced, dividend paying stock which is working on a coronavirus vaccine. In the technology sector, be on the lookout for reasonably priced stocks that prioritize work-from-home and play-from-home technologies.</p>
+
+          <p class="paragraph">The current market dip is another general investment opportunity. When people are panic selling, that is when all your favorite companies go on sale! Don’t miss out on great value opportunities due to general panic and fear.</p>
+
+
+
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/Opportunity" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}

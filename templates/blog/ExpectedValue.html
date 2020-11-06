@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Expected Value in Investing</h1>
+        <h3>Basic odds calculations to guarantee a long term return</h3>
+        <p>Written by: Zack | zack@randomstock.net</p>
+
+        <img src="static/blog/07/odds.PNG" width="500" height="300">
+          <br>
+          <br>
+          <hr>
+
+    <div class="article">
+        <h2>Key Points</h2>
+        <ul>
+            <li>Determine the percent chance of a successful trade based on your analysis (say 10%)</li>
+            <li>Determine the return of the trade in question (e.g. 50$ profit on a $50 investment)</li>
+            <li>Compute whether your trade will win in the long run: if you win $50 in 1 out of 10 and lose $50 in 9 out of 10, your trade has an expected value
+            of $-400</li>
+            <li>Conversely, if your trade is a 90% winner, then your expected value is $+400</li>
+        </ul>
+        <hr>
+        <br>
+        <img src="static/blog/07/success.jpg" width="500" height="300">
+        <br>
+        <br>
+        <h2>Determining Percent Chance of Successful Trade</h2>
+        <p>How do you compute the chance that your trade will succeed? Ah! Therein lies the rub. Well, one method is to look at a specific type of trade, say: selling an
+            options trade. A study in <a href="https://www.investopedia.com/articles/optioninvestor/03/100103.asp">1990</a> (yes a long time ago, lol) showed that ~75% of
+            options trades expired worthless. Now I'm not saying this is iron clad truth, but you could test it's accuracy yourself. Check and see if 75% of the options trades
+            you sell are winners. I recognize determining a percentage of success is difficult, and this is the skill of the trade. However, if you follow these rules and find
+            you are losing money in the long run, that means you're not making odds correctly.
+        </p>
+        <br>
+        <img src="static/blog/07/thinking.jpg" width="500" height="300">
+        <br>
+        <br>
+        <h2>Percent Return Weighed Against Percent Profit</h2>
+        <p>You have found a trade that you think has a success rate of 25%, meaning 25% of the time you win and 75% of the time you lose. In order for this trade to be
+            a winner for you, the return must be > 300%. Meaning you'd need to make more than $300 profit on a $100 dollar investment. Let's look at it play out over 100 trades: If
+            you win $300 25 times, you've just made $7500, if you lose $100 75 times, you've just lost $7500 giving an expected value of $0. Now lets say that you can make a 400% profit on
+            the trade with a 25% success rate. Now you can make $10000 on your 25 winning trades and you only lose $7500 on your 75 losing trades, your expected value is $2,500.
+        </p>
+        <br>
+        <img src="static/blog/07/potOdds.jpg" width="500" height="300">
+        <br>
+        <br>
+        <h2>Conclusion</h2>
+        <p>These are the same type of calculations casinos undertake to make sure that in the long run, they make a profit. It's much easier in the casino business because the
+            probability of success (chances of a jackpot, blackjack, roulette win) are known. This principle can be adopted in the investing world, the only unknown is determining
+            probability of success. This is where your skill and analysis come into play. Beware of anyone who says they can calculate the probability of success with a blackbox application.
+            Actually beware of most trading coaches, trading algorithms, and trading platforms.
+        <br>
+        <br>
+         <p>-Zack</p>
+
+        <p> Please Note! These are my opinions! and should not be considered financial advice. Please
+        do your own due diligence before investing.</p>
+
+
+
+    </div>
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/ExpectedValue" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}
