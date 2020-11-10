@@ -118,6 +118,75 @@ xhttp.open("GET", "/_cryptoButton", true);
 xhttp.send();
 }
 
+//Checkbox scripts
+function indexButtonPost() {
+    const AMEX = document.getElementById("AMEX").checked;
+    const LSE = document.getElementById("LSE").checked;
+    const NASDAQ = document.getElementById("NASDAQ").checked;
+    const NYSE = document.getElementById("NYSE").checked;
+    const SGX = document.getElementById("SGX").checked;
+
+    var list = [];
+
+    if (AMEX == true){
+        list.push("AMEX=true")
+    }
+    else {
+        list.push("AMEX=false")
+    }
+
+
+    if (LSE == true){
+        list.push("LSE=true")
+    }
+    else {
+        list.push("LSE=false")
+    }
+
+
+    if (NASDAQ == true){
+        list.push("NASDAQ=true")
+    }
+    else {
+        list.push("NASDAQ=false")
+    }
+
+
+    if (NYSE == true){
+        list.push("NYSE=true")
+    }
+    else {
+        list.push("NYSE=false")
+    }
+
+
+    if (SGX == true){
+        list.push("SGX=true")
+    }
+    else {
+        list.push("SGX=false")
+    }
+
+    var result = list.join("&")
+
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+           var response = JSON.parse(xhttp.responseText);
+           document.getElementById("symbol").innerHTML = response.symbol;
+           document.getElementById("company").innerHTML = response.company;
+           document.getElementById("exchange").innerHTML = response.exchange;
+
+        }
+    };
+
+    xhttp.open("POST", "/_indexButton", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(result);
+    }
+
 
 // Stock Quote script
 function stockQuote() {
@@ -164,3 +233,7 @@ function stockQuote() {
 
 
 }
+
+
+
+

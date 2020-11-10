@@ -16,7 +16,6 @@
     <button class="stockQuoteButton" type="button" onclick="stockQuote()">Stock Quote</button>
     <br>
     <br>
-
     <br>
     <em>"{{stockquotefinal}}"</em><br>
     -{{quoteauthorfinal}}
@@ -25,11 +24,43 @@
 
 <div class="mybutton">
 
-    <button id="indexButton" style="background-color: #295fa6" class="btn btn-primary btn-lg" onclick="indexButton()">Get Another Stock</button>
+    <button id="indexButton" style="background-color: #295fa6" class="btn btn-primary btn-lg" onclick="indexButtonPost()">Get Another Stock</button>
 
 </div>
 <br>
-<br>
+
+<div class="checkbox-container">
+    <form autocomplete="off">
+
+
+        <input type="checkbox" id="AMEX" name="AMEX">
+        <label for="AMEX"> AMEX</label>
+
+
+
+        <input type="checkbox" id="LSE" name="LSE">
+        <label for="LSE"> LSE</label>
+
+
+
+        <input type="checkbox" id="NASDAQ" name="NASDAQ">
+        <label for="NASDAQ"> NASDAQ</label>
+
+
+
+        <input type="checkbox" id="NYSE" name="NYSE">
+        <label for="NYSE"> NYSE</label>
+
+
+
+        <input type="checkbox" id="SGX" name="SGX">
+        <label for="SGX"> SGX</label>
+
+    </form>
+</div>
+<p class="checkbox-prompt">Select the exchanges to draw your random stock from</p>
+
+
 <div class="share_buttons">
     <div class="share_button" id="twitter" onclick="twitter()"><img src="static/share_buttons/twitter.png" width="36" height="36"></div>
     <div class="share_button" id="facebook" onclick="facebook()"><img src="static/share_buttons/facebook.png" width="36" height="36"></div>
@@ -37,25 +68,5 @@
     <div class="share_button" id="reddit" onclick="reddit()"><img src="static/share_buttons/reddit.png" width="36" height="36"></div>
     <div class="share_button" id="linkedin" onclick="linkedin()"><img src="static/share_buttons/linkedin.png" width="36" height="36"></div>
 </div>
-
-<p style="text-align: center"><b>Share your result!</b></p>
-
-<div class="disclaimer">
-    <br>
-    <br>
-    <br>
-
-    <p>
-        Welcome to RandomStock! Whenever you visit, we will generate a random stock for you!
-        The randomly generated stocks are retrieved from a large, regularly updated database (~15k) of all publicly traded stocks in the
-        United States and abroad. We also included a fun quote for your amusement.
-    </p>
-    <p>
-        <b>We do not advocate that you invest money into randomly selected securities!</b> This page was made to give
-        people
-        access to a random stock generator, and for general entertainment.
-    </p>
-</div>
-
 
 {% endblock %}

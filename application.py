@@ -46,25 +46,84 @@ def index():
                            quoteauthorfinal=quoteauthorfinal)
 
 
-@app.route("/_indexButton")
+@app.route("/_indexButton", methods=["GET", "POST"])
 def _indexButton():
-    conn = sqlite3.connect('randomstock.db')
-    db = conn.cursor()
 
-    stock = random.randint(0, 15031)
+    if request.method == "POST":
 
-    # extract stock information
-    db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
-    exchange = db.fetchone()
-    db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
-    symbol = db.fetchone()
-    db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
-    stock = db.fetchone()
+        AMEX = request.form["AMEX"]
+        LSE = request.form["LSE"]
+        NASDAQ = request.form["NASDAQ"]
+        NYSE = request.form["NYSE"]
+        SGX = request.form["SGX"]
 
-    symbol = symbol[0]
-    company = stock[0]
-    exchange = exchange[0]
-    return jsonify(symbol=symbol, company=company, exchange=exchange)
+        exchanges = []
+
+        if AMEX == 'true':
+            amex = random.randint(1, 2248)
+            exchanges.append(amex)
+        if LSE == 'true':
+            lse = random.randint(2249, 7117)
+            exchanges.append(lse)
+        if NASDAQ == 'true':
+            nasdaq = random.randint(7118, 10755)
+            exchanges.append(nasdaq)
+        if NYSE == 'true':
+            nyse = random.randint(10756, 13910)
+            exchanges.append(nyse)
+        if SGX == 'true':
+            sgx = random.randint(13910, 15031)
+            exchanges.append(sgx)
+
+        if not exchanges:
+            stock = random.randint(1, 15031)
+
+        else:
+            lengthOfList = len(exchanges) - 1
+
+            randomNumber = random.randint(0, lengthOfList)
+
+            stock = exchanges[randomNumber]
+
+
+
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+
+        # extract stock information
+        db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
+        exchange = db.fetchone()
+        db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
+        symbol = db.fetchone()
+        db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
+        stock = db.fetchone()
+
+        symbol = symbol[0]
+        company = stock[0]
+        exchange = exchange[0]
+        return jsonify(symbol=symbol, company=company, exchange=exchange)
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        stock = random.randint(1, 15031)
+
+        # extract stock information
+        db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
+        exchange = db.fetchone()
+        db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
+        symbol = db.fetchone()
+        db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
+        stock = db.fetchone()
+
+        symbol = symbol[0]
+        company = stock[0]
+        exchange = exchange[0]
+        return jsonify(symbol=symbol, company=company, exchange=exchange)
+
 
 
 @app.route("/PennyStocks")
