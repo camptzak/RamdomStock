@@ -18,14 +18,6 @@ def index():
     conn = sqlite3.connect('randomstock.db')
     db = conn.cursor()
 
-    # Uncheck all the boxes in the session dictionary
-    session["AMEX"] = False
-    session["LSE"] = False
-    session["AMEX"] = False
-    session["NASDAQ"] = False
-    session["NYSE"] = False
-    session["SGX"] = False
-
 
     # random number generation
     stock = random.randint(1, 15031)
@@ -54,25 +46,84 @@ def index():
                            quoteauthorfinal=quoteauthorfinal)
 
 
-@app.route("/_indexButton")
+@app.route("/_indexButton", methods=["GET", "POST"])
 def _indexButton():
-    conn = sqlite3.connect('randomstock.db')
-    db = conn.cursor()
 
-    stock = random.randint(0, 15031)
+    if request.method == "POST":
 
-    # extract stock information
-    db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
-    exchange = db.fetchone()
-    db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
-    symbol = db.fetchone()
-    db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
-    stock = db.fetchone()
+        AMEX = request.form["AMEX"]
+        LSE = request.form["LSE"]
+        NASDAQ = request.form["NASDAQ"]
+        NYSE = request.form["NYSE"]
+        SGX = request.form["SGX"]
 
-    symbol = symbol[0]
-    company = stock[0]
-    exchange = exchange[0]
-    return jsonify(symbol=symbol, company=company, exchange=exchange)
+        exchanges = []
+
+        if AMEX == 'true':
+            amex = random.randint(1, 2248)
+            exchanges.append(amex)
+        if LSE == 'true':
+            lse = random.randint(2249, 7117)
+            exchanges.append(lse)
+        if NASDAQ == 'true':
+            nasdaq = random.randint(7118, 10755)
+            exchanges.append(nasdaq)
+        if NYSE == 'true':
+            nyse = random.randint(10756, 13910)
+            exchanges.append(nyse)
+        if SGX == 'true':
+            sgx = random.randint(13910, 15031)
+            exchanges.append(sgx)
+
+        if not exchanges:
+            stock = random.randint(1, 15031)
+
+        else:
+            lengthOfList = len(exchanges) - 1
+
+            randomNumber = random.randint(0, lengthOfList)
+
+            stock = exchanges[randomNumber]
+
+
+
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+
+        # extract stock information
+        db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
+        exchange = db.fetchone()
+        db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
+        symbol = db.fetchone()
+        db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
+        stock = db.fetchone()
+
+        symbol = symbol[0]
+        company = stock[0]
+        exchange = exchange[0]
+        return jsonify(symbol=symbol, company=company, exchange=exchange)
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        stock = random.randint(1, 15031)
+
+        # extract stock information
+        db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
+        exchange = db.fetchone()
+        db.execute("SELECT symbol FROM securities WHERE id = ?", (stock,))
+        symbol = db.fetchone()
+        db.execute("SELECT name FROM securities WHERE id = ?", (stock,))
+        stock = db.fetchone()
+
+        symbol = symbol[0]
+        company = stock[0]
+        exchange = exchange[0]
+        return jsonify(symbol=symbol, company=company, exchange=exchange)
+
 
 
 @app.route("/PennyStocks")
@@ -499,3 +550,99 @@ def PDC():
         rows = db.fetchall()
 
     return render_template("blog/PDC.html", rows=rows)
+
+@app.route("/ExpectedValue", methods=["GET", "POST"])
+def ExpectedValue():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("ExpectedValue"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 7
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("ExpectedValue"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 7")
+        rows = db.fetchall()
+
+    return render_template("blog/ExpectedValue.html", rows=rows)
+
+@app.route("/Savings", methods=["GET", "POST"])
+def Savings():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("Savings"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 8
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("Savings"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 8")
+        rows = db.fetchall()
+
+    return render_template("blog/savings.html", rows=rows)
+
+@app.route("/Opportunity", methods=["GET", "POST"])
+def Opportunity():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("Opportunity"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 9
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("Opportunity"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 9")
+        rows = db.fetchall()
+
+    return render_template("blog/opportunity.html", rows=rows)
