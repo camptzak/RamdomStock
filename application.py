@@ -646,3 +646,35 @@ def Opportunity():
         rows = db.fetchall()
 
     return render_template("blog/opportunity.html", rows=rows)
+
+@app.route("/DollarCostAveraging", methods=["GET", "POST"])
+def DollarCostAveraging():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("DollarCostAveraging"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 10
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("DollarCostAveraging"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 10")
+        rows = db.fetchall()
+
+    return render_template("blog/DollarCostAveraging.html", rows=rows)

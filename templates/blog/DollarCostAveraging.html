@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Long Term Investment Strategy</h1>
+        <h3 style="margin-bottom: 10px">Building a long term investment portfolio with dollar-cost-averaging</h3>
+
+        <img class="avatar" src="static/Bilal.jpg"><p class="email">Written by: Bilal | Bilal.elahi@randomstock.net<br>
+        <em>Financial Analyst serving multiple markets globally with expertise in Finance, Technology, Economics and Business niche.
+            Charter Holder in Accounting & Finance with 7 years industry experience. Currently serving as a Financial Analyst to multiple clients globally.</em>
+            <a href="https://twitter.com/bilalahsanelahi?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @bilalahsanelahi</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+          <p class="paragraph"><b>Are you thinking of building an investment portfolio for yourself?</b> In that case, there are a few things you should consider before beginning. Do you have your long-term goals defined? What are the objectives that you wish to meet through your investment portfolio? Is your retirement secure? What are your current earnings, expenses, and savings? How do you plan on funding your investment portfolio?</p>
+
+          <p class="paragraph">Most importantly when you enter the market, <b>remain calm and remember your plan</b>. The market is dynamic; losses occur, and you must be prepared to see yourself down without panic selling. Most investors demand 3-5 years timeline for making appreciable gains. If you see an undervalued stock or good investment opportunity it may be many years before the market recognizes the true value of that security. As the wise Benjamin Graham said: “In the short run, the market is a voting machine but in the long run, it is a weighing machine.” </p>
+
+          <p class="paragraph">When considering how to build your portfolio, an important question to ask is: <b>How much risk can I tolerate?</b> If you don’t have a high risk tolerance or are interested in building a retirement fund, you might want to look into <a href="https://www.fidelity.com/learning-center/investment-products/mutual-funds/what-are-mutual-funds">mutual funds</a>, <a href="https://www.investopedia.com/terms/i/indexfund.asp">index funds</a>, and <a href="https://en.wikipedia.org/wiki/Exchange-traded_fund">exchange-traded funds</a> (ETFs). These securities buy a set of assets with one investment. These options allow you to buy into different <a href="https://seekingalpha.com/etfs-and-funds/etf-tables/sectors">sectors</a> and in specific <a href="https://money.usnews.com/funds/mutual-funds/rankings/foreign-large-growth">geographic</a> regions.</p>
+
+          <p class="paragraph">Are you the type of person that has a high-risk tolerance? Are you interested in picking individual stocks? This is not recommended for the laymen and requires a lot of study and insight. Go for <a href="https://www.investopedia.com/articles/basics/11/how-to-pick-a-stock.asp">quality</a> over quantity if you plan to go for individual equities.  If you’re going to pick your own stocks, pick around ten excellent assets, plan your exit strategy and execute your plan. </p>
+
+          <p class="paragraph">Investors who do not have a large quantity of money can engage in a strategy called <a href="https://www.nerdwallet.com/article/investing/dollar-cost-averaging-2">dollar-cost-averaging</a>.  Using this strategy, you average out market downturns and peaks and end up paying the 52 week average share price.</p>
+
+          <p class="paragraph">Do not wait to begin! Consistent periodic investments can give you higher returns with more years of compounding interest. <a href="https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator"> For example</a>, if we invest $100 and keep contributing $100 every month into the SP500 (assuming a 10% yearly return), it becomes $68,100 after 20 years. The SP500 is a relatively safe fund, and if you can put away $100 per month for long term savings, you should absolutely be putting it into the market in this manner. Note, the past does not forecast potential profits, and all assets bear the possibility of losses and risk.</p>
+
+
+
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/DollarCostAveraging" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}
