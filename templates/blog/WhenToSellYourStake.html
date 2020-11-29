@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>When To Sell Your Stake</h1>
+        <h3 style="margin-bottom: 10px">When and why to sell your investment</h3>
+
+        <img class="avatar" src="static/Bilal.jpg"><p class="email">Written by: Bilal | Bilal.elahi@randomstock.net<br>
+        <em>Financial Analyst serving multiple markets globally with expertise in Finance, Technology, Economics and Business niche.
+            Charter Holder in Accounting & Finance with 7 years industry experience. Currently serving as a Financial Analyst to multiple clients globally.</em>
+            <a href="https://twitter.com/bilalahsanelahi?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @bilalahsanelahi</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+          <p class="paragraph">A most neglected and critical part of investing is deciding when to sell. If you do not sell when needed, grabbing shares at a discount will mean absolutely zero. Unfortunately, we cannot give you "The Immutable Laws of Sale" but we heartily agree with Philip Fisher, who said “If the job has been correctly done when a common stock is purchased, the time to sell it is – almost never.” Here are a few instances where we feel selling is warranted:</p>
+
+          <p class="paragraph"><b>Change in a Businesses Management or Strategy</b> A change in management or acquisition may significantly affect the business. You should be familiar with the company leadership before investing, and if that leadership changes during your holding period you may want to reevaluate your position. Also, any change in business strategy or shift in measurable goals should be an indicator to reevaluate. Temporary and permanent changes are part of a firm, but it is necessary to differentiate them, and determine independently if these changes will positively or negatively impact the company’s bottom line.</p>
+
+          <p class="paragraph"><b>Valuation</b> Sometimes media exposure or general hype can drive a companies share price up to unreasonable heights. If you are certain that there is a gross overvaluation, it may be wise to sell. You can always buy the shares back once everyone comes to their senses.</p>
+
+          <p class="paragraph"><b>Bad Investment Thesis</b> Sometimes it turns out that the justification for purchasing the stock was faulty, or maybe the valuation was too ambitious, or the risks were underestimated; then you should consider selling stock. It's OK to admit you've made a mistake and cut your losses short.</p>
+
+          <p class="paragraph"><b>Up all night</b> It might be time to move your money elsewhere if you have an investment that causes you to lose sleep or otherwise gives you unnecessary anxiety. True wealth is being able to live your life the way you chose, and an anxiety provoking investment taking a toll on your health is not worth the trouble. Adding insult to injury, worrying about a stock could cause you to lose sight elsewhere in your portfolio and make a rash decision.</p>
+
+          <p class="paragraph"><b>Better Opportunities</b> Selling stock to reactivate money can be a strong reason to sell. Maybe you ultimately invested in Company X, but you want another stock, like Company Y. Selling a current holding can be justified by the opportunity cost of losing out on new gains. However, we emphatically caution you never to sell your stock at a loss except under extreme circumstances.</p>
+
+          <p class="paragraph"><em>This blog is published and provided for informational and entertainment purposes only. The information in this blog constitutes the opinions of the author and should not be regarded as financial advice.</em> </p>
+
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/WhenToSellYourStake" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}

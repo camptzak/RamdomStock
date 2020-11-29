@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Five Simple Rules For Investing Success</h1>
+        <h3 style="margin-bottom: 10px">A foolproof way to build wealth</h3>
+
+        <img class="avatar" src="static/Bilal.jpg"><p class="email">Written by: Bilal | Bilal.elahi@randomstock.net<br>
+        <em>Financial Analyst serving multiple markets globally with expertise in Finance, Technology, Economics and Business niche.
+            Charter Holder in Accounting & Finance with 7 years industry experience. Currently serving as a Financial Analyst to multiple clients globally.</em>
+            <a href="https://twitter.com/bilalahsanelahi?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @bilalahsanelahi</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+          <p class="paragraph"><b>1. Realistic Expectations</b> The path to fortune is not straight upward. An excellent yearly return depends on the market, but somewhere around 20% should be considered a great year. If you are planning on doubling or tripling your money, you may be disappointed. If you choose to take risks by investing heavily in single securities, you must accept the possibility that you could lose everything you invest.</p>
+
+          <p class="paragraph"><b>2. Diversification</b> An intelligent and reasonable plan of action is to diversify your investment. It’s the philosophy that many index fund investors use, placing their funds on the market of hundreds of different companies in every sector. This strategy still allows you to pick which index funds or ETF’s you plan on investing in.</p>
+
+          <p class="paragraph"><b>3. Long-term investor mindset</b> The more you sell, the more your broker earns, whatever your return. Wall Street has a mindset of short term. You can't judge a companies success by looking at its market price over a single day, week, month, or even year. Look back at the best businesses on the market, and you'll see that it took most of them years to find and manage their winning business models. It can also take a while for a company's stock price to reflect its success.</p>
+
+          <p class="paragraph"><b>4. Add to Your Winning Stock </b>A lot of investors get obsessed with finding the next outstanding stock. Therefore, they'll often miss the fact that the best stock to invest in right now might well be one they already own. We've found that a lot of our winning stocks keep on winning. It serves as a potent reminder not to ignore the firms in which you had enough confidence to buy at least once.</p>
+
+          <p class="paragraph"><b>5. Keep Investing</b> The best investors don't just buy stocks once and let them fly. They save money over time and keep saving daily. Having cash at your side gives you more options on where to invest. If you have good plans, you can get your new money to work in your favorite stocks right away. At other times, you should let the cash accumulate so that you're able to take advantage of rewards as they emerge.</p>
+
+
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/FiveRulesToInvesting" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}

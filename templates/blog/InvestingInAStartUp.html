@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>Investing in a Start-Up</h1>
+        <h3 style="margin-bottom: 10px">Questions to ask when investing in a new business</h3>
+
+        <img class="avatar" src="static/Bilal.jpg"><p class="email">Written by: Bilal | Bilal.elahi@randomstock.net<br>
+        <em>Financial Analyst serving multiple markets globally with expertise in Finance, Technology, Economics and Business niche.
+            Charter Holder in Accounting & Finance with 7 years industry experience. Currently serving as a Financial Analyst to multiple clients globally.</em>
+            <a href="https://twitter.com/bilalahsanelahi?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @bilalahsanelahi</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+          <p class="paragraph"><b>What should I look for in a Start-Up or new business?</b> With so much information out there, it can be difficult to discern what is important and what is not relevant. This situation can lead to feeling overwhelmed and possibly making poor decisions. We’re excited about investment knowledge and passionate about sharing our ideas on how to make smart stock choices.</p>
+
+          <p class="paragraph">Are you interested in a new company? Maybe a company that just had their IPO? Important information to look for would be: <b>Who are the competitors that this new company has to take on?</b> How is this new company different from those competitors? If they are the first business into a new market niche (e.g. <a href="https://finance.yahoo.com/quote/UBER/">Uber</a>) and you believe their new idea is good, an early investment may put you in a position for success. An important caveat is of course to carefully examine the business by looking at all SEC filings and important documents.</p>
+
+          <p class="paragraph"><b>Strong leadership</b> is vital during the early high-growth phase for a company. Important questions to ask about the leadership are: Have these executives launched a new company before? Have these executives worked in this industry before?</p>
+
+          <p class="paragraph">We like seeing businesses with the <b>financial support they need to expand and prosper.</b> Important questions to ask are: Who are the VC’s supporting this business? How much of a stake do these VC’s have and how much did they pay for it? What is the relationship like between the VC’s and the founders of the company?</p>
+
+          <p class="paragraph"><em>This blog is published and provided for informational and entertainment purposes only. The information in this blog constitutes the opinions of the author and should not be regarded as financial advice.</em> </p>
+
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/InvestingInAStartUp" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}
