@@ -190,38 +190,46 @@ function indexButtonPost() {
 
 // Stock Quote script
 function stockQuote() {
-
-
-    var list = [];
-
     let exchange = document.getElementById("exchange").innerText;
-    list.push("exchange=" + exchange);
 
-    let symbol = document.getElementById("symbol").innerText;
-    list.push("symbol=" + symbol);
-    var result = list.join("&");
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+    if (exchange == 'AMEX'){
+        let symb = document.getElementById("symbol").innerText;
+        window.open("https://www.tradingview.com/symbols/AMEX-" + symb)
+    }
 
-            var my = window.open('/analysis', '_blank');
-            var response = JSON.parse(xhttp.responseText);
+    else if (exchange == 'LSE'){
+        let symb = document.getElementById("symbol").innerHTML;
+        window.open("https://www.tradingview.com/symbols/LSE-" + symb)
+    }
 
-            my.onload = function () {
+    else if (exchange == 'NASDAQ'){
+        let symb = document.getElementById("symbol").innerHTML;
+        window.open("https://www.tradingview.com/symbols/NASDAQ-" + symb)
+    }
 
-                 my.document.getElementById("symbol").innerHTML = response.symbol;
-                 my.document.getElementById("exchange").innerHTML = response.exchange;
+    else if (exchange == 'NYSE'){
+        let symb = document.getElementById("symbol").innerHTML;
+        window.open("https://www.tradingview.com/symbols/NYSE-" + symb)
+    }
 
-            };
+    else if (exchange == 'OTCBB'){
+        let symb = document.getElementById("symbol").innerHTML;
+        window.open("https://www.tradingview.com/symbols/OTC-" + symb)
+    }
 
-        }
-    };
+    else if (exchange == 'SGX'){
+        let symb = document.getElementById("symbol").innerHTML;
+        window.open("https://www.tradingview.com/symbols/SGX-:" + symb)
+    }
 
-    xhttp.open("POST", "/_analysis", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(result);
+    else{
+        window.open("https://www.nyse.com")
+    }
+
+
 }
+
 
 
 // Coinbase Quote
