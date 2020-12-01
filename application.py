@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import datetime
 import pandas as pd
 from flask_bootstrap import Bootstrap
-
+import yahoo_fin.stock_info as si
 
 application = app = Flask(__name__)
 
@@ -19,7 +19,6 @@ Session(app)
 def index():
     conn = sqlite3.connect('randomstock.db')
     db = conn.cursor()
-
 
     # random number generation
     stock = random.randint(1, 15031)
@@ -50,7 +49,6 @@ def index():
 
 @app.route("/_indexButton", methods=["GET", "POST"])
 def _indexButton():
-
     if request.method == "POST":
 
         AMEX = request.form["AMEX"]
@@ -87,12 +85,8 @@ def _indexButton():
 
             stock = exchanges[randomNumber]
 
-
-
-
         conn = sqlite3.connect('randomstock.db')
         db = conn.cursor()
-
 
         # extract stock information
         db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
@@ -125,7 +119,6 @@ def _indexButton():
         company = stock[0]
         exchange = exchange[0]
         return jsonify(symbol=symbol, company=company, exchange=exchange)
-
 
 
 @app.route("/PennyStocks")
@@ -201,7 +194,6 @@ def crypto():
     db.execute("SELECT lookup FROM crypto WHERE id = ?", crypto)
     cryptolookup = db.fetchone()
 
-
     symbolfinal = cryptoSymbol[0]
     namefinal = cryptoName[0]
     lookup = cryptolookup[0]
@@ -233,9 +225,9 @@ def _cryptoButton():
     lookup = cryptolookup[0]
     return jsonify(symbol=symbol, company=company, lookup=lookup)
 
+
 @app.route("/analysis", methods=["GET", "POST"])
 def analysis():
-
     if request.method == "POST":
         exchange = request.form["exchange"]
         symbol = request.form["symbol"]
@@ -249,19 +241,68 @@ def analysis():
         return render_template("analysis.html")
 
 
-@app.route("/_analysis", methods=["GET", "POST"])
+@app.route("/_analysis", methods=["POST"])
 def _analysis():
 
-    if request.method == "POST":
-        exchange = request.form["exchange"]
-        symbol = request.form["symbol"]
-        print(exchange)
-        print(symbol)
+    exchange = request.form["exchange"]
+    symbol = request.form["symbol"]
+    print(exchange)
+    print(symbol)
 
-        dfs = pd.read_html(f"https://eoddata.com/stockquote/{exchange}/{symbol}.htm", match='Name')
-        df = dfs[0]
-        print(df)
+    try:
+        quoteTable = si.get_quote_table(symbol)
 
+    except (RuntimeError, TypeError, NameError, IndexError, ValueError):
+        quoteTable = None
+
+    if quoteTable != None:
+
+        # for data in quoteTable:
+        #
+        #     try:
+        #         data = quoteTable[data]
+        #
+        #     except (KeyError):
+        #         pass
+
+        print(quoteTable)
+        # oneYearTargetEst = quoteTable['1y Target Est']
+        # fiftyTwoWeekRange = quoteTable['52 Week Range']
+        # ask = quoteTable['Ask']
+        # averageVolume = quoteTable['Avg. Volume']
+        # beta = quoteTable['Beta (5Y Monthly)']
+        # bid = quoteTable['Bid']
+        # daysRange = quoteTable["Day's Range"]
+        # EPS = quoteTable['EPS (TTM)']
+        # earningsDate = quoteTable['Earnings Date']
+        # exDividendDate = quoteTable['Ex-Dividend Date']
+        # forwardDividendAndYield = quoteTable['Forward Dividend & Yield']
+        # marketCap = quoteTable['Market Cap']
+        # open = quoteTable['Open']
+        # peRatio = quoteTable['PE Ratio (TTM)']
+        # previousClose = quoteTable['Previous Close']
+        quotePrice = quoteTable['Quote Price']
+        # volume = quoteTable['Quote Price']
+
+        return jsonify(exchange=exchange, symbol=symbol,
+                       # fiftyTwoWeekRange=fiftyTwoWeekRange,
+                       # ask=ask,
+                       # averageVolume=averageVolume,
+                       # beta=beta,
+                       # bid=bid,
+                       # daysRange=daysRange,
+                       # EPS=EPS,
+                       # earningsDate=earningsDate,
+                       # exDividendDate=exDividendDate,
+                       # forwardDividendAndYield=forwardDividendAndYield,
+                       # marketCap=marketCap,
+                       # open=open,
+                       # peRatio=peRatio,
+                       # previousClose=previousClose,
+                       quotePrice=quotePrice)
+                       # volume=volume
+
+    else:
         return jsonify(exchange=exchange, symbol=symbol)
 
 
@@ -454,6 +495,7 @@ def coronaVaccine():
 
     return render_template("blog/coronaVaccine.html", rows=rows)
 
+
 @app.route("/randomness", methods=["GET", "POST"])
 def randomness():
     if request.method == "POST":
@@ -518,6 +560,7 @@ def TSLAshort():
         rows = db.fetchall()
 
     return render_template("blog/TSLAshort.html", rows=rows)
+
 
 @app.route("/thirteenf", methods=["GET", "POST"])
 def thirteenf():
@@ -584,6 +627,7 @@ def PDC():
 
     return render_template("blog/PDC.html", rows=rows)
 
+
 @app.route("/ExpectedValue", methods=["GET", "POST"])
 def ExpectedValue():
     if request.method == "POST":
@@ -615,6 +659,7 @@ def ExpectedValue():
         rows = db.fetchall()
 
     return render_template("blog/ExpectedValue.html", rows=rows)
+
 
 @app.route("/Savings", methods=["GET", "POST"])
 def Savings():
@@ -648,6 +693,7 @@ def Savings():
 
     return render_template("blog/savings.html", rows=rows)
 
+
 @app.route("/Opportunity", methods=["GET", "POST"])
 def Opportunity():
     if request.method == "POST":
@@ -680,6 +726,7 @@ def Opportunity():
 
     return render_template("blog/opportunity.html", rows=rows)
 
+
 @app.route("/DollarCostAveraging", methods=["GET", "POST"])
 def DollarCostAveraging():
     if request.method == "POST":
@@ -711,6 +758,7 @@ def DollarCostAveraging():
         rows = db.fetchall()
 
     return render_template("blog/DollarCostAveraging.html", rows=rows)
+
 
 @app.route("/FiveRulesToInvesting", methods=["GET", "POST"])
 def FiveRulesToInvesting():

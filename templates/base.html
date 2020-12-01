@@ -75,13 +75,13 @@
                 <a class="nav-link " href="{{url_for('blog')}}">
                     <img src="static/blog.png" width="24" height="24"> Blog</a></li>
 
-<!--            {% if active_page == "analysis" %}-->
-<!--            <li class="nav-item active">-->
-<!--            {% else %}-->
-<!--            <li class="nav-item">-->
-<!--            {% endif %}-->
-<!--                <a class="nav-link " href="{{url_for('analysis')}}">-->
-<!--                    <img src="static/bar-graph.png" width="24" height="24"> Analysis</a></li>-->
+            {% if active_page == "analysis" %}
+            <li class="nav-item active">
+            {% else %}
+            <li class="nav-item">
+            {% endif %}
+                <a class="nav-link " href="{{url_for('analysis')}}">
+                    <img src="static/bar-graph.png" width="24" height="24"> Analysis</a></li>
         </ul>
 
         <!-- left side of navbar -->
