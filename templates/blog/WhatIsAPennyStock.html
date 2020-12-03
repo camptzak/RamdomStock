@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>What is a Penny Stock?</h1>
+        <h3 style="margin-bottom: 10px">What are penny stocks, and is it worth trading them?</h3>
+
+        <img class="avatar" src="static/Bilal.jpg"><p class="email">Written by: Bilal | Bilal.elahi@randomstock.net<br>
+        <em>Financial Analyst serving multiple markets globally with expertise in Finance, Technology, Economics and Business niche.
+            Charter Holder in Accounting & Finance with 7 years industry experience. Currently serving as a Financial Analyst to multiple clients globally.</em>
+            <a href="https://twitter.com/bilalahsanelahi?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @bilalahsanelahi</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+          <p class="paragraph">Penny stocks are known by various names: <em>microcaps</em>, <em>small caps</em>, etc. What a penny stock really is, is a company with a market capitalization of under 250 Million USD. Many penny stocks are not listed on the more prominent <a href="https://www.sec.gov/reportspubs/investor-publications/investorpubsmicrocapstockhtm.html">(and more regulated)</a> stock exchanges. Investors need to use a more polished investment strategy to book actual gains from investing in penny stocks compared to mainstream stocks.</p>
+
+          <p class="paragraph">Even the cheapest shares listed on the stock exchanges (NASDAQ, NYSE, LSE) are not penny stocks. If share prices of a company for any reason fall to under a dollar, that will not make the share a penny stock. You must look at the market capitalization to make that determination. This means that a company with a share price of 0.97 USD that is listed on the New York Stock Exchange (NYSE) does not automatically qualify as a penny stock.</p>
+
+          <p class="paragraph">The mainstream stock exchanges require a minimum market capitalization, a minimum share price, and annual listing fees. If a share under-performs in terms of capitalization or share price, the major markets usually <em>delist</em> the stock. After this, the stock moves to the OTC market. People holding such shares will still be shareholders, but it will probably be a poor investment.</p>
+
+          <p class="paragraph">Penny stocks are usually traded through the OTC markets. The OTC Bulletin Board is a trading platform run by the Financial Industry Regulatory Authority (FIRA). FIRA has a few base requirements, one of which is that a company must maintain updated financial statements.</p>
+
+          <p class="paragraph"><b>Should I buy penny stocks?</b> While penny stocks can be profitable, there are some signs to check to ensure that you don't place your money in a fly-by-night company that folds after you buy in. You need to take a detailed look at the financial statements and determine if the company is profitable. It is also essential that you examine the company's liquidity and asset situation. A company worth investing in should have adequate cash flow and convertible assets to pay off creditors' in case of bankruptcy. Penny stock firms should have a plan on how to grow their business and get listed on the mainstream stock exchanges.</p>
+
+          <p class="paragraph"><em>This blog is published and provided for informational and entertainment purposes only. The information in this blog constitutes the opinions of the author and should not be regarded as financial advice.</em> </p>
+
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/WhatIsAPennyStock" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}

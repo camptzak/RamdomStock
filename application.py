@@ -4,7 +4,6 @@ import sqlite3
 import random
 from werkzeug.security import check_password_hash, generate_password_hash
 import datetime
-import pandas as pd
 from flask_bootstrap import Bootstrap
 
 
@@ -232,37 +231,6 @@ def _cryptoButton():
     company = stock[0]
     lookup = cryptolookup[0]
     return jsonify(symbol=symbol, company=company, lookup=lookup)
-
-@app.route("/analysis", methods=["GET", "POST"])
-def analysis():
-
-    if request.method == "POST":
-        exchange = request.form["exchange"]
-        symbol = request.form["symbol"]
-        print(exchange)
-        print(symbol)
-
-        return render_template("analysis.html", exchange=exchange, symbol=symbol)
-
-
-    else:
-        return render_template("analysis.html")
-
-
-@app.route("/_analysis", methods=["GET", "POST"])
-def _analysis():
-
-    if request.method == "POST":
-        exchange = request.form["exchange"]
-        symbol = request.form["symbol"]
-        print(exchange)
-        print(symbol)
-
-        dfs = pd.read_html(f"https://eoddata.com/stockquote/{exchange}/{symbol}.htm", match='Name')
-        df = dfs[0]
-        print(df)
-
-        return jsonify(exchange=exchange, symbol=symbol)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -809,3 +777,36 @@ def InvestingInAStartUp():
         rows = db.fetchall()
 
     return render_template("blog/InvestingInAStartUp.html", rows=rows)
+
+
+@app.route("/WhatIsAPennyStock", methods=["GET", "POST"])
+def WhatIsAPennyStock():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("WhatIsAPennyStock"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 14
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("WhatIsAPennyStock"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 14")
+        rows = db.fetchall()
+
+    return render_template("blog/WhatIsAPennyStock.html", rows=rows)
