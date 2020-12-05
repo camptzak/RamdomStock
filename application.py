@@ -244,6 +244,21 @@ def analysis():
 @app.route("/_analysis", methods=["POST"])
 def _analysis():
 
+    def isNaN(data):
+        return data != data
+
+    def dataCheck(dict, key):
+        if key not in dict.keys():
+            return 'No Data'
+
+        elif isNaN(quoteTable[key]):
+            return 'No Data'
+
+        else:
+            return quoteTable[key]
+
+
+
     exchange = request.form["exchange"]
     symbol = request.form["symbol"]
     print(exchange)
@@ -256,53 +271,80 @@ def _analysis():
         quoteTable = None
 
     if quoteTable != None:
+        print("QuoteTableExists")
 
-        # for data in quoteTable:
-        #
-        #     try:
-        #         data = quoteTable[data]
-        #
-        #     except (KeyError):
-        #         pass
+        oneYearTargetEst = dataCheck(quoteTable, '1y Target Est')
+        print(oneYearTargetEst)
 
-        print(quoteTable)
-        # oneYearTargetEst = quoteTable['1y Target Est']
-        # fiftyTwoWeekRange = quoteTable['52 Week Range']
-        # ask = quoteTable['Ask']
-        # averageVolume = quoteTable['Avg. Volume']
-        # beta = quoteTable['Beta (5Y Monthly)']
-        # bid = quoteTable['Bid']
-        # daysRange = quoteTable["Day's Range"]
-        # EPS = quoteTable['EPS (TTM)']
-        # earningsDate = quoteTable['Earnings Date']
-        # exDividendDate = quoteTable['Ex-Dividend Date']
-        # forwardDividendAndYield = quoteTable['Forward Dividend & Yield']
-        # marketCap = quoteTable['Market Cap']
-        # open = quoteTable['Open']
-        # peRatio = quoteTable['PE Ratio (TTM)']
-        # previousClose = quoteTable['Previous Close']
-        quotePrice = quoteTable['Quote Price']
-        # volume = quoteTable['Quote Price']
+        fiftyTwoWeekRange = dataCheck(quoteTable, '52 Week Range')
+        print(fiftyTwoWeekRange)
+
+        ask = dataCheck(quoteTable, 'Ask')
+        print(ask)
+
+        averageVolume = dataCheck(quoteTable, 'Avg. Volume')
+        print(averageVolume)
+
+        beta = dataCheck(quoteTable, 'Beta (5Y Monthly)')
+        print(beta)
+
+        bid = dataCheck(quoteTable, 'Bid')
+        print(bid)
+
+        daysRange = dataCheck(quoteTable, "Day's Range")
+        print(daysRange)
+
+        EPS = dataCheck(quoteTable, 'EPS (TTM)')
+        print(EPS)
+
+        earningsDate = dataCheck(quoteTable, 'Earnings Date')
+        print(earningsDate)
+
+        exDividendDate = dataCheck(quoteTable,'Ex-Dividend Date')
+        print(exDividendDate)
+
+        forwardDividendAndYield = dataCheck(quoteTable, 'Forward Dividend & Yield')
+        print(forwardDividendAndYield)
+
+        marketCap = dataCheck(quoteTable, 'Market Cap')
+        print(marketCap)
+
+        open = dataCheck(quoteTable, 'Open')
+        print(open)
+
+        peRatio = dataCheck(quoteTable, 'PE Ratio (TTM)')
+        print(peRatio)
+
+        previousClose = dataCheck(quoteTable, 'Previous Close')
+        print(previousClose)
+
+        quotePrice = dataCheck(quoteTable, 'Quote Price')
+        print(quotePrice)
+
+        volume = dataCheck(quoteTable, 'Volume')
+        print(volume)
 
         return jsonify(exchange=exchange, symbol=symbol,
-                       # fiftyTwoWeekRange=fiftyTwoWeekRange,
-                       # ask=ask,
-                       # averageVolume=averageVolume,
-                       # beta=beta,
-                       # bid=bid,
-                       # daysRange=daysRange,
-                       # EPS=EPS,
-                       # earningsDate=earningsDate,
-                       # exDividendDate=exDividendDate,
-                       # forwardDividendAndYield=forwardDividendAndYield,
-                       # marketCap=marketCap,
-                       # open=open,
-                       # peRatio=peRatio,
-                       # previousClose=previousClose,
-                       quotePrice=quotePrice)
-                       # volume=volume
+                       oneYearTargetEst=oneYearTargetEst,
+                       fiftyTwoWeekRange=fiftyTwoWeekRange,
+                       ask=ask,
+                       averageVolume=averageVolume,
+                       beta=beta,
+                       bid=bid,
+                       daysRange=daysRange,
+                       EPS=EPS,
+                       earningsDate=earningsDate,
+                       exDividendDate=exDividendDate,
+                       forwardDividendAndYield=forwardDividendAndYield,
+                       marketCap=marketCap,
+                       open=open,
+                       peRatio=peRatio,
+                       previousClose=previousClose,
+                       quotePrice=quotePrice,
+                       volume=volume)
 
     else:
+        print('No Quote Table')
         return jsonify(exchange=exchange, symbol=symbol)
 
 

@@ -5,29 +5,38 @@
 {% endblock %}
 
 {% block body %}
-<div></div>
-<br>
+<div class="container">
+    
+    <div class="row">
+        exchange = <b><div id="exchange">{{exchange}}</div></b>
+        symbol = <b><div id="symbol">{{symbol}}</div></b>
+    </div>
+    <div class="row">
+        One Year Target Estimate = <b><div id="oneYearTargetEst">{{oneYearTargetEst}}</div></b>
+        Fifty Two Week Range = <b><div id="fiftyTwoWeekRange">{{fiftyTwoWeekRange}}</div></b>
+        Ask = <b><div id="ask">{{ask}}</div></b>
+        Average Volume = <b><div id="averageVolume">{{averageVolume}}</div></b>
+    </div>
+    <div class="row">
+        beta = <b><div id="beta">{{beta}}</div></b>
+        Bid = <b><div id="bid">{{bid}}</div></b>
+        Days Range = <b><div id="daysRange">{{daysRange}}</div></b>
+        EPS = <b><div id="EPS">{{EPS}}</div></b>
+    </div>
+    <div class="row">
+        Earnings Date = <b><div id="earningsDate">{{earningsDate}}</div></b>
+        Expected Dividend Date = <b><div id="exDividendDate">{{exDividendDate}}</div></b>
+        Forward Dividend and Yield = <b><div id="forwardDividendAndYield">{{forwardDividendAndYield}}</div></b>
+        Market Cap = <b><div id="marketCap">{{marketCap}}</div></b>
+    </div>
+    <div class="row">
+        Open = <b><div id="open">{{open}}</div></b>
+        P/E Ratio = <b><div id="peRatio">{{peRatio}}</div></b>
+        Previous Close = <b><div id="previousClose">{{previousClose}}</div></b>
+        Quote Price = <b><div id="quotePrice">{{quotePrice}}</div></b>
+        Volume = <b><div id="volume">{{volume}}</div></b>
+    </div>
 
-exchange = <b><div id="exchange">{{exchange}}</div></b><br>
-symbol = <b><div id="symbol">{{symbol}}</div></b>
-    One Year Target Estimate = <div id="oneYearTargetEst">{{oneYearTargetEst}}</div>
-    Fifty Two Week Range = <div id="fiftyTwoWeekRange">{{fiftyTwoWeekRange}}</div>
-    Ask = <div id="ask">{{ask}}</div>
-    Average Volume = <div id="averageVolume">{{averageVolume}}</div>
-    beta = <div id="beta">{{beta}}</div>
-    Bid = <div id="bid">{{bid}}</div>
-    Days Range = <div id="daysRange">{{daysRange}}</div>
-    EPS = <div id="EPS">{{EPS}}</div>
-    Earnings Date = <div id="earningsDate">{{earningsDate}}</div>
-    Expected Dividend Date = <div id="exDividendDate">{{exDividendDate}}</div>
-    Forward Dividend and Yield = <div id="forwardDividendAndYield">{{forwardDividendAndYield}}</div>
-    Market Cap = <div id="marketCap">{{marketCap}}</div>
-    Open = <div id="open">{{open}}</div>
-    P/E Ratio = <div id="peRatio">{{peRatio}}</div>
-    Previous Close = <div id="previousClose">{{previousClose}}</div>
-Quote Price = <b><div id="quotePrice">{{quotePrice}}</div></b>
-    Volume = <div id="volume">{{volume}}</div>
-
-
+</div>
 {% endblock %}
 
