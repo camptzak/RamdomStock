@@ -37,7 +37,7 @@ while 1 == 1:
                 print(tp.error.TweepError)
                 pass
 
-    time.sleep(604800)
+    time.sleep(345600)
 
     user = api.get_user("UnplannedI")
     followers = api.followers_ids("UnplannedI")
