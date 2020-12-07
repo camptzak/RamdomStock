@@ -324,6 +324,7 @@ def _analysis():
         volume = dataCheck(quoteTable, 'Volume')
         print(volume)
 
+
         return jsonify(exchange=exchange, symbol=symbol,
                        oneYearTargetEst=oneYearTargetEst,
                        fiftyTwoWeekRange=fiftyTwoWeekRange,
