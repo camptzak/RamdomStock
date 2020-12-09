@@ -229,12 +229,108 @@ def _cryptoButton():
 @app.route("/analysis", methods=["GET", "POST"])
 def analysis():
     if request.method == "POST":
-        exchange = request.form["exchange"]
-        symbol = request.form["symbol"]
-        print(exchange)
-        print(symbol)
 
-        return render_template("analysis.html", exchange=exchange, symbol=symbol)
+        def isNaN(data):
+            return data != data
+
+        def dataCheck(dict, key):
+            if key not in dict.keys():
+                return 'No Data'
+
+            elif isNaN(quoteTable[key]):
+                return 'No Data'
+
+            else:
+                return quoteTable[key]
+
+        symbol = request.form["symbolInput"]
+
+        try:
+            quoteTable = si.get_quote_table(symbol)
+
+        except (RuntimeError, TypeError, NameError, IndexError, ValueError):
+            quoteTable = None
+
+        if quoteTable != None:
+            print("QuoteTableExists")
+
+            oneYearTargetEst = dataCheck(quoteTable, '1y Target Est')
+            print(oneYearTargetEst)
+
+            fiftyTwoWeekRange = dataCheck(quoteTable, '52 Week Range')
+            print(fiftyTwoWeekRange)
+
+            ask = dataCheck(quoteTable, 'Ask')
+            print(ask)
+
+            averageVolume = dataCheck(quoteTable, 'Avg. Volume')
+            print(averageVolume)
+
+            beta = dataCheck(quoteTable, 'Beta (5Y Monthly)')
+            print(beta)
+
+            bid = dataCheck(quoteTable, 'Bid')
+            print(bid)
+
+            daysRange = dataCheck(quoteTable, "Day's Range")
+            print(daysRange)
+
+            EPS = dataCheck(quoteTable, 'EPS (TTM)')
+            print(EPS)
+
+            earningsDate = dataCheck(quoteTable, 'Earnings Date')
+            print(earningsDate)
+
+            exDividendDate = dataCheck(quoteTable, 'Ex-Dividend Date')
+            print(exDividendDate)
+
+            forwardDividendAndYield = dataCheck(quoteTable, 'Forward Dividend & Yield')
+            print(forwardDividendAndYield)
+
+            marketCap = dataCheck(quoteTable, 'Market Cap')
+            print(marketCap)
+
+            open = dataCheck(quoteTable, 'Open')
+            print(open)
+
+            peRatio = dataCheck(quoteTable, 'PE Ratio (TTM)')
+            print(peRatio)
+
+            previousClose = dataCheck(quoteTable, 'Previous Close')
+            print(previousClose)
+
+            quotePrice = dataCheck(quoteTable, 'Quote Price')
+            print(quotePrice)
+
+            volume = dataCheck(quoteTable, 'Volume')
+            print(volume)
+
+
+
+
+            return render_template("analysis.html", symbol=symbol,
+                           oneYearTargetEst=oneYearTargetEst,
+                           fiftyTwoWeekRange=fiftyTwoWeekRange,
+                           ask=ask,
+                           averageVolume=averageVolume,
+                           beta=beta,
+                           bid=bid,
+                           daysRange=daysRange,
+                           EPS=EPS,
+                           earningsDate=earningsDate,
+                           exDividendDate=exDividendDate,
+                           forwardDividendAndYield=forwardDividendAndYield,
+                           marketCap=marketCap,
+                           open=open,
+                           peRatio=peRatio,
+                           previousClose=previousClose,
+                           quotePrice=quotePrice,
+                           volume=volume)
+
+        else:
+            flash("Sorry! We don't have any data for that symbol", "error")
+            redirect(url_for("analysis"))
+            return render_template("analysis.html")
 
 
     else:
