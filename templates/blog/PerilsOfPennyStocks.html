@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        <h1>The Perils of Penny Stocks</h1>
+        <h3 style="margin-bottom: 10px">lack of regulation in penny stocks creates a dangerous investment field</h3>
+
+        <img class="avatar" src="static/Bilal.jpg"><p class="email">Written by: Bilal | Bilal.elahi@randomstock.net<br>
+        <em>Financial Analyst serving multiple markets globally with expertise in Finance, Technology, Economics and Business niche.
+            Charter Holder in Accounting & Finance with 7 years industry experience. Currently serving as a Financial Analyst to multiple clients globally.</em>
+            <a href="https://twitter.com/bilalahsanelahi?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @bilalahsanelahi</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+          <p class="paragraph">Penny stocks attract investors on the assumption that all successful businesses start on a small scale and build their way up to the top. Many people assume or are told that the penny stock is anticipated to work its way to the major stock markets. This is false more often than not, and it is better as an investor to avoid penny stocks for many reasons.</p>
+
+          <p class="paragraph">Penny stocks may be cheap and may be touted as having growth potential, but they carry a significantly higher risk. The risk is higher for penny stocks as they are not listed on the major stock exchanges. Listing on major exchanges requires quantitative financial information (earnings, market cap, etc), corporate governance standards (shareholder rights), as well as continuing oversight and regulation by the exchange. Penny stocks are not required to meet these same standards.</p>
+
+          <p class="paragraph">When you are not aware of the company’s workings, finances, management team, and regulatory practices, you are throwing your money into the dark. Any available <b>information</b> is also not vetted by any regulatory board and is therefore <b>not credible</b>.</p>
+
+          <p class="paragraph">Most penny stocks trade through the OTC Bulletin Board (OTCBB) and the pink sheets. Companies on the OTCBB must file their documents with the Securities and Exchange Commission (SEC), giving a bare minimum of information. However, there are no such requirements for companies on the pink sheets. You will be investing without current financial information about the company.</p>
+
+          <p class="paragraph">Most of the micro-cap stock companies considered to be penny stocks are either new or near bankruptcy. There will be either <b>no track record</b> or a poor one. What will form the basis of your investment decision? If you still opt to buy the stock, chances are that you will not be able to sell it off quickly until it starts to grow, if it ever does. This is known as having <b>poor liquidity</b> since you cannot sell the stock easily.</p>
+
+          <p class="paragraph">The lesser regulation of micro-caps also exposes investors to the <b>pump and dump</b> scam. Traders buy large volumes of penny stocks, hype up the stock to raise investor interest, and push up prices. Once prices rise, these people sell off their stocks to make a profit.</p>
+
+          <p class="paragraph">The lower regulatory oversight, lack of information, and history leave penny stocks vulnerable to fraudulent activity. Apart from the pump and dump mentioned above, many companies pay individuals to boost their company and stock through social and traditional media to raise investor interest.  Such <b>false reviews</b> and news are generated to increase share prices and create hype for the company.</p>
+
+          <p class="paragraph">Another more serious scam is when shares are sold to offshore investors to avoid <a href="https://www.accountingtools.com/articles/2017/5/16/stock-registration">stock registration</a>. The offshore stock is then sold back to local investors for a much higher price to book gains.</p>
+
+          <p class="paragraph">People promoting penny stocks claim that all mid and even large market-cap stocks started as penny stocks. This is not the case, most excellent companies will not offer an IPO until they are ready to be listed on a major exchange. The uninformed investor can get convinced by a penny stock scammer that all companies started small and that they need to buy in bulk to book a considerable gain when the penny stock takes off into the big league. Such claims need to be taken with a grain of salt. Penny stocks are not for the novice and long-term investor and if you want to protect your capital, stay far away from them. </p>
+
+          <p class="paragraph"><em>This blog is published and provided for informational and entertainment purposes only. The information in this blog constitutes the opinions of the author and should not be regarded as financial advice.</em> </p>
+
+        {% if rows %}
+            {% for row in rows %}
+                <div class="blog_comment rounded">
+                    <p >
+                        <b class="fontLarge">{{row[3]}} says:</b><br>
+                        {{row[4]}}<br>
+                        {{row[2]}}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container">
+            <form action="/PerilsOfPennyStocks" method="post">
+                <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                        <textarea class="form-control" rows="5" name="comment" id="Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" style="background-color: #295fa6" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+    </div>
+
+{% endblock %}

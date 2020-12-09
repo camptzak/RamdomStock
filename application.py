@@ -810,3 +810,36 @@ def WhatIsAPennyStock():
         rows = db.fetchall()
 
     return render_template("blog/WhatIsAPennyStock.html", rows=rows)
+
+
+@app.route("/PerilsOfPennyStocks", methods=["GET", "POST"])
+def PerilsOfPennyStocks():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("PerilsOfPennyStocks"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 15
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("PerilsOfPennyStocks"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 15")
+        rows = db.fetchall()
+
+    return render_template("blog/PerilsOfPennyStocks.html", rows=rows)
