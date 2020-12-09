@@ -31,8 +31,8 @@ function linkedin() {
   window.open("http://www.linkedin.com/feed")
 }
 
-
 // coin javascript functions
+
 function twitterCoin(){
   let symbol = document.getElementById("symbol").innerHTML;
   let company = document.getElementById("company").innerHTML;
@@ -167,7 +167,7 @@ function indexButtonPost() {
         list.push("SGX=false")
     }
 
-    var result = list.join("&");
+    var result = list.join("&")
 
 
     var xhttp = new XMLHttpRequest();
@@ -223,20 +223,14 @@ function stockQuote() {
         window.open("https://www.tradingview.com/symbols/SGX-:" + symb)
     }
 
+    else if (exchange == 'Coinbase'){
+        let lookup = document.getElementById("lookup").innerHTML;
+        window.open("https://www.coinbase.com/price/" + lookup)
+    }
     else{
         window.open("https://www.nyse.com")
     }
 
 
 }
-
-
-
-// Coinbase Quote
-function coinQuote(){
-
-    let lookup = document.getElementById("lookup").innerHTML;
-    window.open("https://www.coinbase.com/price/" + lookup)
-
-    }
 
