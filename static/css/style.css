@@ -1,0 +1,188 @@
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: #cfe0e8;
+}
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
+
+.result {
+  text-align: center;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.mybutton {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stockQuoteButton {
+  color: goldenrod;
+  border-radius: 10px;
+}
+
+/* share buttons */
+.share_buttons {
+  text-align: center;
+}
+
+.share_button {
+  margin: 3px;
+  display: inline-block;
+  border-radius: 100%;
+}
+
+.share_button:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.active {
+  color: black;
+}
+
+/* Analysis Page */
+.dataFrame {
+  margin: 100px;
+}
+
+.data {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.symbolInput {
+  width: 200px;
+  margin: auto
+}
+
+input[type="text"]::placeholder {
+  text-align: center;
+}
+/* checkboxes */
+
+.checkbox-container {
+  margin: auto;
+  text-align: center;
+  padding-left: 40px;
+}
+
+.checkbox-container label {
+  margin-right: 30px;
+}
+
+
+.checkbox-prompt {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+
+/* alerts and messages */
+.alert-error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+  margin: 16px;
+}
+
+.alert-info {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+  margin: 16px;
+}
+
+
+/* blog post */
+
+.avatar {
+  float: left;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.email {
+  overflow: hidden;
+}
+
+.blog_heading {
+  margin-left: 100px;
+  font: 40px Courier-new;
+}
+
+.blog_page {
+  margin: 50px 100px;
+}
+
+.blog_comment {
+  outline: 2px solid #295fa6;
+  padding: 5px;
+  margin: 5px;
+}
+
+.article {
+  font: 20px Lora, "Times New Roman", Serif;
+  line-height: 2;
+}
+
+.paragraph {
+  padding: 10px 20px;
+}
+
+/* blog page */
+
+.post-preview > a {
+  color: #212529;
+}
+
+.post-preview > a:focus, .post-preview > a:hover {
+  text-decoration: none;
+  color: #0085A1;
+}
+
+.post-preview > a > .post-title {
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.post-preview > a > .post-subtitle {
+  font-weight: 300;
+  margin: 0 0 10px;
+}
+
+.post-preview > .post-meta {
+  font-size: 18px;
+  font-style: italic;
+  margin-top: 0;
+  color: #868e96;
+}
+
+.post-preview > .post-meta > a {
+  text-decoration: none;
+  color: #212529;
+}
+
+.post-preview > .post-meta > a:focus, .post-preview > .post-meta > a:hover {
+  text-decoration: underline;
+  color: #0085A1;
+}
+
+@media only screen and (min-width: 768px) {
+  .post-preview > a > .post-title {
+    font-size: 36px;
+  }
+}
