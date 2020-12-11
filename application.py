@@ -300,6 +300,7 @@ def analysis():
             print(previousClose)
 
             quotePrice = dataCheck(quoteTable, 'Quote Price')
+            quotePrice = round(quotePrice, 4)
             print(quotePrice)
 
             volume = dataCheck(quoteTable, 'Volume')

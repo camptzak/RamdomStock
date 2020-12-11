@@ -52,18 +52,27 @@ body {
 
 /* Analysis Page */
 .dataFrame {
-  margin: 100px;
+  margin-top: 100px;
+  margin-right: 100px;
+  margin-left: 100px;
+
 }
 
 .data {
   display: flex;
-  align-items: center;
+  justify-content: center;
   margin-bottom: 20px;
+}
+
+.moreData {
+  text-align: center;
+  margin: 25px;
 }
 
 .symbolInput {
   width: 200px;
-  margin: auto
+  margin: auto;
+  margin-top: 25px;
 }
 
 input[type="text"]::placeholder {
