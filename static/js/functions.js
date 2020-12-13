@@ -195,50 +195,64 @@ function stockQuote() {
     var list = [];
 
     let exchange = document.getElementById("exchange").innerText;
-    list.push("exchange=" + exchange);
-
     let symbol = document.getElementById("symbol").innerText;
-    list.push("symbol=" + symbol);
-    var result = list.join("&");
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+    if (exchange == 'SGX') {
+        let symb = document.getElementById("symbol").innerHTML;
+        window.open("https://www.tradingview.com/symbols/SGX-:" + symb)
+    }
 
-            var my = window.open('/analysis', '_blank');
-            var response = JSON.parse(xhttp.responseText);
+    else if (exchange == 'LSE'){
+        let symb = document.getElementById("symbol").innerHTML;
+        window.open("https://www.tradingview.com/symbols/LSE-" + symb)
+    }
 
-            my.onload = function () {
+    else {
 
 
-                my.document.getElementById("symbol").innerHTML = response.symbol;
-                my.document.getElementById("exchange").innerHTML = response.exchange;
-                my.document.getElementById("oneYearTargetEst").innerHTML = response.oneYearTargetEst;
-                my.document.getElementById("fiftyTwoWeekRange").innerHTML = response.fiftyTwoWeekRange;
-                my.document.getElementById("ask").innerHTML = response.ask;
-                my.document.getElementById("averageVolume").innerHTML = response.averageVolume;
-                my.document.getElementById("beta").innerHTML = response.beta;
-                my.document.getElementById("bid").innerHTML = response.bid;
-                my.document.getElementById("daysRange").innerHTML = response.daysRange;
-                my.document.getElementById("EPS").innerHTML = response.EPS;
-                my.document.getElementById("earningsDate").innerHTML = response.earningsDate;
-                my.document.getElementById("exDividendDate").innerHTML = response.exDividendDate;
-                my.document.getElementById("forwardDividendAndYield").innerHTML = response.forwardDividendAndYield;
-                my.document.getElementById("marketCap").innerHTML = response.marketCap;
-                my.document.getElementById("open").innerHTML = response.open;
-                my.document.getElementById("peRatio").innerHTML = response.peRatio;
-                my.document.getElementById("previousClose").innerHTML = response.previousClose;
-                my.document.getElementById("quotePrice").innerHTML = response.quotePrice;
-                my.document.getElementById("volume").innerHTML = response.volume
+        list.push("exchange=" + exchange);
+        list.push("symbol=" + symbol);
+        var result = list.join("&");
 
-            };
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
 
-        }
-    };
+                var my = window.open('/analysis', '_blank');
+                var response = JSON.parse(xhttp.responseText);
 
-    xhttp.open("POST", "/_analysis", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(result);
+                my.onload = function () {
+
+
+                    my.document.getElementById("symbol").innerHTML = response.symbol;
+                    my.document.getElementById("exchange").innerHTML = response.exchange;
+                    my.document.getElementById("oneYearTargetEst").innerHTML = response.oneYearTargetEst;
+                    my.document.getElementById("fiftyTwoWeekRange").innerHTML = response.fiftyTwoWeekRange;
+                    my.document.getElementById("ask").innerHTML = response.ask;
+                    my.document.getElementById("averageVolume").innerHTML = response.averageVolume;
+                    my.document.getElementById("beta").innerHTML = response.beta;
+                    my.document.getElementById("bid").innerHTML = response.bid;
+                    my.document.getElementById("daysRange").innerHTML = response.daysRange;
+                    my.document.getElementById("EPS").innerHTML = response.EPS;
+                    my.document.getElementById("earningsDate").innerHTML = response.earningsDate;
+                    my.document.getElementById("exDividendDate").innerHTML = response.exDividendDate;
+                    my.document.getElementById("forwardDividendAndYield").innerHTML = response.forwardDividendAndYield;
+                    my.document.getElementById("marketCap").innerHTML = response.marketCap;
+                    my.document.getElementById("open").innerHTML = response.open;
+                    my.document.getElementById("peRatio").innerHTML = response.peRatio;
+                    my.document.getElementById("previousClose").innerHTML = response.previousClose;
+                    my.document.getElementById("quotePrice").innerHTML = response.quotePrice;
+                    my.document.getElementById("volume").innerHTML = response.volume
+
+                };
+
+            }
+        };
+
+        xhttp.open("POST", "/_analysis", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(result);
+    }
 }
 
 

@@ -358,8 +358,8 @@ def _analysis():
 
     exchange = request.form["exchange"]
     symbol = request.form["symbol"]
-    print(exchange)
-    print(symbol)
+    # print(exchange)
+    # print(symbol)
 
     try:
         quoteTable = si.get_quote_table(symbol)
@@ -368,58 +368,59 @@ def _analysis():
         quoteTable = None
 
     if quoteTable != None:
-        print("QuoteTableExists")
+        # print("QuoteTableExists")
 
         oneYearTargetEst = dataCheck(quoteTable, '1y Target Est')
-        print(oneYearTargetEst)
+        # print(oneYearTargetEst)
 
         fiftyTwoWeekRange = dataCheck(quoteTable, '52 Week Range')
-        print(fiftyTwoWeekRange)
+        # print(fiftyTwoWeekRange)
 
         ask = dataCheck(quoteTable, 'Ask')
-        print(ask)
+        # print(ask)
 
         averageVolume = dataCheck(quoteTable, 'Avg. Volume')
-        print(averageVolume)
+        # print(averageVolume)
 
         beta = dataCheck(quoteTable, 'Beta (5Y Monthly)')
-        print(beta)
+        # print(beta)
 
         bid = dataCheck(quoteTable, 'Bid')
-        print(bid)
+        # print(bid)
 
         daysRange = dataCheck(quoteTable, "Day's Range")
-        print(daysRange)
+        # print(daysRange)
 
         EPS = dataCheck(quoteTable, 'EPS (TTM)')
-        print(EPS)
+        # print(EPS)
 
         earningsDate = dataCheck(quoteTable, 'Earnings Date')
-        print(earningsDate)
+        # print(earningsDate)
 
         exDividendDate = dataCheck(quoteTable,'Ex-Dividend Date')
-        print(exDividendDate)
+        # print(exDividendDate)
 
         forwardDividendAndYield = dataCheck(quoteTable, 'Forward Dividend & Yield')
-        print(forwardDividendAndYield)
+        # print(forwardDividendAndYield)
 
         marketCap = dataCheck(quoteTable, 'Market Cap')
-        print(marketCap)
+        # print(marketCap)
 
         open = dataCheck(quoteTable, 'Open')
-        print(open)
+        # print(open)
 
         peRatio = dataCheck(quoteTable, 'PE Ratio (TTM)')
-        print(peRatio)
+        # print(peRatio)
 
         previousClose = dataCheck(quoteTable, 'Previous Close')
-        print(previousClose)
+        # print(previousClose)
 
         quotePrice = dataCheck(quoteTable, 'Quote Price')
-        print(quotePrice)
+        quotePrice = round(quotePrice, 4)
+        # print(quotePrice)
 
         volume = dataCheck(quoteTable, 'Volume')
-        print(volume)
+        # print(volume)
 
 
         return jsonify(exchange=exchange, symbol=symbol,
@@ -442,7 +443,7 @@ def _analysis():
                        volume=volume)
 
     else:
-        print('No Quote Table')
+        # print('No Quote Table')
         return jsonify(exchange=exchange, symbol=symbol)
 
 
@@ -475,7 +476,7 @@ def login():
         # Query database for username
         db.execute("SELECT * FROM users WHERE username = ?", (username,))
         rows = db.fetchone()
-        print(rows)
+        # print(rows)
 
         if not rows:
             flash("Sorry, that username does not exist", "error")
