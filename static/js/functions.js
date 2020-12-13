@@ -31,8 +31,8 @@ function linkedin() {
   window.open("http://www.linkedin.com/feed")
 }
 
-// coin javascript functions
 
+// coin javascript functions
 function twitterCoin(){
   let symbol = document.getElementById("symbol").innerHTML;
   let company = document.getElementById("company").innerHTML;
@@ -167,7 +167,7 @@ function indexButtonPost() {
         list.push("SGX=false")
     }
 
-    var result = list.join("&")
+    var result = list.join("&");
 
 
     var xhttp = new XMLHttpRequest();
@@ -190,12 +190,16 @@ function indexButtonPost() {
 
 // Stock Quote script
 function stockQuote() {
+
+
+    var list = [];
+
     let exchange = document.getElementById("exchange").innerText;
+    let symbol = document.getElementById("symbol").innerText;
 
-
-    if (exchange == 'AMEX'){
-        let symb = document.getElementById("symbol").innerText;
-        window.open("https://www.tradingview.com/symbols/AMEX-" + symb)
+    if (exchange == 'SGX') {
+        let symb = document.getElementById("symbol").innerHTML;
+        window.open("https://www.tradingview.com/symbols/SGX-:" + symb)
     }
 
     else if (exchange == 'LSE'){
@@ -203,34 +207,61 @@ function stockQuote() {
         window.open("https://www.tradingview.com/symbols/LSE-" + symb)
     }
 
-    else if (exchange == 'NASDAQ'){
-        let symb = document.getElementById("symbol").innerHTML;
-        window.open("https://www.tradingview.com/symbols/NASDAQ-" + symb)
-    }
-
-    else if (exchange == 'NYSE'){
-        let symb = document.getElementById("symbol").innerHTML;
-        window.open("https://www.tradingview.com/symbols/NYSE-" + symb)
-    }
-
-    else if (exchange == 'OTCBB'){
-        let symb = document.getElementById("symbol").innerHTML;
-        window.open("https://www.tradingview.com/symbols/OTC-" + symb)
-    }
-
-    else if (exchange == 'SGX'){
-        let symb = document.getElementById("symbol").innerHTML;
-        window.open("https://www.tradingview.com/symbols/SGX-:" + symb)
-    }
-
-    else if (exchange == 'Coinbase'){
-        let lookup = document.getElementById("lookup").innerHTML;
-        window.open("https://www.coinbase.com/price/" + lookup)
-    }
-    else{
-        window.open("https://www.nyse.com")
-    }
+    else {
 
 
+        list.push("exchange=" + exchange);
+        list.push("symbol=" + symbol);
+        var result = list.join("&");
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                var my = window.open('/analysis', '_blank');
+                var response = JSON.parse(xhttp.responseText);
+
+                my.onload = function () {
+
+
+                    my.document.getElementById("symbol").innerHTML = response.symbol;
+                    my.document.getElementById("exchange").innerHTML = response.exchange;
+                    my.document.getElementById("oneYearTargetEst").innerHTML = response.oneYearTargetEst;
+                    my.document.getElementById("fiftyTwoWeekRange").innerHTML = response.fiftyTwoWeekRange;
+                    my.document.getElementById("ask").innerHTML = response.ask;
+                    my.document.getElementById("averageVolume").innerHTML = response.averageVolume;
+                    my.document.getElementById("beta").innerHTML = response.beta;
+                    my.document.getElementById("bid").innerHTML = response.bid;
+                    my.document.getElementById("daysRange").innerHTML = response.daysRange;
+                    my.document.getElementById("EPS").innerHTML = response.EPS;
+                    my.document.getElementById("earningsDate").innerHTML = response.earningsDate;
+                    my.document.getElementById("exDividendDate").innerHTML = response.exDividendDate;
+                    my.document.getElementById("forwardDividendAndYield").innerHTML = response.forwardDividendAndYield;
+                    my.document.getElementById("marketCap").innerHTML = response.marketCap;
+                    my.document.getElementById("open").innerHTML = response.open;
+                    my.document.getElementById("peRatio").innerHTML = response.peRatio;
+                    my.document.getElementById("previousClose").innerHTML = response.previousClose;
+                    my.document.getElementById("quotePrice").innerHTML = response.quotePrice;
+                    my.document.getElementById("volume").innerHTML = response.volume
+
+                };
+
+            }
+        };
+
+        xhttp.open("POST", "/_analysis", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(result);
+    }
 }
+
+
+
+// Coinbase Quote
+function coinQuote(){
+
+    let lookup = document.getElementById("lookup").innerHTML;
+    window.open("https://www.coinbase.com/price/" + lookup)
+
+    }
 

@@ -5,9 +5,57 @@
 {% endblock %}
 
 {% block body %}
-<div></div>
-<div>Current Under Development</div>
-<!--    exchange = <div id="exchange">{{exchange}}</div><br>-->
-<!--    symbol = <div id="symbol">{{symbol}}</div>-->
+<div class="container dataFrame">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-md-4 col-sm-12 data">Exchange =  <b><div id="exchange">{{exchange}}</div></b></div>
+        <div class="col-lg-3 col-md-4 col-sm-12 data">Symbol =  <b><div id="symbol">{{symbol}}</div></b></div>
+        <div class="col-lg-3 col-md-4 col-sm-12 data">Quote Price = <b><div id="quotePrice">{{quotePrice}}</div></b></div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/o/open.asp">Open</a> = <b><div id="open">{{open}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data">Previous Close = <b><div id="previousClose">{{previousClose}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/v/volume.asp">Volume</a> = <b><div id="volume">{{volume}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/m/marketcapitalization.asp">Market Cap</a> = <b><div id="marketCap">{{marketCap}}</div></b></div>
+    </div>
+
+
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/b/beta.asp">beta</a> = <b><div id="beta">{{beta}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/b/bid.asp">Bid</a> = <b><div id="bid">{{bid}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/a/ask.asp">Ask</a> (USD) = <b><div id="ask">{{ask}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data">Days Range (USD) = <b><div id="daysRange">{{daysRange}}</div></b></div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-md-6 col-sm-12 data">Earnings Date = <b><div id="earningsDate">{{earningsDate}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data">Expected Dividend Date = <b><div id="exDividendDate">{{exDividendDate}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/f/forward-dividend-yield.asp">Forward Dividend and Yield</a> = <b><div id="forwardDividendAndYield">{{forwardDividendAndYield}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/e/eps.asp">EPS</a> = <b><div id="EPS">{{EPS}}</div></b></div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-md-6 col-sm-12 data">One Year Target Estimate (USD) = <b><div id="oneYearTargetEst">{{oneYearTargetEst}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data">Fifty Two Week Range (USD) = <b><div id="fiftyTwoWeekRange">{{fiftyTwoWeekRange}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/average-volume">Average Volume</a> = <b><div id="averageVolume">{{averageVolume}}</div></b></div>
+        <div class="col-lg-3 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/p/price-earningsratio.asp">P/E Ratio</a> = <b><div id="peRatio">{{peRatio}}</div></b></div>
+    </div>
+
+</div>
+
+<form method="post" action="/analysis">
+  <div class="form-group symbolInput">
+      <input type="text" class="form-control" name="symbolInput" id="symbolInput" placeholder="Enter Symbol">
+  </div>
+  <div class="mybutton">
+    <button type="submit" class="btn btn-primary" style="background-color: #295fa6">Submit</button>
+  </div>
+</form>
+
+<div class="moreData">Need more data? Check out the <a href="https://www.sec.gov/edgar.shtml">EDGAR</a> database, <a href="https://finance.yahoo.com/">yahoo finance</a>, or email me! zack@randomstock.net</div>
+
+
+
 {% endblock %}
 

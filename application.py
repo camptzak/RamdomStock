@@ -4,8 +4,9 @@ import sqlite3
 import random
 from werkzeug.security import check_password_hash, generate_password_hash
 import datetime
+import pandas as pd
 from flask_bootstrap import Bootstrap
-
+import yahoo_fin.stock_info as si
 
 application = app = Flask(__name__)
 
@@ -18,7 +19,6 @@ Session(app)
 def index():
     conn = sqlite3.connect('randomstock.db')
     db = conn.cursor()
-
 
     # random number generation
     stock = random.randint(1, 15031)
@@ -49,7 +49,6 @@ def index():
 
 @app.route("/_indexButton", methods=["GET", "POST"])
 def _indexButton():
-
     if request.method == "POST":
 
         AMEX = request.form["AMEX"]
@@ -86,12 +85,8 @@ def _indexButton():
 
             stock = exchanges[randomNumber]
 
-
-
-
         conn = sqlite3.connect('randomstock.db')
         db = conn.cursor()
-
 
         # extract stock information
         db.execute("SELECT exchange FROM securities WHERE id = ?", (stock,))
@@ -124,7 +119,6 @@ def _indexButton():
         company = stock[0]
         exchange = exchange[0]
         return jsonify(symbol=symbol, company=company, exchange=exchange)
-
 
 
 @app.route("/PennyStocks")
@@ -200,7 +194,6 @@ def crypto():
     db.execute("SELECT lookup FROM crypto WHERE id = ?", crypto)
     cryptolookup = db.fetchone()
 
-
     symbolfinal = cryptoSymbol[0]
     namefinal = cryptoName[0]
     lookup = cryptolookup[0]
@@ -233,6 +226,227 @@ def _cryptoButton():
     return jsonify(symbol=symbol, company=company, lookup=lookup)
 
 
+@app.route("/analysis", methods=["GET", "POST"])
+def analysis():
+    if request.method == "POST":
+
+        def isNaN(data):
+            return data != data
+
+        def dataCheck(dict, key):
+            if key not in dict.keys():
+                return 'No Data'
+
+            elif isNaN(quoteTable[key]):
+                return 'No Data'
+
+            else:
+                return quoteTable[key]
+
+        symbol = request.form["symbolInput"]
+
+        try:
+            quoteTable = si.get_quote_table(symbol)
+
+        except (RuntimeError, TypeError, NameError, IndexError, ValueError, KeyError):
+            quoteTable = None
+
+        if quoteTable != None:
+            # print("QuoteTableExists")
+
+            oneYearTargetEst = dataCheck(quoteTable, '1y Target Est')
+            # print(oneYearTargetEst)
+
+            fiftyTwoWeekRange = dataCheck(quoteTable, '52 Week Range')
+            # print(fiftyTwoWeekRange)
+
+            ask = dataCheck(quoteTable, 'Ask')
+            # print(ask)
+
+            averageVolume = dataCheck(quoteTable, 'Avg. Volume')
+            # print(averageVolume)
+
+            beta = dataCheck(quoteTable, 'Beta (5Y Monthly)')
+            # print(beta)
+
+            bid = dataCheck(quoteTable, 'Bid')
+            # print(bid)
+
+            daysRange = dataCheck(quoteTable, "Day's Range")
+            # print(daysRange)
+
+            EPS = dataCheck(quoteTable, 'EPS (TTM)')
+            # print(EPS)
+
+            earningsDate = dataCheck(quoteTable, 'Earnings Date')
+            # print(earningsDate)
+
+            exDividendDate = dataCheck(quoteTable, 'Ex-Dividend Date')
+            # print(exDividendDate)
+
+            forwardDividendAndYield = dataCheck(quoteTable, 'Forward Dividend & Yield')
+            # print(forwardDividendAndYield)
+
+            marketCap = dataCheck(quoteTable, 'Market Cap')
+            # print(marketCap)
+
+            open = dataCheck(quoteTable, 'Open')
+            # print(open)
+
+            peRatio = dataCheck(quoteTable, 'PE Ratio (TTM)')
+            # print(peRatio)
+
+            previousClose = dataCheck(quoteTable, 'Previous Close')
+            # print(previousClose)
+
+            quotePrice = dataCheck(quoteTable, 'Quote Price')
+            quotePrice = round(quotePrice, 4)
+            # print(quotePrice)
+
+            volume = dataCheck(quoteTable, 'Volume')
+            # print(volume)
+
+
+
+
+            return render_template("analysis.html", symbol=symbol,
+                           oneYearTargetEst=oneYearTargetEst,
+                           fiftyTwoWeekRange=fiftyTwoWeekRange,
+                           ask=ask,
+                           averageVolume=averageVolume,
+                           beta=beta,
+                           bid=bid,
+                           daysRange=daysRange,
+                           EPS=EPS,
+                           earningsDate=earningsDate,
+                           exDividendDate=exDividendDate,
+                           forwardDividendAndYield=forwardDividendAndYield,
+                           marketCap=marketCap,
+                           open=open,
+                           peRatio=peRatio,
+                           previousClose=previousClose,
+                           quotePrice=quotePrice,
+                           volume=volume)
+
+        else:
+            flash("Sorry! We don't have any data for that symbol", "error")
+            redirect(url_for("analysis"))
+            return render_template("analysis.html")
+
+
+    else:
+        return render_template("analysis.html")
+
+
+@app.route("/_analysis", methods=["POST"])
+def _analysis():
+
+    def isNaN(data):
+        return data != data
+
+    def dataCheck(dict, key):
+        if key not in dict.keys():
+            return 'No Data'
+
+        elif isNaN(quoteTable[key]):
+            return 'No Data'
+
+        else:
+            return quoteTable[key]
+
+
+
+    exchange = request.form["exchange"]
+    symbol = request.form["symbol"]
+    # print(exchange)
+    # print(symbol)
+
+    try:
+        quoteTable = si.get_quote_table(symbol)
+
+    except (RuntimeError, TypeError, NameError, IndexError, ValueError):
+        quoteTable = None
+
+    if quoteTable != None:
+        # print("QuoteTableExists")
+
+        oneYearTargetEst = dataCheck(quoteTable, '1y Target Est')
+        # print(oneYearTargetEst)
+
+        fiftyTwoWeekRange = dataCheck(quoteTable, '52 Week Range')
+        # print(fiftyTwoWeekRange)
+
+        ask = dataCheck(quoteTable, 'Ask')
+        # print(ask)
+
+        averageVolume = dataCheck(quoteTable, 'Avg. Volume')
+        # print(averageVolume)
+
+        beta = dataCheck(quoteTable, 'Beta (5Y Monthly)')
+        # print(beta)
+
+        bid = dataCheck(quoteTable, 'Bid')
+        # print(bid)
+
+        daysRange = dataCheck(quoteTable, "Day's Range")
+        # print(daysRange)
+
+        EPS = dataCheck(quoteTable, 'EPS (TTM)')
+        # print(EPS)
+
+        earningsDate = dataCheck(quoteTable, 'Earnings Date')
+        # print(earningsDate)
+
+        exDividendDate = dataCheck(quoteTable,'Ex-Dividend Date')
+        # print(exDividendDate)
+
+        forwardDividendAndYield = dataCheck(quoteTable, 'Forward Dividend & Yield')
+        # print(forwardDividendAndYield)
+
+        marketCap = dataCheck(quoteTable, 'Market Cap')
+        # print(marketCap)
+
+        open = dataCheck(quoteTable, 'Open')
+        # print(open)
+
+        peRatio = dataCheck(quoteTable, 'PE Ratio (TTM)')
+        # print(peRatio)
+
+        previousClose = dataCheck(quoteTable, 'Previous Close')
+        # print(previousClose)
+
+        quotePrice = dataCheck(quoteTable, 'Quote Price')
+        quotePrice = round(quotePrice, 4)
+        # print(quotePrice)
+
+        volume = dataCheck(quoteTable, 'Volume')
+        # print(volume)
+
+
+        return jsonify(exchange=exchange, symbol=symbol,
+                       oneYearTargetEst=oneYearTargetEst,
+                       fiftyTwoWeekRange=fiftyTwoWeekRange,
+                       ask=ask,
+                       averageVolume=averageVolume,
+                       beta=beta,
+                       bid=bid,
+                       daysRange=daysRange,
+                       EPS=EPS,
+                       earningsDate=earningsDate,
+                       exDividendDate=exDividendDate,
+                       forwardDividendAndYield=forwardDividendAndYield,
+                       marketCap=marketCap,
+                       open=open,
+                       peRatio=peRatio,
+                       previousClose=previousClose,
+                       quotePrice=quotePrice,
+                       volume=volume)
+
+    else:
+        # print('No Quote Table')
+        return jsonify(exchange=exchange, symbol=symbol)
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     conn = sqlite3.connect('randomstock.db')
@@ -262,7 +476,7 @@ def login():
         # Query database for username
         db.execute("SELECT * FROM users WHERE username = ?", (username,))
         rows = db.fetchone()
-        print(rows)
+        # print(rows)
 
         if not rows:
             flash("Sorry, that username does not exist", "error")
@@ -422,6 +636,7 @@ def coronaVaccine():
 
     return render_template("blog/coronaVaccine.html", rows=rows)
 
+
 @app.route("/randomness", methods=["GET", "POST"])
 def randomness():
     if request.method == "POST":
@@ -486,6 +701,7 @@ def TSLAshort():
         rows = db.fetchall()
 
     return render_template("blog/TSLAshort.html", rows=rows)
+
 
 @app.route("/thirteenf", methods=["GET", "POST"])
 def thirteenf():
@@ -552,6 +768,7 @@ def PDC():
 
     return render_template("blog/PDC.html", rows=rows)
 
+
 @app.route("/ExpectedValue", methods=["GET", "POST"])
 def ExpectedValue():
     if request.method == "POST":
@@ -583,6 +800,7 @@ def ExpectedValue():
         rows = db.fetchall()
 
     return render_template("blog/ExpectedValue.html", rows=rows)
+
 
 @app.route("/Savings", methods=["GET", "POST"])
 def Savings():
@@ -616,6 +834,7 @@ def Savings():
 
     return render_template("blog/savings.html", rows=rows)
 
+
 @app.route("/Opportunity", methods=["GET", "POST"])
 def Opportunity():
     if request.method == "POST":
@@ -648,6 +867,7 @@ def Opportunity():
 
     return render_template("blog/opportunity.html", rows=rows)
 
+
 @app.route("/DollarCostAveraging", methods=["GET", "POST"])
 def DollarCostAveraging():
     if request.method == "POST":
@@ -679,6 +899,7 @@ def DollarCostAveraging():
         rows = db.fetchall()
 
     return render_template("blog/DollarCostAveraging.html", rows=rows)
+
 
 @app.route("/FiveRulesToInvesting", methods=["GET", "POST"])
 def FiveRulesToInvesting():
@@ -777,69 +998,3 @@ def InvestingInAStartUp():
         rows = db.fetchall()
 
     return render_template("blog/InvestingInAStartUp.html", rows=rows)
-
-
-@app.route("/WhatIsAPennyStock", methods=["GET", "POST"])
-def WhatIsAPennyStock():
-    if request.method == "POST":
-
-        if session.get("user_id") is None:
-            flash("Sorry! You must be logged in to post a comment", "error")
-            return redirect(url_for("WhatIsAPennyStock"))
-
-        comment = request.form["comment"]
-        username = session.get("username")
-        date = (str(datetime.datetime.now())).split(".")
-        date = date[0]
-
-        article = 14
-
-        conn = sqlite3.connect('randomstock.db')
-        db = conn.cursor()
-
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
-        conn.commit()
-
-        return redirect(url_for("WhatIsAPennyStock"))
-
-    else:
-        conn = sqlite3.connect('randomstock.db')
-        db = conn.cursor()
-        db.execute("SELECT * FROM comments WHERE article = 14")
-        rows = db.fetchall()
-
-    return render_template("blog/WhatIsAPennyStock.html", rows=rows)
-
-
-@app.route("/PerilsOfPennyStocks", methods=["GET", "POST"])
-def PerilsOfPennyStocks():
-    if request.method == "POST":
-
-        if session.get("user_id") is None:
-            flash("Sorry! You must be logged in to post a comment", "error")
-            return redirect(url_for("PerilsOfPennyStocks"))
-
-        comment = request.form["comment"]
-        username = session.get("username")
-        date = (str(datetime.datetime.now())).split(".")
-        date = date[0]
-
-        article = 15
-
-        conn = sqlite3.connect('randomstock.db')
-        db = conn.cursor()
-
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
-        conn.commit()
-
-        return redirect(url_for("PerilsOfPennyStocks"))
-
-    else:
-        conn = sqlite3.connect('randomstock.db')
-        db = conn.cursor()
-        db.execute("SELECT * FROM comments WHERE article = 15")
-        rows = db.fetchall()
-
-    return render_template("blog/PerilsOfPennyStocks.html", rows=rows)
