@@ -248,63 +248,63 @@ def analysis():
         try:
             quoteTable = si.get_quote_table(symbol)
 
-        except (RuntimeError, TypeError, NameError, IndexError, ValueError):
+        except (RuntimeError, TypeError, NameError, IndexError, ValueError, KeyError):
             quoteTable = None
 
         if quoteTable != None:
-            print("QuoteTableExists")
+            # print("QuoteTableExists")
 
             oneYearTargetEst = dataCheck(quoteTable, '1y Target Est')
-            print(oneYearTargetEst)
+            # print(oneYearTargetEst)
 
             fiftyTwoWeekRange = dataCheck(quoteTable, '52 Week Range')
-            print(fiftyTwoWeekRange)
+            # print(fiftyTwoWeekRange)
 
             ask = dataCheck(quoteTable, 'Ask')
-            print(ask)
+            # print(ask)
 
             averageVolume = dataCheck(quoteTable, 'Avg. Volume')
-            print(averageVolume)
+            # print(averageVolume)
 
             beta = dataCheck(quoteTable, 'Beta (5Y Monthly)')
-            print(beta)
+            # print(beta)
 
             bid = dataCheck(quoteTable, 'Bid')
-            print(bid)
+            # print(bid)
 
             daysRange = dataCheck(quoteTable, "Day's Range")
-            print(daysRange)
+            # print(daysRange)
 
             EPS = dataCheck(quoteTable, 'EPS (TTM)')
-            print(EPS)
+            # print(EPS)
 
             earningsDate = dataCheck(quoteTable, 'Earnings Date')
-            print(earningsDate)
+            # print(earningsDate)
 
             exDividendDate = dataCheck(quoteTable, 'Ex-Dividend Date')
-            print(exDividendDate)
+            # print(exDividendDate)
 
             forwardDividendAndYield = dataCheck(quoteTable, 'Forward Dividend & Yield')
-            print(forwardDividendAndYield)
+            # print(forwardDividendAndYield)
 
             marketCap = dataCheck(quoteTable, 'Market Cap')
-            print(marketCap)
+            # print(marketCap)
 
             open = dataCheck(quoteTable, 'Open')
-            print(open)
+            # print(open)
 
             peRatio = dataCheck(quoteTable, 'PE Ratio (TTM)')
-            print(peRatio)
+            # print(peRatio)
 
             previousClose = dataCheck(quoteTable, 'Previous Close')
-            print(previousClose)
+            # print(previousClose)
 
             quotePrice = dataCheck(quoteTable, 'Quote Price')
             quotePrice = round(quotePrice, 4)
-            print(quotePrice)
+            # print(quotePrice)
 
             volume = dataCheck(quoteTable, 'Volume')
-            print(volume)
+            # print(volume)
 
 
 
