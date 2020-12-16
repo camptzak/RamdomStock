@@ -56,9 +56,11 @@ conn = sqlite3.connect('randomstock.db')
 db = conn.cursor()
 
 
+databaseQuery = [[1, 2248], [2249, 7717], [7718, 10755], [10756, 13910], [13911, 15031], [15032, 25514]]
+magicNumber = random.randint(0,5)
+spread = databaseQuery[magicNumber]
 
-
-stock = random.randint(1, 25514)
+stock = random.randint(spread[0], spread[1])
 
 # extract random stock from database for other markets
 
@@ -72,6 +74,12 @@ symbol = otherSymbol[0]
 name = otherStock[0]
 exchange = exchange[0]
 
+linkExchange = exchange
+
+if linkExchange == 'OTCBB':
+    linkExchange = 'OTC'
+
+link ="https://www.randomstock.net/analysis"
 
 # extract random stock from pennyStock database
 
@@ -81,7 +89,8 @@ tweet = "%s Todays Random Stock is: \n" \
 "Symbol: %s \n" \
 "Company: %s \n" \
 "Exchange: %s \n" \
-"%s" % (greetings, symbol, name, exchange, goodbye)
+"Analysis: %s \n" \
+"%s" % (greetings, symbol, name, exchange, link, goodbye)
 
 
 api.update_status(tweet)
