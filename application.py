@@ -245,6 +245,11 @@ def analysis():
 
         symbol = request.form["symbolInput"]
 
+        if symbol == None:
+            flash("Sorry! We don't have any data for that symbol", "error")
+            redirect(url_for("analysis"))
+            return render_template("analysis.html")
+
         try:
             quoteTable = si.get_quote_table(symbol)
 
@@ -998,3 +1003,72 @@ def InvestingInAStartUp():
         rows = db.fetchall()
 
     return render_template("blog/InvestingInAStartUp.html", rows=rows)
+
+@app.route("/WhatIsAPennyStock", methods=["GET", "POST"])
+def WhatIsAPennyStock():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("WhatIsAPennyStock"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 14
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("WhatIsAPennyStock"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 14")
+        rows = db.fetchall()
+
+    return render_template("blog/WhatIsAPennyStock.html", rows=rows)
+
+@app.route("/PerilsOfPennyStocks", methods=["GET", "POST"])
+def PerilsOfPennyStocks():
+    if request.method == "POST":
+
+        if session.get("user_id") is None:
+            flash("Sorry! You must be logged in to post a comment", "error")
+            return redirect(url_for("PerilsOfPennyStocks"))
+
+        comment = request.form["comment"]
+        username = session.get("username")
+        date = (str(datetime.datetime.now())).split(".")
+        date = date[0]
+
+        article = 15
+
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+
+        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+                   (article, comment, username, date))
+        conn.commit()
+
+        return redirect(url_for("PerilsOfPennyStocks"))
+
+    else:
+        conn = sqlite3.connect('randomstock.db')
+        db = conn.cursor()
+        db.execute("SELECT * FROM comments WHERE article = 15")
+        rows = db.fetchall()
+
+    return render_template("blog/PerilsOfPennyStocks.html", rows=rows)
+
+
+
+
+
