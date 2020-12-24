@@ -25,19 +25,22 @@ while 1 == 1:
     superUsers = ["PeterLBrandt", "SJosephBurns", "SeekingAlpha", "business", "traderstewie", "elerianm", "NicTrades", "50Pips", "MrAaronKlein", "ritholtz", "Rayner_Teo", "Schuldensuehner", "jsblokland", "steve_hanke", "TheStalwart", "EddyElfenbein", "Ralph_Acampora", "MebFaber", "Trader_Dante", "sspencer_smb", "StockCats", "LiveSquawk", "jimcramer"]
     for user in superUsers:
         print(user)
-        for follower in api.followers(user):
-            print(follower.screen_name)
+        try:
+            for follower in api.followers(user):
+                print(follower.screen_name)
 
-            try:
-                user_ID = follower.id
-                api.create_friendship(user_ID)
-                sleeper()
+                try:
+                    user_ID = follower.id
+                    api.create_friendship(user_ID)
+                    sleeper()
 
-            except tp.error.TweepError:
-                print(tp.error.TweepError)
-                pass
+                except:
+                    pass
 
-    time.sleep(345600)
+        except:
+            pass
+
+    time.sleep(604800)
 
     user = api.get_user("UnplannedI")
     followers = api.followers_ids("UnplannedI")
