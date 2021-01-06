@@ -1,0 +1,34 @@
+{% load static %}
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+<div class="container">
+
+    <h1>Signup</h1>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% if exists %}
+        <script>
+            alert('User Already Exists')
+        </script>
+      {% endif %}
+
+      {% if pass_dont_match %}
+        <script>
+            alert("Passwords don't match")
+        </script>
+      {% endif %}
+
+      {% for field in form %}
+        <p>
+          {{ field.label_tag }}<br>
+          {{ field }}
+        </p>
+
+      {% endfor %}
+
+      <button class="btn btn-success">Signup</button>
+    </form>
+
+</div>
