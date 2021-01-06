@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from stocks.models import Securities
+from stocks.models import Securitie
 
 
 class SecuritiesSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Securities
+        model = Securitie
         fields = ('id', 'symbol', 'name', 'exchange', )

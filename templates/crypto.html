@@ -15,17 +15,11 @@
             $.ajax({
                 url: "",
                 type: "POST",
-                data: {csrfmiddlewaretoken: '{{ csrf_token }}',
-                       'amex': $('#amex').is(":checked"),
-                       'nasdaq': $('#nasdaq').is(":checked"),
-                       'lse': $('#lse').is(":checked"),
-                       'nyse': $('#nyse').is(":checked"),
-                       'sgx': $('#sgx').is(":checked")},
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function(result){
-                    {#console.log(result);#}
+                    console.log(result);
                     document.getElementById("symbol").innerHTML = result.symbol;
                     document.getElementById("name").innerHTML = result.company_name;
-                    document.getElementById("listed_on").innerHTML = result.listed_on
                 },
                 error: function(result){
                     {#console.log(result);#}
@@ -53,7 +47,7 @@
 
             <div>
                 <strong> LISTED ON </strong>
-                <div id="listed_on">{{ data.listed_on }}</div>
+                <div id="listed_on">Coinbase</div>
             </div>
 
             <button id='reload' class="btn-primary btn-lg">
@@ -68,23 +62,6 @@
             </div>
         </div>
 
-        <div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="amex">AMEX</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="lse">LSE</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="nasdaq">NASDAQ</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="nyse">NYSE</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="sgx">SGX</label>
-            </div>
-        </div>
     </div>
 
 </body>
