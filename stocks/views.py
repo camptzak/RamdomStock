@@ -1,14 +1,22 @@
+import os
+import json
+from math import isnan
+import pandas
+import lxml
+import hashlib
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django import forms
 from django.contrib import messages
-import hashlib
-import os
+
 from django.template.response import TemplateResponse
 from django.views import View
 from django.views.generic import TemplateView
 from httplib2 import Response
+from zinnia.models import Entry
+from zinnia.models_bases.entry import AbstractEntry
+
 from randomstock.settings import STATIC_URL, STATIC_ROOT
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authentication import TokenAuthentication
@@ -17,10 +25,15 @@ from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ViewSet, GenericViewSet, ModelViewSet
+import yahoo_fin.stock_info as si
 
-from stocks.models import Securitie, User, Quote, Crypto
-from stocks.serializers import SecuritiesSerializer
+from stocks.models import Securitie, User, Quote, Crypto, BlogInfo
+from stocks.serializers import SecuritiesSerializer, EntrySerializer
 
+
+# helper function
+def hash_password(password):
+    return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 class Home(View):
 
@@ -57,7 +70,7 @@ class Home(View):
                    'listed_on': securities.exchange,
                    }
 
-        return JsonResponse(context, status=201)
+        return JsonResponse(context, status=200)
 
 
 class CustomUserCreationForm(forms.Form, View):
@@ -94,7 +107,7 @@ class CustomUserCreationForm(forms.Form, View):
     def save(self, commit=True):
 
         password = self.cleaned_data['password1']
-        hashed_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
+        hashed_password = hash_password(password)
         user = User.objects.create(
             username=self.cleaned_data['username'],
             email=self.cleaned_data['email'],
@@ -117,6 +130,29 @@ class CustomUserCreationForm(forms.Form, View):
     def get(self, request):
         form = CustomUserCreationForm()
         return render(request, self.template_name, {'form': form})
+
+
+class Login(View):
+
+    template = 'login.html'
+
+    def get(self, request):
+        return render(request, self.template, {})
+
+    def post(self, response):
+        username = response.data.get('username', None)
+        password = response.data.get('password', None)
+        if (username is None) or (password is None):
+            raise ValidationError("missing details")
+
+        hashed_password = hash_password(password)
+
+        try:
+            user_obj = User.objects.get(username=username, password=hashed_password)
+        except User.DoesNotExist:  # if username does not exists
+            return render(response, self.template_name, {'not_exists': True})
+
+        return render(response, self.template_name, {'logged in': True})
 
 
 class PennyStocks(View):
@@ -158,4 +194,115 @@ class CryptoStocks(View):
         crypto_obj = Crypto.objects.filter().all().order_by('?').last()
         context = {'symbol': crypto_obj.symbol,
                    'company_name': crypto_obj.name}
-        return JsonResponse(context, status=201)
+        return JsonResponse(context, status=200)
+
+
+class BlogView(View):
+    template = 'blog.html'
+
+    def get(self, request):
+        return render(request, template_name=self.template_name, context={})
+
+
+class BlogViewSet(ListAPIView):
+    serializer_class = EntrySerializer
+    pagination_class = PageNumberPagination
+
+    # get the list of all blogs
+    def get(self, request, *args, **kwargs):
+        self.queryset = Entry.objects.all()
+        return self.list(request, *args, **kwargs)
+
+
+class BlogDetailsView(View):
+    template = 'blog_details.html'
+
+    def get(self, request):
+        pass
+        # return render(request, template_name=self.template_name, context={})
+
+    def post(self, request):
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+        except Exception as e:
+            raise ValidationError('Error reading body of request')
+        user = data.user
+        text = data.get('text', None)
+        brief_description = data.get('brief_description', None)
+        title = data.get('title', None)
+        publication_date = data.get('publication_date', None)
+
+        if (text is None) or (brief_description is None) or (title is None):
+            return JsonResponse({'Error': 'missing fields'}, status=201)
+
+        try:
+            if publication_date is None:
+                blog = Entry.objects.create(brief_description=text,
+                                            user=user,
+                                            title=title,
+                                            text=brief_description
+                                            )
+            else:
+                blog = Entry.objects.create(brief_description=text,
+                                            user=user,
+                                            title=title,
+                                            text=brief_description,
+                                            publication_date=publication_date
+                                            )
+        except Exception as e:
+            return render(request, template_name=self.template_name, context={'Error': 'Something went wrong'})
+
+        return JsonResponse({'Success': 'Blog created'}, status=201)
+
+
+class AnalysisView(View):
+    template = 'analysis.html'
+
+    def get(self, request):
+        return render(request, template_name=self.template_name, context={})
+
+    def post(self, request):
+        data = json.loads(request.body.decode('utf-8'))
+        symbol = data.get('symbol', None)
+
+        try:
+            quote_table = si.get_quote_table(symbol)
+        except Exception as e:
+            return JsonResponse({"Error": "Sorry! We don't have any data for that symbol"}, status=200)
+
+        # field_names = ['symbol', 'oneYearTargetEst', 'fiftyTwoWeekRange',
+        #           'ask', 'averageVolume', 'beta', 'bid', 'daysRange',
+        #           'EPS', 'earningsDate', 'exDividendDate',
+        #           'forwardDividendAndYield', 'marketCap', 'open',
+        #           'peRatio', 'previousClose', 'quotePrice', 'volume']
+
+        fields = ['1y Target Est', '52 Week Range', 'Ask', 'Avg. Volume',
+                  'Beta (5Y Monthly)', 'Bid', "Day's Range", 'EPS (TTM)',
+                  'Earnings Date',  'Ex-Dividend Date', 'Forward Dividend & Yield',
+                  'Market Cap', 'Open', 'PE Ratio (TTM)', 'Previous Close',
+                  'Quote Price', 'Volume']
+
+        for key in fields:
+            if type(quote_table[key]) != str:
+                if isnan(quote_table[key]):
+                    quote_table[key] = 'N/A'
+
+        # {'1y Target Est': 9.0,
+        #  '52 Week Range': '2.21 - 12.69',
+        #  'Ask': '12.84 x 800',
+        #  'Avg. Volume': 973371.0,
+        #  'Beta (5Y Monthly)': 2.69,
+        #  'Bid': '9.50 x 800',
+        #  "Day's Range": '10.64 - 11.46',
+        #  'EPS (TTM)': -24.64,
+        #  'Earnings Date': 'Feb 18, 2021 - Feb 22, 2021',
+        #  'Ex-Dividend Date': 'Mar 04, 2019',
+        #  'Forward Dividend & Yield': 'N/A (N/A)',
+        #  'Market Cap': '912.037M',
+        #  'Open': 10.7,
+        #  'PE Ratio (TTM)': nan,
+        #  'Previous Close': 10.52,
+        #  'Quote Price': 11.199999809265137,
+        #  'Volume': 1063695.0}
+
+        return JsonResponse(quote_table, status=200)

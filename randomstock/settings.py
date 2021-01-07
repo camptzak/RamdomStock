@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_comments',
-    'stocks',
     'tagging',
-    'zinnia'
+    'stocks',
+    'zinnia',
 ]
 
 MIDDLEWARE = [
@@ -116,6 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+ZINNIA_ENTRY_BASE_MODEL = 'stocks.models.BlogInfo'
+MIGRATION_MODULES = {'zinnia': 'stocks.migrations_zinnia'}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -131,6 +133,11 @@ USE_L10N = True
 USE_TZ = True
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -140,6 +147,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 STATICFILES_DIRS = (
     join(BASE_DIR, 'static'),
+)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    #'django.contrib.staticfiles.finders.AppDirectoriesFinder',    #causes verbose duplicate notifications in django 1.9
 )
 SITE_ID = 1
 
