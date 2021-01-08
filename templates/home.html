@@ -1,92 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>randomstock</title>
+    <title>RandomStock</title>
+    <meta charset="utf-8">
     {% load static %}
-
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'images/icon-01.png' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
 
-        $("#reload").click(function(){
-            $.ajax({
-                url: "",
-                type: "POST",
-                data: {csrfmiddlewaretoken: '{{ csrf_token }}',
-                       'amex': $('#amex').is(":checked"),
-                       'nasdaq': $('#nasdaq').is(":checked"),
-                       'lse': $('#lse').is(":checked"),
-                       'nyse': $('#nyse').is(":checked"),
-                       'sgx': $('#sgx').is(":checked")},
-                success: function(result){
-                    {#console.log(result);#}
-                    document.getElementById("symbol").innerHTML = result.symbol;
-                    document.getElementById("name").innerHTML = result.company_name;
-                    document.getElementById("listed_on").innerHTML = result.listed_on
-                },
-                error: function(result){
-                    {#console.log(result);#}
-                }
+            $("#reload").click(function () {
+                $.ajax({
+                    url: "",
+                    type: "POST",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        'amex': $('#amex').is(":checked"),
+                        'nasdaq': $('#nasdaq').is(":checked"),
+                        'lse': $('#lse').is(":checked"),
+                        'nyse': $('#nyse').is(":checked"),
+                        'sgx': $('#sgx').is(":checked")
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        document.getElementById("symbol").innerHTML = result.symbol;
+                        document.getElementById("name").innerHTML = result.company_name;
+                        document.getElementById("listed_on").innerHTML = result.listed_on
+                    },
+                    error: function (result) {
+                        console.log(result);
+                    }
+                });
             });
+
         });
-
-    });
     </script>
-
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href=""><img src="{% static 'images/logo-01.svg' %}"></a>
 
-    <div class="container text-center">
-        <div>
-            <div>
-                <strong> SYMBOL </strong>
-                <div id="symbol">{{ data.symbol }}</div>
-            </div>
-
-            <div>
-                <strong> NAME </strong>
-                <div id="name">{{ data.company_name }}</div>
-            </div>
-
-            <div>
-                <strong> LISTED ON </strong>
-                <div id="listed_on">{{ data.listed_on }}</div>
-            </div>
-
-            <button id='reload' class="btn-primary btn-lg">
-                GET ANOTHER STOCK
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-        </div>
 
-        <div>
-            <div>
-                <strong> {{ data.quote_author }} </strong>
-                <div id="listed_on">{{ data.quote }}</div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="penny-stocks"><img src="{% static 'images/cent.png' %}"> OTC
+                            Stocks<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="crypto"><img src="{% static 'images/bitcoin.png' %}"> Crypto</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="blog"><img src="{% static 'images/blog.png' %}"> Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="analysis"><img src="{% static 'images/bar-graph.png' %}">
+                            Analysis</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="login">Login</a>
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="register">Register</a>
+                </form>
             </div>
         </div>
-
-        <div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="amex">AMEX</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="lse">LSE</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="nasdaq">NASDAQ</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="nyse">NYSE</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" id="sgx">SGX</label>
+    </nav>
+    <div class="container-fluid p-0">
+        <div class="main-banner">
+            <div class="container result">
+                <div class="result-inner">
+                    <p>Symbol <b id="symbol">{{ data.symbol }}</b></p>
+                    <p>Company Name <b id="name">{{ data.company_name }}</b></p>
+                    <p>Listed On <b id="listed_on">{{ data.listed_on }}</b></p>
+                    <button class="btn btn-outline-light outline-none">Stock Quote</button>
+                </div>
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="middle-text">
+            <em>
+                "{{ data.quote }}"
+            </em>
+            <p>-{{ data.quote_author }}</p>
+            <button class="btn btn-outline-primary btn-lg outline-none" id="reload">Get Another Stock</button>
+            <div class="exchanges-div">
+                <h2>Select the exchanges to draw your random stock from</h2>
+                <form autocomplete="off" class="checkbox-container">
 
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="amex" name="AMEX">
+                        <label class="form-check-label" for="AMEX"> AMEX</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="lse" name="LSE">
+                        <label class="form-check-label" for="LSE"> LSE</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="nasdaq" name="NASDAQ">
+                        <label class="form-check-label" for="NASDAQ"> NASDAQ</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="nyse" name="NYSE">
+                        <label class="form-check-label" for="NYSE"> NYSE</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="sgx" name="SGX">
+                        <label class="form-check-label" for="SGX"> SGX</label>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+        <div class="share_buttons">
+            <div class="share_button" id="twitter" onclick=""><img src="{% static 'images/twitter.png' %}" width="36"
+                                                                   height="36"></div>
+            <div class="share_button" id="facebook" onclick=""><img src="{% static 'images/facebook.png' %}" width="36"
+                                                                    height="36"></div>
+            <div class="share_button" id="instagram" onclick=""><img src="{% static 'images/instagram.png' %}" width="36"
+                                                                     height="36"></div>
+            <div class="share_button" id="reddit" onclick=""><img src="{% static 'images/reddit.png' %}" width="36"
+                                                                  height="36"></div>
+            <div class="share_button" id="linkedin" onclick=""><img src="{% static 'images/linkedin.png' %}" width="36"
+                                                                    height="36"></div>
+        </div>
+        <footer class="footer">
+            <small>© Copyright 2020, RandomStock™</small>
+        </footer>
+    </div>
 </body>
-
 </html>

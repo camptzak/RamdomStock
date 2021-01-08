@@ -3,10 +3,9 @@
 <head>
   <title>RandomStock</title>
   <meta charset="utf-8">
-    {% load static %}
+        {% load static %}
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="{% static 'images/icon-01.png' %}">
-
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -17,63 +16,51 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href=""><img src="{% static 'images/logo-01.svg' %}"></a>
+        <a class="navbar-brand" href=""><img src="{% static 'images/logo-01.svg' %}"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="penny-stocks"><img src="{% static 'images/cent.png' %}"> OTC
-                            Stocks<span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="crypto"><img src="{% static 'images/bitcoin.png' %}"> Crypto</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="blog"><img src="{% static 'images/blog.png' %}"> Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="analysis"><img src="{% static 'images/bar-graph.png' %}">
-                            Analysis</a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <a class="btn btn-outline-success my-2 my-sm-0" href="login">Login</a>
-                    <a class="btn btn-outline-success my-2 my-sm-0" href="register">Register</a>
-                </form>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="penny-stocks"><img src="{% static 'images/cent.png' %}"> OTC Stocks<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="crypto"><img src="{% static 'images/bitcoin.png' %}"> Crypto</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="blog"><img src="{% static 'images/blog.png' %}"> Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="analysis"><img src="{% static 'images/bar-graph.png' %}"> Analysis</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <a class="btn btn-outline-success my-2 my-sm-0">Login</a>
+            <a class="btn btn-outline-success my-2 my-sm-0">Register</a>
+          </form>
         </div>
-    </nav>
+    </div>
+      </nav>
 
       <div class="container-fluid bg-img">
         <div class="d-flex justify-content-center h-100">
             <div class="card">
                 <div class="card-header">
-                    <h3>Register</h3>
+                    <h3>Sign In</h3>
                 </div>
                 <div class="card-body">
-                    <form action="/register/" method="post">
+                    <form action="/login/" method="post">
                         {% csrf_token %}
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
                             <input type="text" class="form-control" name="username" id="username" placeholder="Username">
-                            
-                        </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                            </div>
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Email">
-                            
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
@@ -81,14 +68,17 @@
                             </div>
                             <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                         </div>
+                        <div class="row align-items-center remember">
+                            <input type="checkbox">Remember Me
+                        </div>
                         <div class="form-group">
-                            <input type="submit" value="Register" class="btn float-right login_btn">
+                            <input type="submit" value="Login" class="btn float-right login_btn">
                         </div>
                     </form>
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-center links">
-                        Already have an account?<a href="Login.html">Sign In</a>
+                        Don't have an account?<a href="Register.html">Register</a>
                     </div>
                     <!-- <div class="d-flex justify-content-center">
                         <a href="#">Forgot your password?</a>

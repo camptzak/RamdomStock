@@ -38,7 +38,7 @@ class Comment(models.Model):
     # user = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    # date = models.TextField()
+    # date = register/models.TextField()
     # time = models.TextField()
     likes = models.IntegerField()
 

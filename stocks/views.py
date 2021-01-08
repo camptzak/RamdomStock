@@ -35,6 +35,7 @@ from stocks.serializers import SecuritiesSerializer, EntrySerializer
 def hash_password(password):
     return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
+
 class Home(View):
 
     template_name = 'home.html'
@@ -74,10 +75,9 @@ class Home(View):
 
 
 class CustomUserCreationForm(forms.Form, View):
-    username = forms.CharField(label='Enter Username', min_length=4, max_length=150)
-    email = forms.EmailField(label='Enter email')
-    password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
+    username = forms.CharField(min_length=4, max_length=150)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
 
     template_name = 'register.html'
 
@@ -95,18 +95,12 @@ class CustomUserCreationForm(forms.Form, View):
             raise ValidationError("Email already exists")
         return email
 
-    def clean_password2(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
-
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Password don't match")
-
-        return password2
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        return password
 
     def save(self, commit=True):
-
-        password = self.cleaned_data['password1']
+        password = self.cleaned_data['password']
         hashed_password = hash_password(password)
         user = User.objects.create(
             username=self.cleaned_data['username'],
@@ -133,26 +127,25 @@ class CustomUserCreationForm(forms.Form, View):
 
 
 class Login(View):
-
     template = 'login.html'
 
     def get(self, request):
         return render(request, self.template, {})
 
     def post(self, response):
-        username = response.data.get('username', None)
-        password = response.data.get('password', None)
+        username = response.POST.get('username', None)
+        password = response.POST.get('password', None)
         if (username is None) or (password is None):
             raise ValidationError("missing details")
 
         hashed_password = hash_password(password)
 
         try:
-            user_obj = User.objects.get(username=username, password=hashed_password)
+            user_obj = User.objects.get(username=username, password_hash=hashed_password)
         except User.DoesNotExist:  # if username does not exists
-            return render(response, self.template_name, {'not_exists': True})
+            return render(response, self.template, {'not_exists': True})
 
-        return render(response, self.template_name, {'logged in': True})
+        return render(response, 'home.html', {'logged in': True})
 
 
 class PennyStocks(View):
@@ -182,9 +175,10 @@ class CryptoStocks(View):
 
     def get(self, request):
         quote_obj = Quote.objects.all().order_by('?').last()
-        crypto_obj = Crypto.objects.filter(exchange__icontains='OTCBB').all().order_by('?').last()
+        crypto_obj = Crypto.objects.all().order_by('?').last()
         context = {'data': {'symbol': crypto_obj.symbol,
                             'company_name': crypto_obj.name,
+                            'lookup': 'Coinbase',
                             'quote': quote_obj.quote,
                             'quote_author': quote_obj.author
                             }}
@@ -193,7 +187,8 @@ class CryptoStocks(View):
     def post(self, request):
         crypto_obj = Crypto.objects.filter().all().order_by('?').last()
         context = {'symbol': crypto_obj.symbol,
-                   'company_name': crypto_obj.name}
+                   'company_name': crypto_obj.name,
+                   'lookup': 'Coinbase'}
         return JsonResponse(context, status=200)
 
 
