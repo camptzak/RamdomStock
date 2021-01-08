@@ -357,23 +357,23 @@ a.nav-link img{
         max-width: 49%;
         border-radius: 4px;
     }
+}
+@media (max-width: 767px){
+    .data {
+        display: flex;
+        justify-content: center;
+        margin: 1px;
+        margin-bottom: 20px;
+        border: solid 1px #f6f2f2;
+        /* margin: 1px; */
+        /* width: 94% !important; */
+        max-width: 100%;
+        border-radius: 4px;
     }
-    @media (max-width: 767px){
-        .data {
-            display: flex;
-            justify-content: center;
-            margin: 1px;
-            margin-bottom: 20px;
-            border: solid 1px #f6f2f2;
-            /* margin: 1px; */
-            /* width: 94% !important; */
-            max-width: 100%;
-            border-radius: 4px;
-        }
-        .blog-detail-banner{
-            background-image: url(../images/bg-main.jpg);
-            height: 300px;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-        }
+    .blog-detail-banner{
+        background-image: url(../images/bg-main.jpg);
+        height: 300px;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
