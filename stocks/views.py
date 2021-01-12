@@ -1,39 +1,96 @@
-import os
 import json
-from math import isnan
-import pandas
-import lxml
 import hashlib
-from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect, reverse
-from django import forms
-from django.contrib import messages
-
-from django.template.response import TemplateResponse
-from django.views import View
-from django.views.generic import TemplateView
-from httplib2 import Response
-from zinnia.models import Entry
-from zinnia.models_bases.entry import AbstractEntry
-
-from randomstock.settings import STATIC_URL, STATIC_ROOT
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.exceptions import ValidationError
-from rest_framework.generics import ListAPIView
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ViewSet, GenericViewSet, ModelViewSet
 import yahoo_fin.stock_info as si
 
-from stocks.models import Securitie, User, Quote, Crypto, BlogInfo
+from math import isnan
+from django import forms
+from django.views import View
+from zinnia.models import Entry
+from django.shortcuts import render
+from django.http import JsonResponse
+from rest_framework.views import APIView
+from django.contrib.auth.models import User
+from rest_framework.generics import ListAPIView
+from rest_framework.authtoken.models import Token
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.authtoken.views import ObtainAuthToken
 from stocks.serializers import SecuritiesSerializer, EntrySerializer
+from stocks.models import Securitie, Profile, Quote, Crypto, BlogInfo
 
 
 # helper function
-def hash_password(password):
-    return hashlib.sha256(password.encode("utf-8")).hexdigest()
+def hash_password(pass1):
+    return hashlib.sha256(pass1.encode("utf-8")).hexdigest()
+
+
+class Register(forms.Form, View):
+    username = forms.CharField(min_length=4, max_length=150)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    template_name = 'register.html'
+
+    def post(self, request):
+
+        data = request.POST
+        email = data.get('email', None)
+        username = data.get('username', None)
+        password = data.get('password', None)
+
+        if email is not None:
+            email = email.lower()
+            r = User.objects.filter(email=email)
+            if r.count():
+                raise ValidationError("Email already exists")
+        else:
+            raise ValidationError("Email not provided")
+
+        if username is not None:
+            username = username.lower()
+            r = User.objects.filter(username=username)
+            if r.count():
+                raise ValidationError("Username already exists")
+        else:
+            raise ValidationError("Username not provided")
+
+        if password is not None:
+            # creating new user
+            password_hashed = hash_password(password)
+            user = User.objects.create_user(username=username, email=email)
+            user.password = password_hashed
+            user.save()
+            profile = Profile.objects.create(user=user)
+
+        return render(request, 'login.html', {'logged in': True})
+
+    def get(self, request):
+        form = Register()
+        return render(request, self.template_name, {'form': form})
+
+
+class Login(View):
+    template = 'login.html'
+
+    def get(self, request):
+        return render(request, self.template, {})
+
+    def post(self, response):
+        username = response.POST.get('username', None)
+        password = response.POST.get('password', None)
+        if (username is None) or (password is None):
+            raise ValidationError("missing details")
+
+        password_hashed = hash_password(password)
+
+        try:
+            user_obj = User.objects.get(username=username, password=password_hashed)
+        except User.DoesNotExist:  # if username does not exists
+            return render(response, self.template, {'not_exists': True})
+
+        token, created = Token.objects.get_or_create(user=user_obj)
+        return render(response, 'home.html', {'token': token.key})
 
 
 class Home(View):
@@ -72,80 +129,6 @@ class Home(View):
                    }
 
         return JsonResponse(context, status=200)
-
-
-class CustomUserCreationForm(forms.Form, View):
-    username = forms.CharField(min_length=4, max_length=150)
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-
-    template_name = 'register.html'
-
-    def clean_username(self):
-        username = self.cleaned_data['username'].lower()
-        r = User.objects.filter(username=username)
-        if r.count():
-            raise ValidationError("Username already exists")
-        return username
-
-    def clean_email(self):
-        email = self.cleaned_data['email'].lower()
-        r = User.objects.filter(email=email)
-        if r.count():
-            raise ValidationError("Email already exists")
-        return email
-
-    def clean_password(self):
-        password = self.cleaned_data.get('password')
-        return password
-
-    def save(self, commit=True):
-        password = self.cleaned_data['password']
-        hashed_password = hash_password(password)
-        user = User.objects.create(
-            username=self.cleaned_data['username'],
-            email=self.cleaned_data['email'],
-            password_hash=hashed_password
-        )
-        return user
-
-    def post(self, request):
-
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Account created successfully')
-            return redirect('error.html')
-        else:
-            return redirect('error.html')
-
-        return render(request, self.template_name, {'form': form})
-
-    def get(self, request):
-        form = CustomUserCreationForm()
-        return render(request, self.template_name, {'form': form})
-
-
-class Login(View):
-    template = 'login.html'
-
-    def get(self, request):
-        return render(request, self.template, {})
-
-    def post(self, response):
-        username = response.POST.get('username', None)
-        password = response.POST.get('password', None)
-        if (username is None) or (password is None):
-            raise ValidationError("missing details")
-
-        hashed_password = hash_password(password)
-
-        try:
-            user_obj = User.objects.get(username=username, password_hash=hashed_password)
-        except User.DoesNotExist:  # if username does not exists
-            return render(response, self.template, {'not_exists': True})
-
-        return render(response, 'home.html', {'logged in': True})
 
 
 class PennyStocks(View):
@@ -193,7 +176,7 @@ class CryptoStocks(View):
 
 
 class BlogView(View):
-    template = 'blog.html'
+    template = 'blog_details.html'
 
     def get(self, request):
         return render(request, template_name=self.template_name, context={})
@@ -209,7 +192,8 @@ class BlogViewSet(ListAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class BlogDetailsView(View):
+class BlogDetailsView(APIView):
+    permission_classes = (IsAuthenticated,)
     template = 'blog_details.html'
 
     def get(self, request):
@@ -221,7 +205,14 @@ class BlogDetailsView(View):
             data = json.loads(request.body.decode('utf-8'))
         except Exception as e:
             raise ValidationError('Error reading body of request')
-        user = data.user
+
+        # change this to authenticate from django user
+        user_id = request.user
+        try:
+            user = User.objects.get(id=1)
+        except User.DoesNotExist:
+            ValidationError('user does not exist')
+
         text = data.get('text', None)
         brief_description = data.get('brief_description', None)
         title = data.get('title', None)
@@ -242,7 +233,7 @@ class BlogDetailsView(View):
                                             user=user,
                                             title=title,
                                             text=brief_description,
-                                            publication_date=publication_date
+                                            # publication_date=publication_date
                                             )
         except Exception as e:
             return render(request, template_name=self.template_name, context={'Error': 'Something went wrong'})

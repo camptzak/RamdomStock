@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from zinnia.models_bases.entry import AbstractEntry
 
 
@@ -8,16 +9,14 @@ class Securitie(models.Model):
     exchange = models.CharField(max_length=255)
 
 
-class User(models.Model):
-    username = models.CharField(max_length=255, unique=True)
-    password_hash = models.CharField(max_length=1000)
-    email = models.CharField(max_length=255, unique=True)
+class Profile(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
     bio = models.CharField(max_length=2000)
     type = models.CharField(choices=(('A', 'admin'), ('C', 'common'), ('W', 'writer'),),
                             max_length=255, default=('C', 'common'))
 
     def __str__(self):
-        return 'User: ' + self.username
+        return 'User: ' + get_user_model().username
 
 
 class Crypto(models.Model):
@@ -31,22 +30,22 @@ class Quote(models.Model):
     author = models.CharField(max_length=255)
 
 
-# data not moved, need to create blog class first, is article the blog id?
-class Comment(models.Model):
-    article = models.CharField(max_length=255)
-    comment = models.CharField(max_length=1000)
-    # user = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    # date = register/models.TextField()
-    # time = models.TextField()
-    likes = models.IntegerField()
-
-
 class BlogInfo(AbstractEntry):
     text = models.CharField(max_length=1000)
     brief_description = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     class Meta(AbstractEntry.Meta):
         abstract = True
+
+
+# data not moved, need to create blog class first, is article the blog id?
+class Comment(models.Model):
+    # blog = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name='blog_id')
+    comment = models.CharField(max_length=1000)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    likes = models.IntegerField()
