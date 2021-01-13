@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>RandomStock</title>
+    <meta charset="utf-8"/>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" href="{% static 'images/icon-01.png' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // ajax call to fetch the analysis
+            $("#analysisForm").submit(function (e) {
+                // this function  is at the bottom
+                loader(true);
+                e.preventDefault();
+                // fetching form, url and method
+                const form = $(this);
+                const url = form.attr('action');
+                const method = form.attr('method');
+                // fetching form data
+                const formData = new FormData($('#analysisForm')[0]);
+                // ajax call
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        // displaying data
+                        displayData(result);
+                        loader(false);
+                    },
+                    error: function (result) {
+                        alert("Oops! An error occurred. Please check console");
+                        console.log(result);
+                        loader(false);
+                    }
+                });
+            });
+        });
+
+        function displayData(data) {
+            console.log(data);
+            $("#symbol").html($("#symbolInput").val());
+
+            $("#open").html(data["Open"]);
+            $("#volume").html(data["Volume"]);
+            $("#marketCap").html(data["Market Cap"]);
+            $("#beta").html(data["Beta (5Y Monthly)"]);
+            $("#bid").html(data["Bid"]);
+            $("#ask").html(data["Ask"]);
+            $("#forwardDividendAndYield").html(data["Forward Dividend & Yield"]);
+            $("#EPS").html(data["EPS (TTM)"]);
+            $("#averageVolume").html(data["Avg. Volume"]);
+            $("#peRatio").html(data["PE Ratio (TTM)"]);
+            $("#quotePrice").html(data["Quote Price"]);
+            $("#previousClose").html(data["Previous Close"]);
+            $("#daysRange").html(data["Day's Range"]);
+            $("#earningsDate").html(data["Earnings Date"]);
+            $("#exDividendDate").html(data["Ex-Dividend Date"]);
+            $("#oneYearTargetEst").html(data["1y Target Est"]);
+            $("#fiftyTwoWeekRange").html(data["52 Week Range"]);
+        }
+
+    </script>
+</head>
+<body>
+{#{% url 'stocks:login' %}#}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="">
+            <img src="{% static 'images/logo-01.svg' %}">
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="OTC Stocks.html">
+                        <img src="{% static 'images/cent.png' %}">
+                        OTC Stocks
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Crypto.html">
+                        <img src="{% static 'images/bitcoin.png' %}"/>
+                        Crypto
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Blog.html">
+                        <img src="{% static 'images/blog.png' %}"/>
+                        Blog
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="analysis.html">
+                        <img src="{% static 'images/bar-graph.png' %}"/>
+                        Analysis
+                    </a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <a class="btn btn-outline-success my-2 my-sm-0" href="login.html">
+                    Login
+                </a>
+                <a class="btn btn-outline-success my-2 my-sm-0" href="Register.html">
+                    Register
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>
+{#loader - IMPORTANT: This loader is NOT responsive#}
+<div class="row my-loader-section hide">
+    <img src="{% static 'images/loader.gif' %}" alt="Loader" class="my-loader">
+</div>
+<div class="container main-section">
+    <div class="row">
+        <div class="container dataFrame">
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 data">
+                    Exchange =
+                    <b>
+                        <div id="exchange"></div>
+                    </b>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">
+                    Symbol =
+                    <b>
+                        <div id="symbol"></div>
+                    </b>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">
+                    Quote Price =
+                    <b>
+                        <div id="quotePrice"></div>
+                    </b>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">
+                    <a href="https://www.investopedia.com/terms/o/open.asp">Open</a>
+                    =
+                    <b>
+                        <div id="open"></div>
+                    </b>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">Previous Close = <b>
+                    <div id="previousClose"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/v/volume.asp">Volume</a>
+                    = <b>
+                        <div id="volume"></div>
+                    </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                        href="https://www.investopedia.com/terms/m/marketcapitalization.asp">Market Cap</a> = <b>
+                    <div id="marketCap"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a href="https://www.investopedia.com/terms/b/beta.asp">beta</a>
+                    = <b>
+                        <div id="beta"></div>
+                    </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                        href="https://www.investopedia.com/terms/b/bid.asp">Bid</a> = <b>
+                    <div id="bid"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                        href="https://www.investopedia.com/terms/a/ask.asp">Ask</a> (USD) = <b>
+                    <div id="ask"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">Days Range (USD) = <b>
+                    <div id="daysRange"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">Earnings Date = <b>
+                    <div id="earningsDate"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">Expected Dividend Date = <b>
+                    <div id="exDividendDate"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                        href="https://www.investopedia.com/terms/f/forward-dividend-yield.asp">Forward Dividend and
+                    Yield</a> = <b>
+                    <div id="forwardDividendAndYield"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                        href="https://www.investopedia.com/terms/e/eps.asp">EPS</a> = <b>
+                    <div id="EPS"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">One Year Target Estimate (USD) = <b>
+                    <div id="oneYearTargetEst"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data">Fifty Two Week Range (USD) = <b>
+                    <div id="fiftyTwoWeekRange"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                        href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/average-volume">Average
+                    Volume</a> = <b>
+                    <div id="averageVolume"></div>
+                </b></div>
+                <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                        href="https://www.investopedia.com/terms/p/price-earningsratio.asp">P/E Ratio</a> = <b>
+                    <div id="peRatio"></div>
+                </b></div>
+            </div>
+
+
+        </div>
+        <div class="row justify-content-center form-row">
+            <form method="post" action="/analysis/" id="analysisForm">
+                <div class="form-group symbolInput">
+                    <input type="text" class="form-control custom-input" name="symbol" id="symbolInput"
+                           placeholder="Enter Symbol" required>
+                </div>
+                <div class="mybutton">
+                    <button type="submit" class="btn btn-primary" style="background-color: #295fa6">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="moreData">Need more data? Check out the <a href="https://www.sec.gov/edgar.shtml">EDGAR</a>
+            database, <a href="https://finance.yahoo.com/">yahoo finance</a>, or email me! zack@randomstock.net
+        </div>
+    </div>
+    <div class="share_buttons">
+        <div class="share_button" id="twitter" onclick="">
+            <img src="{% static 'images/twitter.png' %}" width="36" height="36"/>
+        </div>
+        <div class="share_button" id="facebook" onclick="">
+            <img src="{% static 'images/facebook.png' %}" width="36" height="36"/>
+        </div>
+        <div class="share_button" id="instagram" onclick="">
+            <img src="{% static 'images/instagram.png' %}" width="36" height="36"/>
+        </div>
+        <div class="share_button" id="reddit" onclick="">
+            <img src="{% static 'images/reddit.png' %}" width="36" height="36"/>
+        </div>
+        <div class="share_button" id="linkedin" onclick="">
+            <img src="{% static 'images/linkedin.png' %}" width="36" height="36"/>
+        </div>
+    </div>
+    <footer class="footer">
+        <small>© Copyright 2020, RandomStock™</small>
+    </footer>
+
+    <script>
+
+        function loader(flag) {
+            if (flag) {
+                $(".my-loader-section").removeClass("hide");
+                $(".main-section").addClass("make-main-section-unclickable");
+            } else {
+                $(".my-loader-section").addClass("hide");
+                $(".main-section").removeClass("make-main-section-unclickable");
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

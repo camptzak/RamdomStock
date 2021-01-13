@@ -192,8 +192,15 @@ class BlogViewSet(ListAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class BlogDetailsView(APIView):
-    permission_classes = (IsAuthenticated,)
+class BlogView(View):
+    template_name = 'blogs.html'
+
+    def get(self, request):
+        # password_hash
+        return render(request, template_name=self.template_name, context={})
+
+
+class BlogDetailsView(View):
     template = 'blog_details.html'
 
     def get(self, request):
@@ -201,8 +208,10 @@ class BlogDetailsView(APIView):
         # return render(request, template_name=self.template_name, context={})
 
     def post(self, request):
+        print(request.POST)
         try:
-            data = json.loads(request.body.decode('utf-8'))
+
+            data = request.POST
         except Exception as e:
             raise ValidationError('Error reading body of request')
 
@@ -212,6 +221,14 @@ class BlogDetailsView(APIView):
             user = User.objects.get(id=1)
         except User.DoesNotExist:
             ValidationError('user does not exist')
+        try:
+            user = User.objects.get(username=data.get('user_id'))
+        except Exception as e:
+            print(e)
+            return JsonResponse({'Error': 'Exception Occurred: ' + str(e)}, status=400)
+
+        if user.type != 'W':
+            return JsonResponse({'Error': 'This user does not have access to publish blog'}, status=400)
 
         text = data.get('text', None)
         brief_description = data.get('brief_description', None)
@@ -236,20 +253,19 @@ class BlogDetailsView(APIView):
                                             # publication_date=publication_date
                                             )
         except Exception as e:
-            return render(request, template_name=self.template_name, context={'Error': 'Something went wrong'})
+            return JsonResponse({'Error': str(e)}, status=400)
 
         return JsonResponse({'Success': 'Blog created'}, status=201)
 
 
 class AnalysisView(View):
-    template = 'analysis.html'
+    template_name = 'analysis.html'
 
     def get(self, request):
         return render(request, template_name=self.template_name, context={})
 
     def post(self, request):
-        data = json.loads(request.body.decode('utf-8'))
-        symbol = data.get('symbol', None)
+        symbol = request.POST.get('symbol')
 
         try:
             quote_table = si.get_quote_table(symbol)
