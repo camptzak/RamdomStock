@@ -50,6 +50,7 @@ jmespath==0.9.5
 libsass==0.19.4
 lockfile==0.12.2
 lxml==4.6.2
+MarkupPy==1.14
 mots-vides==2015.5.11
 msgpack==0.6.2
 mysqlclient==1.4.6
@@ -84,6 +85,7 @@ six==1.14.0
 soupsieve==2.0
 sqlparse==0.3.1
 tablib==1.1.0
+toml==0.10.2
 tqdm==4.55.1
 typing-extensions==3.7.4.3
 ua-parser==0.10.0
