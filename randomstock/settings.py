@@ -145,23 +145,18 @@ REST_FRAMEWORK = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-# STATIC_URL = '/static/'
-#
-# STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
-#
-# # STATICFILES_DIRS = (
-# #     join(BASE_DIR, 'static'),
-# # )
-# # STATICFILES_FINDERS = (
-# #     'django.contrib.staticfiles.finders.FileSystemFinder',
-# #     #'django.contrib.staticfiles.finders.AppDirectoriesFinder',    #causes verbose duplicate notifications in django 1.9
-# # )
-
-STATIC_ROOT = ''
-
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ( os.path.join('static'), )
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
+# STATICFILES_DIRS = (
+#     join(BASE_DIR, 'static'),
+# )
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     #'django.contrib.staticfiles.finders.AppDirectoriesFinder',    #causes verbose duplicate notifications in django 1.9
+# )
+
 SITE_ID = 1
 
 try:
