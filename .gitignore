@@ -3,7 +3,8 @@
 *.sqlite3
 assets/
 __pycache__
-migrations/
+migrations/*
+!migrations/__init__.py
 media/*
 local_settings.py
 randomstock.sqlite3
