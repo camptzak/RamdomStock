@@ -1,0 +1,7 @@
+*.orig
+.idea
+*.sqlite3
+assets/
+__pycache__
+migrations/
+media/*

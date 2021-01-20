@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container main-section">
+        <div class="row">
+            <div class="container dataFrame">
+
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">
+                        Exchange =
+                        <b>
+                            <div id="exchange"></div>
+                        </b>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">
+                        Symbol =
+                        <b>
+                            <div id="symbol"></div>
+                        </b>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">
+                        Quote Price =
+                        <b>
+                            <div id="quotePrice"></div>
+                        </b>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">
+                        <a href="https://www.investopedia.com/terms/o/open.asp">Open</a>
+                        =
+                        <b>
+                            <div id="open"></div>
+                        </b>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">Previous Close = <b>
+                        <div id="previousClose"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.investopedia.com/terms/v/volume.asp">Volume</a>
+                        = <b>
+                            <div id="volume"></div>
+                        </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.investopedia.com/terms/m/marketcapitalization.asp">Market Cap</a> = <b>
+                        <div id="marketCap"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.investopedia.com/terms/b/beta.asp">beta</a>
+                        = <b>
+                            <div id="beta"></div>
+                        </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.investopedia.com/terms/b/bid.asp">Bid</a> = <b>
+                        <div id="bid"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.investopedia.com/terms/a/ask.asp">Ask</a> (USD) = <b>
+                        <div id="ask"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">Days Range (USD) = <b>
+                        <div id="daysRange"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">Earnings Date = <b>
+                        <div id="earningsDate"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">Expected Dividend Date = <b>
+                        <div id="exDividendDate"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.investopedia.com/terms/f/forward-dividend-yield.asp">Forward Dividend and
+                        Yield</a> = <b>
+                        <div id="forwardDividendAndYield"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.investopedia.com/terms/e/eps.asp">EPS</a> = <b>
+                        <div id="EPS"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">One Year Target Estimate (USD) = <b>
+                        <div id="oneYearTargetEst"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data">Fifty Two Week Range (USD) = <b>
+                        <div id="fiftyTwoWeekRange"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/average-volume">Average
+                        Volume</a> = <b>
+                        <div id="averageVolume"></div>
+                    </b></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 data"><a
+                            href="https://www.investopedia.com/terms/p/price-earningsratio.asp">P/E Ratio</a> = <b>
+                        <div id="peRatio"></div>
+                    </b></div>
+                </div>
+
+
+            </div>
+            <div class="row justify-content-center form-row">
+                <form method="GET" action="{% url 'analysisAPI' %}" id="analysisForm">
+                    <div class="form-group">
+{#                    if its a post request then fill the input field and submit via js#}
+                        {% if symbol %}
+                              <input type="text" class="form-control custom-input" name="symbol"
+                               placeholder="Enter Symbol" id="symbolInputField" value="{{ symbol }}" required>
+                        {% else %}
+                              <input type="text" class="form-control custom-input" name="symbol"
+                               placeholder="Enter Symbol" id="symbolInputField" required>
+                        {% endif %}
+
+                    </div>
+                    <div class="mybutton">
+                        <button type="submit" class="btn btn-primary" style="background-color: #295fa6">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="moreData">Need more data? Check out the <a href="https://www.sec.gov/edgar.shtml">EDGAR</a>
+                database, <a href="https://finance.yahoo.com/">yahoo finance</a>, or email me! zack@randomstock.net
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ajax call to fetch the analysis
+        $("#analysisForm").submit(function (e) {
+            // this function  is at the bottom
+            loader(true);
+            e.preventDefault();
+            // fetching form, url and method
+            const form = $(this);
+            const url = form.attr('action');
+            const method = form.attr('method');
+            // ajax call
+            $.ajax({
+                url: url,
+                type: method,
+                data: $("#analysisForm").serialize(),
+                success: function (result) {
+                    console.log(result)
+                    // displaying data
+                    loader(false);
+                    if (result.hasOwnProperty('Error')) {
+                        showToaster("Error: " + result.Error, 2500, "alert-danger");
+                    } else {
+                        displayData(result);
+                    }
+                },
+                error: function (result) {
+                    showToaster("Oops! An error occurred. Please check console", 2500, "alert-danger");
+                    console.log(result);
+                    loader(false);
+                }
+            });
+        });
+
+
+        function displayData(data) {
+            console.log(data);
+            $("#symbol").html($("#symbolInputField").val());
+
+            $("#open").html(data["Open"]);
+            $("#volume").html(data["Volume"]);
+            $("#marketCap").html(data["Market Cap"]);
+            $("#beta").html(data["Beta (5Y Monthly)"]);
+            $("#bid").html(data["Bid"]);
+            $("#ask").html(data["Ask"]);
+            $("#forwardDividendAndYield").html(data["Forward Dividend & Yield"]);
+            $("#EPS").html(data["EPS (TTM)"]);
+            $("#averageVolume").html(data["Avg. Volume"]);
+            $("#peRatio").html(data["PE Ratio (TTM)"]);
+            $("#quotePrice").html(data["Quote Price"]);
+            $("#previousClose").html(data["Previous Close"]);
+            $("#daysRange").html(data["Day's Range"]);
+            $("#earningsDate").html(data["Earnings Date"]);
+            $("#exDividendDate").html(data["Ex-Dividend Date"]);
+            $("#oneYearTargetEst").html(data["1y Target Est"]);
+            $("#fiftyTwoWeekRange").html(data["52 Week Range"]);
+        }
+
+        {#checking if it is a post request then submit the form to fetch the details from API#}
+
+        {% if symbol %}
+            $("#analysisForm").submit();
+        {% endif %}
+
+
+    </script>
+{% endblock %}
+
