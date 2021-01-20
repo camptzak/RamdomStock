@@ -6,3 +6,4 @@ __pycache__
 migrations/
 media/*
 local_settings.py
+randomstock.sqlite3
