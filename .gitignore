@@ -5,3 +5,4 @@ assets/
 __pycache__
 migrations/
 media/*
+local_settings.py
