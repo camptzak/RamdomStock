@@ -1,5 +1,3 @@
-from http.client import HTTPResponse
-
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from stocks.models import Quote, Securitie, Crypto
@@ -77,3 +75,4 @@ class Analysis(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name, {'symbol': request.POST.get('symbol')})
+
