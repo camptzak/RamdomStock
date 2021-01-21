@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0 main-section">
         <div class="main-banner">
             <div class="container result">
                 <div class="result-inner">
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-{#    form to submit on click of stock quote button. It will be submitted through javascript#}
+    {#    form to submit on click of stock quote button. It will be submitted through javascript#}
     <form action="{% url 'analysis' %}" method="post" target="_blank" id="hiddenFormForAnalysis">
         <input type="hidden" value="{{ data.symbol }}" name="symbol" id="hiddenStockInputFieldForAnalysis">
     </form>
@@ -34,32 +34,30 @@
                 </button>
                 <div class="exchanges-div">
                     <h2>Select the exchanges to draw your random stock from</h2>
+                    <div class="row exchanges-checkbox-row">
+                        <label class="my-check-box">AMEX
+                            <input type="checkbox" id="amex" name="AMEX">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="my-check-box"> LSE
+                            <input type="checkbox" id="lse" name="LSE">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="my-check-box">NASDAQ
+                            <input type="checkbox" id="nasdaq" name="NASDAQ">
+                            <span class="checkmark"></span>
+                        </label>
 
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="amex" name="AMEX">
-                        <label class="form-check-label" for="AMEX"> AMEX</label>
+                        <label class="my-check-box">NYSE
+                            <input type="checkbox" id="nyse" name="NYSE">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="my-check-box">SGX
+                            <input type="checkbox" id="sgx" name="SGX">
+                            <span class="checkmark"></span>
+                        </label>
                     </div>
 
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="lse" name="LSE">
-                        <label class="form-check-label" for="LSE"> LSE</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="nasdaq" name="NASDAQ">
-                        <label class="form-check-label" for="NASDAQ"> NASDAQ</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="nyse" name="NYSE">
-                        <label class="form-check-label" for="NYSE"> NYSE</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="sgx" name="SGX">
-                        <label class="form-check-label" for="SGX"> SGX</label>
-                    </div>
                 </div>
             </div>
             {% include './shared/footer.html' %}
@@ -100,7 +98,6 @@
                 }
             });
         });
-
 
     </script>
 

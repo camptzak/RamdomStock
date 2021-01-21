@@ -115,8 +115,7 @@ class BlogComment(View):
         try:
             blog_id = request.GET.get('id')
             comments = Comment.objects.filter(object_pk=blog_id, is_public=True, is_removed=False,
-                                              site=get_current_site(request), ).values_list('user__first_name',
-                                                                                            'user__last_name',
+                                              site=get_current_site(request), ).values_list('user__username',
                                                                                             'comment',
                                                                                             'submit_date'
                                                                                             ).order_by('-submit_date')

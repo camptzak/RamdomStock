@@ -67,7 +67,6 @@
                                             {% endif %}
 
                                         </td>
-                                        <footer class="footer">
                                     </tr>
                                 {% endif %}
                             {% endfor %}
@@ -79,12 +78,14 @@
                     </div>
                 </div>
 
-                <h4 class="my-3">
+                <h4 class="mt-4">
                     {{ data.lead | capfirst }}
                 </h4>
-                <p>
-                    {{ data.content | capfirst }}
-                </p>
+                <hr>
+                <div class="my-4">
+                    {{ data.content | safe | capfirst }}
+                </div>
+                <hr>
                 <div class="be-comment-block" id="commentSection">
 
                 </div>
@@ -167,14 +168,14 @@
                     '                        </div>' +
                     '                        <div class="be-comment-content">' +
                     '                            <span class="be-comment-name">' +
-                    '                                <a>' + data[i][0] + ' ' + data[i][1] + '</a>' +
+                    '                                <a>' + capitalizeFirstLetter(data[i][0]) + '</a>' +
                     '                                </span>' +
                     '                            <span class="be-comment-time">' +
                     '                                <i class="fa fa-clock-o"></i>' +
-                    new Date(data[i][3]) +
+                    new Date(data[i][2]) +
                     '                            </span>' +
                     '                            <p class="be-comment-text">' +
-                    data[i][2] +
+                    data[i][1] +
                     '                            </p>' +
                     '                        </div>' +
                     '                    </div>';
@@ -182,6 +183,9 @@
             }
         }
 
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
     </script>
 
 {% endblock %}

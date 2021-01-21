@@ -14,7 +14,7 @@
         <div class="row" id="blog-section">
             {% for blog in data %}
                 <div class="col-md-4">
-                    <div class="card card-blog" style="cursor: pointer">
+                    <div class="card card-blog">
                         {% if blog.image %}
                             <img class="card-img-top" src="{{ blog.image.url }}" alt="Card image cap">
                         {% else %}
