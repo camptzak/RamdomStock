@@ -16,7 +16,7 @@ class Blog(TemplateView):
             Q(start_publication__isnull=True) | Q(start_publication__lt=now),
             Q(end_publication__isnull=True) | Q(end_publication__gt=now),
             status=PUBLISHED
-        ).only('title', 'lead', 'slug', 'image')
+        ).only('title', 'lead', 'slug', 'image', 'image_caption')
         context = {'data': all_blogs}
         return context
 

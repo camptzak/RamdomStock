@@ -4,6 +4,7 @@ from tagging.models import Tag, TaggedItem
 from .models import Securitie, Crypto, Quote
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
+from RandomStock.settings import ADMIN_ORDERING
 
 
 class SecuritieAdmin(admin.ModelAdmin):
@@ -23,6 +24,21 @@ class QuoteAdmin(admin.ModelAdmin):
     list_display = ['author', 'quote']
     search_fields = ['author', 'quote']
 
+
+# function for reording of models in admin site
+def get_app_list(self, request):
+    app_dict = self._build_app_dict(request)
+    for app_name, object_list in ADMIN_ORDERING:
+        ('zinnia', [
+            'Entry',
+        ]),
+        app = app_dict[app_name]
+        app['models'].sort(key=lambda x: object_list.index(x['object_name']))
+        yield app
+
+
+# Covering django.contrib.admin.AdminSite.get_app_list
+admin.AdminSite.get_app_list = get_app_list
 
 # IMPORTANT
 admin.autodiscover()

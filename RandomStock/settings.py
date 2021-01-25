@@ -25,12 +25,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'custom_all_auth',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'django.contrib.sites',
     'stocks',
-    'custom_all_auth',
     'API',
     'django_comments',
     'tagging',
@@ -39,6 +39,25 @@ INSTALLED_APPS = [
     'ckeditor',
     'zinnia_ckeditor',
     'custom_zinnia'
+]
+
+# set my ordering list
+ADMIN_ORDERING = [
+    ('auth', [
+        'User',
+    ]),
+    ('stocks', [
+        'Securitie',
+        'Crypto',
+        'Quote'
+    ]),
+    ('zinnia', [
+        'Entry',
+    ]),
+    ('django_comments', [
+        'Comment',
+    ]),
+
 ]
 
 MIDDLEWARE = [
@@ -50,32 +69,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-#
-# ADMIN_REORDER = (
-#     # Keep original label and models
-#     # 'RandomStock',
-#     # Rename app
-#     {'app': 'auth', 'label': 'Authentication & Authorisation'},
-#     {'app': 'custom_all_auth', 'label': 'Extended Profile'},
-#     {'app': 'stocks', 'label': 'Random Stock'},
-#     {'app': 'custom_zinnia', 'label': 'Blogging Module'},
-#     {'app': 'django_comments', 'label': 'Blogging Comments'},
-#
-#     # Reorder app models
-#     # {'app': 'auth', 'models': ('auth.User', 'auth.Group')},
-#
-#     # Exclude models
-#     # {'app': 'auth', 'models': ('auth.User',)},
-#
-#     # Cross-linked models
-#     # {'app': 'auth', 'models': ('auth.User', 'sites.Site')},
-#
-#     # models with custom name
-#     # {'app': 'auth', 'models': (
-#     #     'auth.Group',
-#     #     {'model': 'auth.User', 'label': 'Staff'},
-#     # )},
-# )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',

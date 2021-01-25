@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
+{% block head_extra %}
+    <meta name="blogKeywords" content="{{ data.excerpt }}" />
+{% endblock %}
 
+{% block content %}
     <div class="container-fluid blog-detail-banner p-0"></div>
 
     <div class="container main-section">

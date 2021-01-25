@@ -1,5 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+
+User = get_user_model()
 
 
 class UserProfile(models.Model):
@@ -11,3 +15,4 @@ class UserProfile(models.Model):
     twitter_url = models.CharField(max_length=255, blank=True)
     instagram_url = models.CharField(max_length=255, blank=True)
     website_url = models.CharField(max_length=255, blank=True)
+
