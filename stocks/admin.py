@@ -27,13 +27,17 @@ class QuoteAdmin(admin.ModelAdmin):
 
 # function for reording of models in admin site
 def get_app_list(self, request):
-    app_dict = self._build_app_dict(request)
-    for app_name, object_list in ADMIN_ORDERING:
-        ('zinnia', [
-            'Entry',
-        ]),
-        app = app_dict[app_name]
-        app['models'].sort(key=lambda x: object_list.index(x['object_name']))
+    try:
+        app_dict = self._build_app_dict(request)
+        for app_name, object_list in ADMIN_ORDERING:
+            ('zinnia', [
+                'Entry',
+            ]),
+            app = app_dict[app_name]
+            app['models'].sort(key=lambda x: object_list.index(x['object_name']))
+            yield app
+    except:
+        app = app_dict['zinnia']
         yield app
 
 
@@ -54,5 +58,3 @@ admin.site.unregister(Tag)
 admin.site.unregister(TaggedItem)
 
 admin.site.unregister(Category)
-
-

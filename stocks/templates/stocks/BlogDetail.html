@@ -28,7 +28,7 @@
                             {% for author in data.authors.all %}
                                 <tr>
                                     <td><b>Author:</b></td>
-                                    <td>{{ author.first_name | title }} {{ author.last_name | title }}
+                                    <td>{{ author.username | title }}
                                         || {{ author.email }}</td>
                                 </tr>
                                 {#                                if user profile exist then show desciprtion and social media links#}

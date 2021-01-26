@@ -18,7 +18,7 @@ class UserAddForm(UserCreationForm):
     def full_clean(self):
         data = self.data.copy()
 
-        if type(data.get('groups', None)) is not 'list':
+        if type(data.get('groups', None)) != 'list':
             data['groups'] = [self.data.get('groups')] if self.data.get('groups', False) else []
         self.data = data
         return super().full_clean()
@@ -54,7 +54,7 @@ class UserUpdateForm(UserChangeForm):
     def full_clean(self):
         data = self.data.copy()
 
-        if type(data.get('groups', None)) is not 'list':
+        if type(data.get('groups', None)) != 'list':
             data['groups'] = [self.data.get('groups')] if self.data.get('groups', False) else []
         self.data = data
         return super().full_clean()
