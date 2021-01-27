@@ -55,7 +55,7 @@ def get_app_list(self, request):
 
 
 # Covering django.contrib.admin.AdminSite.get_app_list
-admin.AdminSite.get_app_list = get_app_list
+# admin.AdminSite.get_app_list = get_app_list
 
 # IMPORTANT
 admin.autodiscover()
@@ -66,7 +66,7 @@ admin.site.register(Crypto, CryptoAdmin)
 admin.site.register(Quote, QuoteAdmin)
 
 admin.site.unregister(Group)
-admin.site.unregister(Site)
+# admin.site.unregister(Site)
 
 admin.site.unregister(Tag)
 admin.site.unregister(TaggedItem)
