@@ -2,23 +2,19 @@ from django.db.models import Q
 from django.utils import timezone
 from zinnia.managers import PUBLISHED
 from zinnia.models.entry import Entry
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, ListView
 
 
-class Blog(TemplateView):
+class Blog(ListView):
+    model = Entry
+    paginate_by = 12
     template_name = 'stocks/blogs.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-
-        now = timezone.now()
-        all_blogs = Entry.objects.filter(
-            Q(start_publication__isnull=True) | Q(start_publication__lt=now),
-            Q(end_publication__isnull=True) | Q(end_publication__gt=now),
-            status=PUBLISHED
-        ).only('title', 'lead', 'slug', 'image', 'image_caption')
-        context = {'data': all_blogs}
-        return context
+    context_object_name = 'blogs'
+    queryset = Entry.objects.filter(
+                    Q(start_publication__isnull=True) | Q(start_publication__lt=timezone.now()),
+                    Q(end_publication__isnull=True) | Q(end_publication__gt=timezone.now()),
+                    status=PUBLISHED
+                ).only('title', 'lead', 'slug', 'image', 'image_caption', 'authors', 'publication_date')
 
 
 class BlogDetail(DetailView):

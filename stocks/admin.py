@@ -1,16 +1,29 @@
 from django.contrib import admin
 from zinnia.models import Category
 from tagging.models import Tag, TaggedItem
-from .models import Securitie, Crypto, Quote
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
 from RandomStock.settings import ADMIN_ORDERING
+from .models import Securitie, Crypto, Quote, PennyStock
 
 
 class SecuritieAdmin(admin.ModelAdmin):
     model = Securitie
     list_display = ['symbol', 'name', 'exchange']
     search_fields = ['symbol', 'name', 'exchange']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.exclude(exchange__icontains='OTCBB').all()
+
+
+class PennyStocksAdmin(admin.ModelAdmin):
+    list_display = ['symbol', 'name', 'exchange']
+    search_fields = ['symbol', 'name', 'exchange']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(exchange__icontains='OTCBB').all()
 
 
 class CryptoAdmin(admin.ModelAdmin):
@@ -48,6 +61,7 @@ admin.AdminSite.get_app_list = get_app_list
 admin.autodiscover()
 
 admin.site.register(Securitie, SecuritieAdmin)
+admin.site.register(PennyStock, PennyStocksAdmin)
 admin.site.register(Crypto, CryptoAdmin)
 admin.site.register(Quote, QuoteAdmin)
 

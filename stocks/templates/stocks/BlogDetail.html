@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block blog-tab %}
+active
+{% endblock %}
+
 {% block head_extra %}
     <meta name="blogKeywords" content="{{ data.excerpt }}" />
 {% endblock %}

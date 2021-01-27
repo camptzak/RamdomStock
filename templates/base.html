@@ -45,25 +45,25 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'penny_stocks' %} ">
+                    <a class="nav-link {% block penny-stocks-tab %}{% endblock %}" href="{% url 'penny_stocks' %}">
                         <img src="{% static 'images/cent.png' %}">
                         OTC Stocks
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'crypto' %}">
+                    <a class="nav-link {% block crypto-tab %}{% endblock %}" href="{% url 'crypto' %}">
                         <img src="{% static 'images/bitcoin.png' %}"/>
                         Crypto
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'blog' %}">
+                    <a class="nav-link {% block blog-tab %}{% endblock %}" href="{% url 'blog' %}">
                         <img src="{% static 'images/blog.png' %}"/>
                         Blog
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'analysis' %}">
+                    <a class="nav-link {% block analysis-tab %}{% endblock %}" href="{% url 'analysis' %}">
                         <img src="{% static 'images/bar-graph.png' %}"/>
                         Analysis
                     </a>

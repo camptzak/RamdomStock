@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'mptt',
     'zinnia',
     'ckeditor',
+    'ckeditor_uploader',
     'zinnia_ckeditor',
     'custom_zinnia'
 ]
@@ -48,6 +49,7 @@ ADMIN_ORDERING = [
     ]),
     ('stocks', [
         'Securitie',
+        'PennyStock',
         'Crypto',
         'Quote'
     ]),
@@ -57,8 +59,31 @@ ADMIN_ORDERING = [
     ('django_comments', [
         'Comment',
     ]),
-
 ]
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'toolbar_Full': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter',
+             'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source'],
+        ],
+        'extraPlugins': ','.join([
+            'justify',
+            'font',
+            'panelbutton',
+            'colorbutton',
+            'colordialog',
+        ]),
+        'allowedContent': True,
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

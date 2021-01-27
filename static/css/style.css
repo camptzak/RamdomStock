@@ -36,6 +36,19 @@ a.nav-link img {
     box-shadow: none;
 }
 
+.btn-outline-primary{
+    color: #295FA6;
+    border-color: #295FA6;
+}
+
+.btn-outline-primary:hover{
+    background-color: #295FA6;
+}
+
+.btn-primary{
+    background-color: #295FA6;
+}
+
 /* Login & Register Page CSS */
 .bg-img {
     background-image: url(../images/bg.jpg);
@@ -549,7 +562,7 @@ input:focus {
 
 /* When the checkbox is checked, add a blue background */
 .my-check-box input:checked ~ .checkmark {
-    background-color: #2196F3;
+    background-color: #295FA6;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -575,6 +588,22 @@ input:focus {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.active{
+    font-weight: bold;
+    border-bottom: 2px solid #295FA6;
+}
+
+.my-active{
+    background-color:#295FA6;
+    color: white;
+}
+
+.my-active:hover{
+     background-color:#295FA6;
+    color: white;
+    cursor: default;
 }
 
 /*[END] homepage checkbox css*/

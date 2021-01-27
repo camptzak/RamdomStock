@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block blog-tab %}
+    active
+{% endblock %}
+
 {% block  content %}
 
     <div class="container-fluid p-0">
@@ -12,7 +16,7 @@
     </div>
     <div class="container mb-4">
         <div class="row" id="blog-section">
-            {% for blog in data %}
+            {% for blog in blogs %}
                 <div class="col-md-4">
                     <div class="card card-blog">
                         {% if blog.image %}
@@ -27,28 +31,69 @@
                             <p class="card-text">
                                 {{ blog.lead }}
                             </p>
-                            <button type="button" class="btn btn-primary"  onclick="openBlogDetails('{{ blog.slug }}')">Read More</button>
+                        </div>
+                        <div class="card-footer">
+                            <div class="float-left">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="openBlogDetails('{{ blog.slug }}')">
+                                    Read More
+                                </button>
+                            </div>
+                            <div class="float-right" style="line-height: 15px;margin-top: 3px;">
+                                <small>Pulished by&nbsp;{% for author in blog.authors.all %}
+                                    <a href="#">{{ author.username | title }}</a> {% endfor %}
+                                    <br>on {{ blog.publication_date }}</small>
+                            </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
 
         </div>
-        {#   #}
-        {#        <div class="row mt-3">#}
-        {#            <div class="col-lg-12" id="pagination-buttons">#}
-        {#                <nav aria-label="Page navigation">#}
-        {#                    <ul class="pagination" style="float: right">#}
-        {#                        <li class="page-item">#}
-        {#                            <a class="btn page-link" id="previous-btn" onclick="previousPage()">Previous</a>#}
-        {#                        </li>#}
-        {#                        <li class="page-item ml-2">#}
-        {#                            <a class="btn page-link" id="next-btn" onclick="nextPage()">Next</a>#}
-        {#                        </li>#}
-        {#                    </ul>#}
-        {#                </nav>#}
-        {#            </div>#}
-        {#        </div>#}
+        <hr>
+        {% if is_paginated %}
+            <div class="row mt-3">
+                <div class="col-lg-12" id="pagination-buttons">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination" style="float: right">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="btn page-link" href="?page={{ page_obj.previous_page_number }}"><<</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="btn page-link disabled"><<</a>
+                                </li>
+                            {% endif %}
+                            {% for i in paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                      <li class="page-item ml-2">
+                                        <a class="page-link my-active">{{ i }}</a>
+                                    </li>
+{#                                    <li class="page-item active">#}
+{#                                        <a class="btn page-link"> <span class="sr-only">(current)</span>{{ i }}</a>#}
+{#                                    </li>#}
+                                {% else %}
+                                    <li class="page-item ml-2">
+                                        <a class="btn page-link" href="?page={{ i }}">{{ i }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                 <li class="page-item ml-2">
+                                <a class="btn page-link" href="?page={{ page_obj.next_page_number }}">>></a>
+                            </li>
+                            {% else %}
+                                  <li class="page-item ml-2">
+                                <a class="btn page-link disabled">>></a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        {% endif %}
+
     </div>
     <script>
         function openBlogDetails(slug) {

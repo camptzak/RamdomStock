@@ -14,6 +14,11 @@ class Crypto(models.Model):
     lookup = models.CharField(max_length=255)
 
 
+class PennyStock(Securitie):
+    class Meta:
+        proxy = True
+
+
 class Quote(models.Model):
     quote = models.CharField(max_length=1000)
     author = models.CharField(max_length=255)
