@@ -25,6 +25,15 @@ class PennyStocksAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         return qs.filter(exchange__icontains='OTCBB').all()
 
+    def get_form(self, request, obj=None, **kwargs):
+        self.exclude = ("exchange",)
+        form = super(PennyStocksAdmin, self).get_form(request, obj, **kwargs)
+        return form
+
+    def save_form(self, request, form, change):
+        form.instance.exchange = 'OTCBB'
+        return super(PennyStocksAdmin, self).save_form(request, form, change)
+
 
 class CryptoAdmin(admin.ModelAdmin):
     model = Crypto
