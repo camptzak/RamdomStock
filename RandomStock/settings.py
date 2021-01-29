@@ -35,11 +35,11 @@ INSTALLED_APPS = [
     'django_comments',
     'tagging',
     'mptt',
+    'custom_zinnia',
     'zinnia',
     'ckeditor',
     'ckeditor_uploader',
     'zinnia_ckeditor',
-    'custom_zinnia'
 ]
 
 # set my ordering list
