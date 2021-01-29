@@ -14,7 +14,7 @@ SECRET_KEY = 'j%^&*1bn1+3dr%ox&1*6b0gvr1(x8l7=4b^szc9@z*xg66$l0o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '54.146.126.76']
+ALLOWED_HOSTS = ['randomstock.net', '.randomstock.net']
 
 # Application definition
 
