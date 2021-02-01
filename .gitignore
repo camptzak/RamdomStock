@@ -1,6 +1,6 @@
 *.orig
 .idea
-#*.sqlite3
+*.sqlite3
 assets/
 __pycache__
 migrations/*
