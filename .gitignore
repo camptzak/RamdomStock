@@ -1,0 +1,11 @@
+*.orig
+.idea
+*.sqlite3
+assets/
+__pycache__
+migrations/*
+!migrations/__init__.py
+media/*
+local_settings.py
+randomstock.sqlite3
+db.sqlite3

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container-fluid p-0 main-section">
+        <div class="main-banner">
+            <div class="container result">
+                <div class="result-inner">
+                    <p>Symbol: <b id="symbol">{{ data.symbol }}</b></p>
+                    <p>Company Name: <b id="name">{{ data.company_name }}</b></p>
+                    <p>Listed On: <b id="listed_on">{{ data.listed_on }}</b></p>
+                    <button class="btn btn-outline-light outline-none" onclick="stockQuote()">Stock Quote</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    form to submit on click of stock quote button. It will be submitted through javascript#}
+    <form action="{% url 'analysis' %}" method="post" target="_blank" id="hiddenFormForAnalysis">
+        <input type="hidden" value="{{ data.symbol }}" name="symbol" id="hiddenStockInputFieldForAnalysis">
+    </form>
+    <form autocomplete="off" class="checkbox-container" method="GET" action="{% url 'filterStocksAPI' %}"
+          id="stockExchangeForm">
+
+        <div class="container">
+            <div class="middle-text">
+                <em>
+                    "{{ data.quote }}"
+                </em>
+                <p>-{{ data.quote_author }}</p>
+                <button class="btn btn-outline-primary btn-lg outline-none" id="reload" type="submit">Get Another
+                    Stock
+                </button>
+                <div class="exchanges-div">
+                    <h2>Select the exchanges to draw your random stock from</h2>
+                    <div class="row exchanges-checkbox-row">
+                        <label class="my-check-box">AMEX
+                            <input type="checkbox" id="amex" name="AMEX">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="my-check-box"> LSE
+                            <input type="checkbox" id="lse" name="LSE">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="my-check-box">NASDAQ
+                            <input type="checkbox" id="nasdaq" name="NASDAQ">
+                            <span class="checkmark"></span>
+                        </label>
+
+                        <label class="my-check-box">NYSE
+                            <input type="checkbox" id="nyse" name="NYSE">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="my-check-box">SGX
+                            <input type="checkbox" id="sgx" name="SGX">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            {% include './shared/footer.html' %}
+        </div>
+    </form>
+
+    <script>
+
+        $("#stockExchangeForm").submit(function (e) {
+            // this function  is at the bottom
+            loader(true);
+            e.preventDefault();
+            // fetching form, url and method
+            const form = $(this);
+            const url = form.attr('action');
+            const method = form.attr('method');
+            // ajax call
+            $.ajax({
+                url: url,
+                type: method,
+                data: $("#stockExchangeForm").serialize(),
+                {#cache: false,#}
+                {#contentType: false,#}
+                {#processData: false,#}
+                success: function (result) {
+                    // displaying data
+                    $("#symbol").html(result.symbol);
+                    $("#hiddenStockInputFieldForAnalysis").val(result.symbol);
+                    $("#name").html(result.company_name);
+                    $("#listed_on").html(result.listed_on);
+                    loader(false);
+                },
+                error: function (result) {
+                    //alert("Oops! An error occurred. Please check console");
+                    showToaster("Oops! An error occurred. Please check console", 2500, "alert-danger");
+                    console.log(result);
+                    loader(false);
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}

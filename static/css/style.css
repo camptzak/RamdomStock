@@ -1,0 +1,652 @@
+.navbar-brand img {
+    width: 150px;
+}
+
+a.nav-link {
+    display: flex;
+    margin-top: 5px;
+    padding: .5rem 1rem !important;
+}
+
+a.nav-link img {
+    width: 22px;
+    height: 22px;
+    margin-right: 5px;
+}
+
+.form-inline .btn-outline-success {
+    color: #295fa6;
+    border-color: #295fa6;
+    margin-left: 15px;
+}
+
+.form-inline .btn-outline-success:hover {
+    color: #fff;
+    background-color: #295fa6;
+    border-color: #295fa6;
+}
+
+.btn-outline-success:not(:disabled):not(.disabled).active, .btn-outline-success:not(:disabled):not(.disabled):active, .show > .btn-outline-success.dropdown-toggle {
+    color: #fff;
+    background-color: #295fa6;
+    border-color: #295fa6;
+}
+
+.btn-outline-success.focus, .btn-outline-success:focus {
+    box-shadow: none;
+}
+
+.btn-outline-primary{
+    color: #295FA6;
+    border-color: #295FA6;
+}
+
+.btn-outline-primary:hover{
+    background-color: #295FA6;
+}
+
+.btn-primary{
+    background-color: #295FA6;
+}
+
+/* Login & Register Page CSS */
+.bg-img {
+    background-image: url(../images/bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+.card {
+    height: 320px;
+    margin-top: 5%;
+    margin-bottom: auto;
+    width: 400px;
+    background-color: rgba(0, 0, 0, 0.65) !important;
+}
+
+.card-header h3 {
+    color: white;
+}
+
+.social_icon {
+    position: absolute;
+    right: 20px;
+    top: -45px;
+}
+
+.input-group-prepend span {
+    width: 50px;
+    background-color: #295fa6;
+    color: white;
+    border: 0 !important;
+}
+
+input:focus {
+    outline: 0 !important;
+    box-shadow: 0 0 0 0 !important;
+}
+
+.remember {
+    color: white;
+}
+
+.remember input {
+    width: 20px;
+    height: 20px;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+.login_btn {
+    color: #fff;
+    background-color: #295fa6;
+    width: 100px;
+}
+
+.login_btn:hover {
+    color: #295fa6;
+    background-color: white;
+}
+
+.links {
+    color: white;
+}
+
+.links a {
+    margin-left: 4px;
+    color: #ffffff;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.links a:hover {
+    margin-left: 4px;
+    color: #295fa6;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+/* Main Page CSS */
+.main-banner {
+    background-image: url(../images/bg-main.jpg);
+    padding: 4% 0 4%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.result {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.result div.result-inner {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 30px 50px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.result div.result-inner:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.result div.result-inner p {
+    font-size: 22px;
+}
+
+.result div.result-inner a {
+    background-color: #fff;
+    font-size: 20px;
+    padding: 7px 15px;
+    color: #295fa6;
+    border-radius: 8px;
+}
+
+.result div.result-inner a:hover {
+    text-decoration: none;
+}
+
+.exchanges-div {
+    text-align: center;
+    color: #000;
+    padding: 20px;
+    margin: 5% 0
+}
+
+.checkbox-container {
+    margin: auto;
+    text-align: center;
+
+}
+
+.form-check {
+    position: relative;
+    display: block;
+    padding-left: 1.25rem;
+}
+
+.form-check-inline {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-left: 0;
+    margin-right: .75rem;
+}
+
+.form-check-inline .form-check-input {
+    position: static;
+    margin-top: 0;
+    margin-right: .3125rem;
+    margin-left: 0;
+}
+
+.checkbox-container label {
+    margin-right: 30px;
+}
+
+.stock-btn {
+    text-align: center;
+}
+
+.stock-btn a {
+    background: #174179;
+    padding: 15px 30px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.middle-text {
+    text-align: center;
+    padding: 35px;
+}
+
+.middle-text em {
+    font-size: 18px;
+}
+
+.middle-text p {
+    margin-bottom: 3rem;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.middle-text a {
+    background: transparent;
+    padding: 15px 30px;
+    color: #295fa6;
+    font-weight: bold;
+    font-size: 24px;
+    border: solid 2px #295fa6;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.middle-text a:hover {
+    background: #295fa6;
+    padding: 15px 30px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    border: solid 2px #295fa6;
+    text-decoration: none;
+}
+
+.share_buttons {
+    text-align: center;
+    padding: 5% 0 0;
+}
+
+.share_button {
+    margin: 3px;
+    display: inline-block;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.share_button img {
+    vertical-align: middle;
+    border-style: none;
+    filter: saturate(0.5);
+}
+
+.footer {
+    text-align: center;
+}
+
+/* BLOG Page CSS */
+.blog-banner {
+    background-image: url(../images/bg-main.jpg);
+    padding: 7% 0 7%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.blog-banner h1 {
+    color: #fff;
+    text-align: center;
+    font-size: 53px;
+}
+
+.card-blog {
+    width: 100%;
+    height: auto;
+    margin-top: 5%;
+    margin-bottom: auto;
+    background-color: #fff !important;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+
+.card-blog:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.card-blog .card-body a {
+    color: #fff;
+    background-color: #295fa6;
+    border-color: #295fa6;
+}
+
+/* BLOG deatil page css */
+
+.blog-detail-banner {
+    background-image: url(../images/bg-main.jpg);
+    height: 400px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.blog-detail-body {
+    padding: 5%;
+}
+
+.blog-detail-body p span {
+    padding: 30px;
+}
+
+/* Analysis Page css */
+.dataFrame {
+    margin: 35px 55px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    padding: 30px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+
+}
+
+.dataFrame:hover {
+
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.data {
+    display: flex;
+    justify-content: left;
+    margin: 1px;
+    margin-bottom: 10px;
+    border: solid 1px #f6f2f2;
+    /* margin: 1px; */
+    /* width: 94% !important; */
+    max-width: 32%;
+    padding: 2px 15px;
+    border-radius: 4px;
+}
+
+
+.symbolInput {
+    width: 200px;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    width: 100%;
+    padding: 35px;
+}
+
+.form-row form {
+    text-align: center;
+}
+
+.custom-input {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.custom-input::placeholder {
+    text-align: center;
+}
+
+.moreData {
+    text-align: center;
+    margin: 25px;
+    width: 100%;
+    justify-content: center;
+}
+
+.my-loader-section {
+    position: fixed;
+    z-index: 1000;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide {
+    display: none;
+}
+
+.make-main-section-unclickable {
+    pointer-events: none;
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.my-loader {
+    width: 40%;
+}
+
+#btn {
+    cursor: pointer;
+}
+
+
+.be-comment-block {
+    margin-top: 3%;
+    border: 1px solid;
+    border-radius: 2px;
+    border: 1px solid #ffffff;
+}
+
+.comments-title {
+    font-size: 16px;
+    color: #262626;
+    margin-bottom: 15px;
+    font-family: 'Conv_helveticaneuecyr-bold';
+}
+
+.be-img-comment {
+    width: 60px;
+    height: 60px;
+    float: left;
+    margin-bottom: 15px;
+}
+
+.be-ava-comment {
+    width: 80px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.be-comment-content {
+    margin-left: 80px;
+}
+
+.be-comment-content span {
+    display: inline-block;
+    width: 49%;
+    margin-bottom: 15px;
+}
+
+.be-comment-name {
+    font-size: 17px;
+    font-family: 'Conv_helveticaneuecyr-bold';
+}
+
+.be-comment-content a {
+    color: #383b43;
+}
+
+.be-comment-content span {
+    display: inline-block;
+    width: 49%;
+    margin-bottom: 15px;
+}
+
+.be-comment-time {
+    text-align: right;
+    color: grey;
+}
+
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
+}
+
+.be-comment-time {
+    font-size: 13px;
+    /*color: #b4b7c1;*/
+}
+
+.be-comment-text {
+    font-size: 15px;
+    line-height: 18px;
+    display: block;
+    background: #f6f6f7;
+    border: 1px solid #edeff2;
+    padding: 15px 20px 20px 20px;
+}
+
+/*[START] homepage checkbox css*/
+.exchanges-checkbox-row {
+    justify-content: center;
+    margin: 20px 0 0;
+}
+
+.my-check-box {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.my-check-box input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    border-radius: 20px;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 0.3rem;
+    border: 0.5px solid grey;
+}
+
+/* On mouse-over, add a grey background color */
+.my-check-box:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.my-check-box input:checked ~ .checkmark {
+    background-color: #295FA6;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.my-check-box input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.my-check-box .checkmark:after {
+    left: 5.5px;
+    top: 1.5px;
+    width: 8px;
+    height: 14px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.active{
+    font-weight: bold;
+    border-bottom: 2px solid #295FA6;
+}
+
+.my-active{
+    background-color:#295FA6;
+    color: white;
+}
+
+.my-active:hover{
+     background-color:#295FA6;
+    color: white;
+    cursor: default;
+}
+
+/*[END] homepage checkbox css*/
+
+
+/* Media Queries */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1300px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .data {
+        display: flex;
+        justify-content: center;
+        margin: 1px;
+        margin-bottom: 20px;
+        border: solid 1px #f6f2f2;
+        /* margin: 1px; */
+        /* width: 94% !important; */
+        max-width: 49%;
+        border-radius: 4px;
+    }
+}
+
+@media (max-width: 767px) {
+    .data {
+        display: flex;
+        justify-content: center;
+        margin: 1px;
+        margin-bottom: 20px;
+        border: solid 1px #f6f2f2;
+        /* margin: 1px; */
+        /* width: 94% !important; */
+        max-width: 100%;
+        border-radius: 4px;
+    }
+
+    .blog-detail-banner {
+        background-image: url(../images/bg-main.jpg);
+        height: 300px;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}

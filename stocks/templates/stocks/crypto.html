@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block crypto-tab %}
+active
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid p-0 main-section">
+        <div class="main-banner">
+            <div class="container result">
+                <div class="result-inner">
+                    <p>Symbol <b id="symbol">{{ data.symbol }}</b></p>
+                    <p>Company Name <b id="name">{{ data.company_name }}</b></p>
+                    <p>Listed On <b id="listed_on">{{ data.lookup }}</b></p>
+                    <button class="btn btn-outline-light outline-none" onclick="coinQuote()">Coin Quote</button>
+                    <p id="lookup" hidden>plncoin</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="middle-text">
+            <em>
+                "The stock market is filled with individuals who know the price of everything
+                but the value of nothing."
+            </em>
+            <p>-Phil Fisher</p>
+            <form method="GET" action="{% url 'cryptoAPI' %}" id="cryptoForm">
+                <button class="btn btn-outline-primary btn-lg outline-none" type="submit">Get Another Cryptocurrency
+                </button>
+            </form>
+        </div>
+        {% include './shared/footer.html' %}
+    </div>
+
+    <script>
+        $("#cryptoForm").submit(function (e) {
+            // this function  is at the bottom
+            loader(true);
+            e.preventDefault();
+
+            // fetching form, url and method
+            const form = $(this);
+            const url = form.attr('action');
+            const method = form.attr('method');
+
+            $.ajax({
+                url: url,
+                type: method,
+                data: {},
+                success: function (result) {
+                    loader(false);
+                    document.getElementById("symbol").innerHTML = result.symbol;
+                    document.getElementById("name").innerHTML = result.company_name;
+                    document.getElementById("listed_on").innerHTML = result.lookup
+                },
+                error: function (result) {
+                    loader(false);
+                    console.log(result);
+                    showToaster("Oops! An error occurred. Please check console", 2500, "alert-danger");
+
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}

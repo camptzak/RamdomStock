@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block blog-tab %}
+active
+{% endblock %}
+
+{% block head_extra %}
+    <meta name="blogKeywords" content="{{ data.excerpt }}" />
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid blog-detail-banner p-0"></div>
+
+    <div class="container main-section">
+        <div class="row">
+            <div class="col-12 blog-detail-body">
+                <h1>{{ data.title | title }}</h1>
+                <div class="row">
+                    <div class="col-lg-1">
+                        {% for author in data.authors.all %}
+                            {% if author.User_Profile and author.User_Profile.profile_picture %}
+                                <img src="{{ author.User_Profile.profile_picture.url }}" alt="" class="profile-img">
+                            {% else %}
+                                <img src="{% static 'images/avatar2.png' %}" alt="" class="profile-img">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-lg-11">
+                        <table class="ml-3">
+                            {#primarily there will be only 1 author but 3rd party model has 1 to many relation with authors so maintaining a loop#}
+                            {% for author in data.authors.all %}
+                                <tr>
+                                    <td><b>Author:</b></td>
+                                    <td>{{ author.username | title }}
+                                        || {{ author.email }}</td>
+                                </tr>
+                                {#                                if user profile exist then show desciprtion and social media links#}
+                                {% if author.User_Profile %}
+                                    <tr>
+                                        <td></td>
+                                        <td>{{ author.User_Profile.description }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            {% if author.User_Profile.facebook_url %}
+                                                <a href="{{ author.User_Profile.facebook_url }}" target="_blank">
+                                                    <div class="share_button" id="facebook"><img
+                                                            src="{% static 'images/facebook.png' %}" width="36"
+                                                            height="36"></div>
+                                                </a>
+                                            {% endif %}
+                                            {% if author.User_Profile.twitter_url %}
+                                                <a href="{{ author.User_Profile.twitter_url }}" target="_blank">
+                                                    <div class="share_button" id="twitter"><img
+                                                            src="{% static 'images/twitter.png' %}" width="36"
+                                                            height="36"></div>
+                                                </a>
+                                            {% endif %}
+                                            {% if author.User_Profile.instagram_url %}
+                                                <a href="{{ author.User_Profile.instagram_url }}" target="_blank">
+                                                    <div class="share_button" id="instagram"><img
+                                                            src="{% static 'images/instagram.png' %}" width="36"
+                                                            height="36"></div>
+                                                </a>
+                                            {% endif %}
+                                            {% if author.User_Profile.website_url %}
+                                                <a href="{{ author.User_Profile.website_url }}" target="_blank">
+                                                    <div class="share_button" id="linkedin"><img
+                                                            src="{% static 'images/linkedin.png' %}" width="36"
+                                                            height="36"></div>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            <tr>
+                                <td><b>Published:</b></td>
+                                <td>{{ data.publication_date.date }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <h4 class="mt-4">
+                    {{ data.lead | capfirst }}
+                </h4>
+                <hr>
+                <div class="my-4">
+                    {{ data.content | safe | capfirst }}
+                </div>
+                <hr>
+                <div class="be-comment-block" id="commentSection">
+
+                </div>
+                <form action="{% url 'blogComment' %}" method="post" id="commentForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <h2 for="textarea">Comment</h2>
+                        <input type="hidden" id="blogID" name="blogID" value="{{ data.id }}">
+                        <textarea class="form-control" rows="5" name="comment" id="commentBox"
+                                  placeholder="Enter your reviews" required></textarea>
+                    </div>
+                    <button id="btn-save" type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <script>
+
+
+        $("#commentForm").submit(function (e) {
+            // this function  is at the bottom
+            loader(true);
+            e.preventDefault();
+
+            // fetching form, url and method
+            const form = $(this);
+            const url = form.attr('action');
+            const method = form.attr('method');
+
+            $.ajax({
+                url: url,
+                type: method,
+                data: $("#commentForm").serialize(),
+                success: function (result) {
+                    $("#commentBox").val("");
+                    showToaster2(result, 2500, "alert-success", "my-toaster-bottom");
+                    getComments();
+                    loader(false);
+                },
+                error: function (result) {
+                    console.log(result);
+                    showToaster2(result['responseJSON'], 2500, "alert-danger", "my-toaster-bottom");
+                    loader(false);
+                }
+            });
+        });
+
+        getComments();
+
+        function getComments() {
+            loader(true);
+
+            $.ajax({
+                url: '{% url 'blogComment' %}',
+                type: 'get',
+                data: {'id':{{ data.id }}},
+                success: function (result) {
+                    showComments(result);
+                    loader(false);
+                },
+                error: function (result) {
+                    showToaster2(result['responseJSON'], 2500, "alert-danger", "my-toaster-bottom");
+                    console.log(result);
+                    loader(false);
+                }
+            });
+        }
+
+        function showComments(data) {
+            data = data.data
+            const len = data.length;
+            $("#commentSection").html("");
+            $("#commentSection").append('<h1 class="comments-title" id="numOfComments">Comments (' + len + ')</h1>');
+            for (let i = 0; i < len; i++) {
+                var commentHTML = '<div class="be-comment">' +
+                    '                        <div class="be-img-comment">' +
+                    '                            <img src="{% static 'images/avatar.jpg' %}" alt="" class="be-ava-comment">' +
+                    '                        </div>' +
+                    '                        <div class="be-comment-content">' +
+                    '                            <span class="be-comment-name">' +
+                    '                                <a>' + capitalizeFirstLetter(data[i][0]) + '</a>' +
+                    '                                </span>' +
+                    '                            <span class="be-comment-time">' +
+                    '                                <i class="fa fa-clock-o"></i>' +
+                    new Date(data[i][2]) +
+                    '                            </span>' +
+                    '                            <p class="be-comment-text">' +
+                    data[i][1] +
+                    '                            </p>' +
+                    '                        </div>' +
+                    '                    </div>';
+                $("#commentSection").append(commentHTML);
+            }
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+    </script>
+
+{% endblock %}

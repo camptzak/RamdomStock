@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block penny-stocks-tab %}
+active
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid p-0 main-section">
+        <div class="main-banner">
+            <div class="container result">
+                <div class="result-inner">
+                    <p>Symbol <b id="symbol">{{ data.symbol }}</b></p>
+                    <p>Company Name <b id="name">{{ data.company_name }}</b></p>
+                    <p>Listed On <b id="listed_on">{{ data.listed_on }}</b></p>
+                    <button class="btn btn-outline-light outline-none" onclick="stockQuote()">Stock Quote</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    form to submit on click of stock quote button. It will be submitted through javascript#}
+    <form action="{% url 'analysis' %}" method="post" target="_blank" id="hiddenFormForAnalysis">
+         <input type="hidden" value="{{ data.symbol }}" name="symbol" id="hiddenStockInputFieldForAnalysis">
+    </form>
+
+    <div class="container">
+        <div class="middle-text">
+            <em>
+                "{{ data.quote }}"
+            </em>
+            <p>-{{ data.quote_author }}</p>
+            <form method="GET" action="{% url 'pennyStocksAPI' %}" id="pennyStockForm">
+                <button class="btn btn-outline-primary btn-lg outline-none" id="reload">Get Another Stock</button>
+            </form>
+        </div>
+    </div>
+    {% include './shared/footer.html' %}
+    <script>
+
+
+        $("#pennyStockForm").submit(function (e) {
+            // this function  is at the bottom
+            loader(true);
+            e.preventDefault();
+
+            // fetching form, url and method
+            const form = $(this);
+            const url = form.attr('action');
+            const method = form.attr('method');
+
+            $.ajax({
+                url: url,
+                type: method,
+                data: {},
+                success: function (result) {
+                    document.getElementById("symbol").innerHTML = result.symbol;
+                    document.getElementById("hiddenStockInputFieldForAnalysis").value = result.symbol;
+                    document.getElementById("name").innerHTML = result.company_name;
+                    document.getElementById("listed_on").innerHTML = result.listed_on
+                    loader(false);
+                },
+                error: function (result) {
+                    showToaster("Oops! An error occurred. Please check console", 2500, "alert-danger");
+                    console.log(result);
+                    loader(false);
+                }
+            });
+        });
+    </script>
+{% endblock %}

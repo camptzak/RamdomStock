@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block head_title %}RandomStock{% endblock %}</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head_extra %}
+    {% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="icon" href="{% static 'images/icon-01.png' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{% static 'js/index.js' %}"></script>
+
+    <!-- google adsense tag -->
+    <script data-ad-client="ca-pub-3356432650728591" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-176573633-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-176573633-1');
+    </script>
+</head>
+<body>
+{#<div class="test" style="">#}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static 'images/logo-01.png' %}">
+        </a>
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% block penny-stocks-tab %}{% endblock %}" href="{% url 'penny_stocks' %}">
+                        <img src="{% static 'images/cent.png' %}">
+                        OTC Stocks
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block crypto-tab %}{% endblock %}" href="{% url 'crypto' %}">
+                        <img src="{% static 'images/bitcoin.png' %}"/>
+                        Crypto
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block blog-tab %}{% endblock %}" href="{% url 'blog' %}">
+                        <img src="{% static 'images/blog.png' %}"/>
+                        Blog
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block analysis-tab %}{% endblock %}" href="{% url 'analysis' %}">
+                        <img src="{% static 'images/bar-graph.png' %}"/>
+                        Analysis
+                    </a>
+                </li>
+            </ul>
+            <div class="form-inline my-2 my-lg-0">
+                {% if user.is_authenticated %}
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'account_logout' %}">
+                        Logout
+                    </a>
+                {% else %}
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'account_login' %}">
+                        Login
+                    </a>
+                    <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'account_signup' %}">
+                        Register
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% include 'shared/toaster.html' %}
+{% include 'shared/loader.html' %}
+
+{% block content %}
+
+{% endblock %}
+
+</body>
+</html>
+
+{#TODO: naming conventions of classes, APIS etc etc, try except, Blog module, refactor API code #}
+
