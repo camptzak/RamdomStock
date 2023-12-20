@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "random-stock"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+tweepy = "^4.14.0"
+flask = "^3.0.0"
+flask-bootstrap = "^3.3.7.1"
+yahoo-fin = "^0.8.9.1"
+flask-session = "^0.5.0"
+dataclasses-json = "^0.6.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
