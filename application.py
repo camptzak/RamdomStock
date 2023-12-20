@@ -1,12 +1,22 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash, jsonify
+from flask import (
+    Flask,
+    render_template,
+    request,
+    url_for,
+    redirect,
+    session,
+    flash,
+    jsonify,
+)
 from flask_session import Session
 import sqlite3
 import random
 from werkzeug.security import check_password_hash, generate_password_hash
 import datetime
 import pandas as pd
-from flask_bootstrap import Bootstrap
 import yahoo_fin.stock_info as si
+
+from models.stock import Stock
 
 application = app = Flask(__name__)
 
@@ -17,7 +27,7 @@ Session(app)
 
 @app.route("/")
 def index():
-    conn = sqlite3.connect('randomstock.db')
+    conn = sqlite3.connect("randomstock.db")
     db = conn.cursor()
 
     # random number generation
@@ -43,14 +53,19 @@ def index():
     stockquotefinal = stockquote[0]
     quoteauthorfinal = quoteauthor[0]
     exchange = exchange[0]
-    return render_template("index.html", symbol=symbol, stock=stock, exchange=exchange, stockquotefinal=stockquotefinal,
-                           quoteauthorfinal=quoteauthorfinal)
+    return render_template(
+        "index.html",
+        symbol=symbol,
+        stock=stock,
+        exchange=exchange,
+        stockquotefinal=stockquotefinal,
+        quoteauthorfinal=quoteauthorfinal,
+    )
 
 
 @app.route("/_indexButton", methods=["GET", "POST"])
 def _indexButton():
     if request.method == "POST":
-
         AMEX = request.form["AMEX"]
         LSE = request.form["LSE"]
         NASDAQ = request.form["NASDAQ"]
@@ -59,19 +74,19 @@ def _indexButton():
 
         exchanges = []
 
-        if AMEX == 'true':
+        if AMEX == "true":
             amex = random.randint(1, 2248)
             exchanges.append(amex)
-        if LSE == 'true':
+        if LSE == "true":
             lse = random.randint(2249, 7117)
             exchanges.append(lse)
-        if NASDAQ == 'true':
+        if NASDAQ == "true":
             nasdaq = random.randint(7118, 10755)
             exchanges.append(nasdaq)
-        if NYSE == 'true':
+        if NYSE == "true":
             nyse = random.randint(10756, 13910)
             exchanges.append(nyse)
-        if SGX == 'true':
+        if SGX == "true":
             sgx = random.randint(13910, 15031)
             exchanges.append(sgx)
 
@@ -85,7 +100,7 @@ def _indexButton():
 
             stock = exchanges[randomNumber]
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
         # extract stock information
@@ -102,7 +117,7 @@ def _indexButton():
         return jsonify(symbol=symbol, company=company, exchange=exchange)
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
         stock = random.randint(1, 15031)
@@ -123,7 +138,7 @@ def _indexButton():
 
 @app.route("/PennyStocks")
 def pennyStocks():
-    conn = sqlite3.connect('randomstock.db')
+    conn = sqlite3.connect("randomstock.db")
     db = conn.cursor()
 
     # random number generation
@@ -144,17 +159,22 @@ def pennyStocks():
 
     symbolfinal = symbol[0]
     namefinal = stock[0]
-    marketfinal = 'OTCBB'
+    marketfinal = "OTCBB"
     stockquotefinal = stockquote[0]
     quoteauthorfinal = quoteauthor[0]
-    return render_template("pennyStocks.html", symbol=symbolfinal, stock=namefinal, exchange=marketfinal,
-                           stockquotefinal=stockquotefinal,
-                           quoteauthorfinal=quoteauthorfinal)
+    return render_template(
+        "pennyStocks.html",
+        symbol=symbolfinal,
+        stock=namefinal,
+        exchange=marketfinal,
+        stockquotefinal=stockquotefinal,
+        quoteauthorfinal=quoteauthorfinal,
+    )
 
 
 @app.route("/_pennyButton")
 def _pennyButton():
-    conn = sqlite3.connect('randomstock.db')
+    conn = sqlite3.connect("randomstock.db")
     db = conn.cursor()
 
     # random number generation
@@ -173,7 +193,7 @@ def _pennyButton():
 
 @app.route("/crypto")
 def crypto():
-    conn = sqlite3.connect('randomstock.db')
+    conn = sqlite3.connect("randomstock.db")
     db = conn.cursor()
 
     # random number generation
@@ -199,14 +219,20 @@ def crypto():
     lookup = cryptolookup[0]
     stockquotefinal = stockquote[0]
     quoteauthorfinal = quoteauthor[0]
-    return render_template("crypto.html", symbol=symbolfinal, stock=namefinal, exchange="Coinbase", lookup=lookup,
-                           stockquotefinal=stockquotefinal,
-                           quoteauthorfinal=quoteauthorfinal, )
+    return render_template(
+        "crypto.html",
+        symbol=symbolfinal,
+        stock=namefinal,
+        exchange="Coinbase",
+        lookup=lookup,
+        stockquotefinal=stockquotefinal,
+        quoteauthorfinal=quoteauthorfinal,
+    )
 
 
 @app.route("/_cryptoButton")
 def _cryptoButton():
-    conn = sqlite3.connect('randomstock.db')
+    conn = sqlite3.connect("randomstock.db")
     db = conn.cursor()
 
     # random number generation
@@ -235,10 +261,10 @@ def analysis():
 
         def dataCheck(dict, key):
             if key not in dict.keys():
-                return 'No Data'
+                return "No Data"
 
             elif isNaN(quoteTable[key]):
-                return 'No Data'
+                return "No Data"
 
             else:
                 return quoteTable[key]
@@ -259,85 +285,17 @@ def analysis():
         if quoteTable != None:
             # print("QuoteTableExists")
 
-            oneYearTargetEst = dataCheck(quoteTable, '1y Target Est')
-            # print(oneYearTargetEst)
+            stock = Stock.from_dict(quoteTable)
 
-            fiftyTwoWeekRange = dataCheck(quoteTable, '52 Week Range')
-            # print(fiftyTwoWeekRange)
-
-            ask = dataCheck(quoteTable, 'Ask')
-            # print(ask)
-
-            averageVolume = dataCheck(quoteTable, 'Avg. Volume')
-            # print(averageVolume)
-
-            beta = dataCheck(quoteTable, 'Beta (5Y Monthly)')
-            # print(beta)
-
-            bid = dataCheck(quoteTable, 'Bid')
-            # print(bid)
-
-            daysRange = dataCheck(quoteTable, "Day's Range")
-            # print(daysRange)
-
-            EPS = dataCheck(quoteTable, 'EPS (TTM)')
-            # print(EPS)
-
-            earningsDate = dataCheck(quoteTable, 'Earnings Date')
-            # print(earningsDate)
-
-            exDividendDate = dataCheck(quoteTable, 'Ex-Dividend Date')
-            # print(exDividendDate)
-
-            forwardDividendAndYield = dataCheck(quoteTable, 'Forward Dividend & Yield')
-            # print(forwardDividendAndYield)
-
-            marketCap = dataCheck(quoteTable, 'Market Cap')
-            # print(marketCap)
-
-            open = dataCheck(quoteTable, 'Open')
-            # print(open)
-
-            peRatio = dataCheck(quoteTable, 'PE Ratio (TTM)')
-            # print(peRatio)
-
-            previousClose = dataCheck(quoteTable, 'Previous Close')
-            # print(previousClose)
-
-            quotePrice = dataCheck(quoteTable, 'Quote Price')
-            quotePrice = round(quotePrice, 4)
-            # print(quotePrice)
-
-            volume = dataCheck(quoteTable, 'Volume')
-            # print(volume)
-
-
-
-
-            return render_template("analysis.html", symbol=symbol,
-                           oneYearTargetEst=oneYearTargetEst,
-                           fiftyTwoWeekRange=fiftyTwoWeekRange,
-                           ask=ask,
-                           averageVolume=averageVolume,
-                           beta=beta,
-                           bid=bid,
-                           daysRange=daysRange,
-                           EPS=EPS,
-                           earningsDate=earningsDate,
-                           exDividendDate=exDividendDate,
-                           forwardDividendAndYield=forwardDividendAndYield,
-                           marketCap=marketCap,
-                           open=open,
-                           peRatio=peRatio,
-                           previousClose=previousClose,
-                           quotePrice=quotePrice,
-                           volume=volume)
+            return render_template(
+                "analysis.html",
+                **stock.to_dict(),
+            )
 
         else:
             flash("Sorry! We don't have any data for that symbol", "error")
             redirect(url_for("analysis"))
             return render_template("analysis.html")
-
 
     else:
         return render_template("analysis.html")
@@ -345,21 +303,18 @@ def analysis():
 
 @app.route("/_analysis", methods=["POST"])
 def _analysis():
-
     def isNaN(data):
         return data != data
 
     def dataCheck(dict, key):
         if key not in dict.keys():
-            return 'No Data'
+            return "No Data"
 
         elif isNaN(quoteTable[key]):
-            return 'No Data'
+            return "No Data"
 
         else:
             return quoteTable[key]
-
-
 
     exchange = request.form["exchange"]
     symbol = request.form["symbol"]
@@ -368,6 +323,7 @@ def _analysis():
 
     try:
         quoteTable = si.get_quote_table(symbol)
+        print(quoteTable)
 
     except (RuntimeError, TypeError, NameError, IndexError, ValueError):
         quoteTable = None
@@ -375,77 +331,12 @@ def _analysis():
     if quoteTable != None:
         # print("QuoteTableExists")
 
-        oneYearTargetEst = dataCheck(quoteTable, '1y Target Est')
-        # print(oneYearTargetEst)
+        stock = Stock.from_dict(quoteTable)
 
-        fiftyTwoWeekRange = dataCheck(quoteTable, '52 Week Range')
-        # print(fiftyTwoWeekRange)
-
-        ask = dataCheck(quoteTable, 'Ask')
-        # print(ask)
-
-        averageVolume = dataCheck(quoteTable, 'Avg. Volume')
-        # print(averageVolume)
-
-        beta = dataCheck(quoteTable, 'Beta (5Y Monthly)')
-        # print(beta)
-
-        bid = dataCheck(quoteTable, 'Bid')
-        # print(bid)
-
-        daysRange = dataCheck(quoteTable, "Day's Range")
-        # print(daysRange)
-
-        EPS = dataCheck(quoteTable, 'EPS (TTM)')
-        # print(EPS)
-
-        earningsDate = dataCheck(quoteTable, 'Earnings Date')
-        # print(earningsDate)
-
-        exDividendDate = dataCheck(quoteTable,'Ex-Dividend Date')
-        # print(exDividendDate)
-
-        forwardDividendAndYield = dataCheck(quoteTable, 'Forward Dividend & Yield')
-        # print(forwardDividendAndYield)
-
-        marketCap = dataCheck(quoteTable, 'Market Cap')
-        # print(marketCap)
-
-        open = dataCheck(quoteTable, 'Open')
-        # print(open)
-
-        peRatio = dataCheck(quoteTable, 'PE Ratio (TTM)')
-        # print(peRatio)
-
-        previousClose = dataCheck(quoteTable, 'Previous Close')
-        # print(previousClose)
-
-        quotePrice = dataCheck(quoteTable, 'Quote Price')
-        quotePrice = round(quotePrice, 4)
-        # print(quotePrice)
-
-        volume = dataCheck(quoteTable, 'Volume')
-        # print(volume)
-
-
-        return jsonify(exchange=exchange, symbol=symbol,
-                       oneYearTargetEst=oneYearTargetEst,
-                       fiftyTwoWeekRange=fiftyTwoWeekRange,
-                       ask=ask,
-                       averageVolume=averageVolume,
-                       beta=beta,
-                       bid=bid,
-                       daysRange=daysRange,
-                       EPS=EPS,
-                       earningsDate=earningsDate,
-                       exDividendDate=exDividendDate,
-                       forwardDividendAndYield=forwardDividendAndYield,
-                       marketCap=marketCap,
-                       open=open,
-                       peRatio=peRatio,
-                       previousClose=previousClose,
-                       quotePrice=quotePrice,
-                       volume=volume)
+        return jsonify(
+            exchange=exchange,
+            **stock.to_dict(),
+        )
 
     else:
         # print('No Quote Table')
@@ -454,7 +345,7 @@ def _analysis():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    conn = sqlite3.connect('randomstock.db')
+    conn = sqlite3.connect("randomstock.db")
     db = conn.cursor()
 
     # Forget any user_id
@@ -462,7 +353,6 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
         username = request.form.get("username")
         password = request.form.get("password")
 
@@ -506,7 +396,7 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    conn = sqlite3.connect('randomstock.db')
+    conn = sqlite3.connect("randomstock.db")
     db = conn.cursor()
 
     # Clear any session data
@@ -547,7 +437,14 @@ def register():
 
         hashpassword = generate_password_hash(password)
 
-        db.execute("INSERT INTO users (username, hash, email) VALUES (?, ?, ?)", (username, hashpassword, email,))
+        db.execute(
+            "INSERT INTO users (username, hash, email) VALUES (?, ?, ?)",
+            (
+                username,
+                hashpassword,
+                email,
+            ),
+        )
         conn.commit()
         flash("Registration Successful!", "info")
         redirect(url_for("login"))
@@ -576,10 +473,10 @@ def blog():
 
 # Blog Posts
 
+
 @app.route("/ValueInCrypto", methods=["GET", "POST"])
 def ValueInCrypto():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("ValueInCrypto"))
@@ -591,17 +488,19 @@ def ValueInCrypto():
 
         article = 1
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("ValueInCrypto"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 1")
         rows = db.fetchall()
@@ -612,7 +511,6 @@ def ValueInCrypto():
 @app.route("/coronaVaccine", methods=["GET", "POST"])
 def coronaVaccine():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("coronaVaccine"))
@@ -624,17 +522,19 @@ def coronaVaccine():
 
         article = 2
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("coronaVaccine"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 2")
         rows = db.fetchall()
@@ -645,7 +545,6 @@ def coronaVaccine():
 @app.route("/randomness", methods=["GET", "POST"])
 def randomness():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("randomness"))
@@ -657,17 +556,19 @@ def randomness():
 
         article = 3
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("randomness"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 3")
         rows = db.fetchall()
@@ -678,7 +579,6 @@ def randomness():
 @app.route("/TSLAshort", methods=["GET", "POST"])
 def TSLAshort():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("TSLAshort"))
@@ -690,17 +590,19 @@ def TSLAshort():
 
         article = 4
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("TSLAshort"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 4")
         rows = db.fetchall()
@@ -711,7 +613,6 @@ def TSLAshort():
 @app.route("/thirteenf", methods=["GET", "POST"])
 def thirteenf():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("thirteenf"))
@@ -723,17 +624,19 @@ def thirteenf():
 
         article = 5
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("thirteenf"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 5")
         rows = db.fetchall()
@@ -744,7 +647,6 @@ def thirteenf():
 @app.route("/PDC", methods=["GET", "POST"])
 def PDC():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("PDC"))
@@ -756,17 +658,19 @@ def PDC():
 
         article = 6
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("PDC"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 6")
         rows = db.fetchall()
@@ -777,7 +681,6 @@ def PDC():
 @app.route("/ExpectedValue", methods=["GET", "POST"])
 def ExpectedValue():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("ExpectedValue"))
@@ -789,17 +692,19 @@ def ExpectedValue():
 
         article = 7
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("ExpectedValue"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 7")
         rows = db.fetchall()
@@ -810,7 +715,6 @@ def ExpectedValue():
 @app.route("/Savings", methods=["GET", "POST"])
 def Savings():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("Savings"))
@@ -822,17 +726,19 @@ def Savings():
 
         article = 8
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("Savings"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 8")
         rows = db.fetchall()
@@ -843,7 +749,6 @@ def Savings():
 @app.route("/Opportunity", methods=["GET", "POST"])
 def Opportunity():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("Opportunity"))
@@ -855,17 +760,19 @@ def Opportunity():
 
         article = 9
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("Opportunity"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 9")
         rows = db.fetchall()
@@ -876,7 +783,6 @@ def Opportunity():
 @app.route("/DollarCostAveraging", methods=["GET", "POST"])
 def DollarCostAveraging():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("DollarCostAveraging"))
@@ -888,17 +794,19 @@ def DollarCostAveraging():
 
         article = 10
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("DollarCostAveraging"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 10")
         rows = db.fetchall()
@@ -909,7 +817,6 @@ def DollarCostAveraging():
 @app.route("/FiveRulesToInvesting", methods=["GET", "POST"])
 def FiveRulesToInvesting():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("FiveRulesToInvesting"))
@@ -921,17 +828,19 @@ def FiveRulesToInvesting():
 
         article = 11
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("FiveRulesToInvesting"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 11")
         rows = db.fetchall()
@@ -942,7 +851,6 @@ def FiveRulesToInvesting():
 @app.route("/WhenToSellYourStake", methods=["GET", "POST"])
 def WhenToSellYourStake():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("WhenToSellYourStake"))
@@ -954,17 +862,19 @@ def WhenToSellYourStake():
 
         article = 12
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("WhenToSellYourStake"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 12")
         rows = db.fetchall()
@@ -975,7 +885,6 @@ def WhenToSellYourStake():
 @app.route("/InvestingInAStartUp", methods=["GET", "POST"])
 def InvestingInAStartUp():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("InvestingInAStartUp"))
@@ -987,27 +896,29 @@ def InvestingInAStartUp():
 
         article = 13
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("InvestingInAStartUp"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 13")
         rows = db.fetchall()
 
     return render_template("blog/InvestingInAStartUp.html", rows=rows)
 
+
 @app.route("/WhatIsAPennyStock", methods=["GET", "POST"])
 def WhatIsAPennyStock():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("WhatIsAPennyStock"))
@@ -1019,27 +930,29 @@ def WhatIsAPennyStock():
 
         article = 14
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("WhatIsAPennyStock"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 14")
         rows = db.fetchall()
 
     return render_template("blog/WhatIsAPennyStock.html", rows=rows)
 
+
 @app.route("/PerilsOfPennyStocks", methods=["GET", "POST"])
 def PerilsOfPennyStocks():
     if request.method == "POST":
-
         if session.get("user_id") is None:
             flash("Sorry! You must be logged in to post a comment", "error")
             return redirect(url_for("PerilsOfPennyStocks"))
@@ -1051,24 +964,21 @@ def PerilsOfPennyStocks():
 
         article = 15
 
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
 
-        db.execute("INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
-                   (article, comment, username, date))
+        db.execute(
+            "INSERT INTO comments (article, comment, user, date) VALUES (?, ?, ?, ?)",
+            (article, comment, username, date),
+        )
         conn.commit()
 
         return redirect(url_for("PerilsOfPennyStocks"))
 
     else:
-        conn = sqlite3.connect('randomstock.db')
+        conn = sqlite3.connect("randomstock.db")
         db = conn.cursor()
         db.execute("SELECT * FROM comments WHERE article = 15")
         rows = db.fetchall()
 
     return render_template("blog/PerilsOfPennyStocks.html", rows=rows)
-
-
-
-
-
